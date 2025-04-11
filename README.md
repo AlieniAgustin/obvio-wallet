@@ -1,6 +1,6 @@
 # Obvio Wallet 💸
 
-**Obvio Wallet** es un proyecto académico cuyo objetivo es desarrollar una billetera virtual en el marco de la asignatura **Análisis y Diseño de Sistemas** (2025), correspondiente a la carrera de **Analista en Computación** y **Licenciatura en Ciencias de la Computación**.
+**Obvio Wallet** es un proyecto académico cuyo objetivo es desarrollar una billetera virtual en el marco de la asignatura **Análisis y Diseño de Sistemas** (2025), correspondiente a las carreras de **Analista en Computación** y **Licenciatura en Ciencias de la Computación**.
 
 ## 📌 Objetivo
 
