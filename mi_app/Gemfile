@@ -1,0 +1,12 @@
+ruby '3.2.2'
+
+source "https://rubygems.org"
+
+gem 'sinatra', '~> 4.1'
+gem 'sinatra-contrib'
+gem 'puma'
+gem 'rackup'
+gem 'sinatra-activerecord'
+gem 'sqlite3'
+gem 'rake'
+gem 'sinatra-contrib'
