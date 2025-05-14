@@ -1,7 +1,7 @@
 
-### --- Explicación de cómo manejarse en mi_app ---
+# --- Explicación de cómo manejarse en mi_app ---
 
-## Estructura:
+### Estructura:
 
 1. **Gemfile**: archivo que dice todas las dependencias/gemas que necesita la app para correr.  
    Cuando corres `bundle install` se fija en este archivo para instalarlo.
@@ -37,11 +37,11 @@
 
  
  
-### --- Pasos para seguir para ver si funciona ---
+# --- Pasos para seguir para ver si funciona ---
 
 > Aclaración: no sé si con esto se chequearía. Estos son los pasos que seguí uno por uno para chequear que se hicieron bien. Cualquier cosa a preguntar a nuestro amigo chatgpt.
 
-## Requisitos previos
+### Requisitos previos
 Deberías tener instalado:
 * Ruby 3.2.2 (o una versión cercana)
 * Bundler (gem install bundler si no lo tenés)
@@ -56,13 +56,13 @@ Deberías tener instalado:
 4. Correr la migracion
 5. Correr un registro desde el intérprete
 
-## Confirmación de que todo anda
+### Confirmación de que todo anda
 1. Te abre la web con el mensaje de bienvenida.
 2. Rake te muestra tareas sin errores.
 3. Se crea y migra la base sin problemas.
 4. Podés usar el modelo User desde la consola.
 
-### --- Comandos ---
+# --- Comandos ---
 
 Correr el server usando Rackup:
 ```Terminal
@@ -134,7 +134,7 @@ nose
 .schema users --indent
 ```
 
-### --- Gemfile ---
+## --- Gemfile ---
 
 Explicación de cada gema:
 Esta línea indica la versión de Ruby que se espera o se recomienda para este proyecto.
