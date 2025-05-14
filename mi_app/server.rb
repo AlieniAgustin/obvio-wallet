@@ -11,6 +11,6 @@ class App < Sinatra::Application
   end
 
   get '/' do
-    'Welcome'
+    'Welcome to Obvio!'
   end
 end
