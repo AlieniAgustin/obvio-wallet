@@ -1,5 +1,5 @@
 
-# --- Explicación de cómo manejarse en mi_app ---
+## --- Explicación de cómo manejarse en mi_app ---
 
 ### Estructura:
 
@@ -37,7 +37,7 @@
 
  
  
-# --- Pasos para seguir para ver si funciona ---
+## --- Pasos para seguir para ver si funciona ---
 
 > Aclaración: no sé si con esto se chequearía. Estos son los pasos que seguí uno por uno para chequear que se hicieron bien. Cualquier cosa a preguntar a nuestro amigo chatgpt.
 
@@ -47,7 +47,7 @@ Deberías tener instalado:
 * Bundler (gem install bundler si no lo tenés)
 * SQLite3 (sudo apt install sqlite3 en Linux / usar Homebrew en macOS)
 
-
+### Pasos
 1. Correr el server (con el comando que está abajo)
     Te tendría que salir en la terminal que está corriendo, y un link. Cuando entrás, te sale la página en blanco con un msg de "Welcome to Obvio!".
 2. Fijarse si rake está funcionando
@@ -62,7 +62,7 @@ Deberías tener instalado:
 3. Se crea y migra la base sin problemas.
 4. Podés usar el modelo User desde la consola.
 
-# --- Comandos ---
+## --- Comandos ---
 
 Correr el server usando Rackup:
 ```Terminal
