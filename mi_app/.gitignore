@@ -1,0 +1,50 @@
+# Bundler
+/Gemfile.lock
+
+# SQLite database
+/db/*.sqlite3
+/db/*.sqlite3-journal
+
+# Logs
+/log/*.log
+
+# PID files (procesos del servidor)
+tmp/pids/*
+*.pid
+
+# Archivos temporales
+tmp/*
+*.tmp
+*.swp
+*.bak
+*.old
+
+# Archivos del editor/IDE
+*.sublime-project
+*.sublime-workspace
+.vscode/
+.idea/
+*.iml
+
+# Archivos de sistema (macOS, Linux)
+.DS_Store
+*.~undo-tree~
+*.orig
+
+# Pruebas o cobertura opcional
+coverage/
+spec/tmp/
+
+# Archivos IRB (consola Ruby)
+/.irb-history
+
+# Rake
+.rake_tasks~
+
+# Archivos del entorno
+.env
+.env.*
+
+# Docker (por si lo usan más adelante)
+*.sock
+docker-compose.override.yml
