@@ -2,38 +2,50 @@
 ### --- Explicación de cómo manejarse en mi_app ---
 
 ## Estructura:
-    ** 1. Gemfile: **  archivo que dice todas las dependencias/gemas que necesita la app para correr.
-        Cuando corres "bundle install" se fija en este archivo para instalarlo.
-    2. Gemfile.lock: es como el Gemfile pero "ejecutado". Si todos estamos en Ubuntu, no hay que tocarlo. 
-        Si alguno no está en Ubuntu, lo borra, y ejecuta nuevamente 'bundle install'.
-    3. server.rb: similar a "main". Es de donde se setea la página. 
-        Se muestra el mensaje de "hola mundo". Denota todas las dependencias que necesita la página para funcionar. 
-    4. config.ru: por lo q entendi esq es parte del framework de rackup. Básicamente sirve para decirle a la dependencias
-        "che para run App necesito server" y que sería el archivo anterior. 
-    5. Rakefile: sirve para que la gema rake pueda manejar la base de datos.
-    6. config: carpeta que tiene el archivo con la configuración de la base de datos.
-        a. database.yml: define qué motor de base de datos se va a usar (sqlite), 
-            y crea tres bases de datos diferentes:
-                i. Produccion
-                ii. Desarrollo (esta no sé por qué no se hizo, pero creo recordar que no hacía falta)
-                iii. Testing 
-    7. models: carpeta con los modelos, o las clases, que tiene el programa. Esto se usa para que la 
-        base de datos pueda crear cada tabla de forma más eficiente. 
-        a. users.rb: archivo con el perfil de esa clase. 
-    8. db: carpeta con todos los archivos relacionados a la base de datos.
-        a. migrate: carpeta donde se guardan las migraciones (no sé si todas o solo las propias)
-        b. schema.rb: esto es mejor no tocarlo. Recomendable hacer todas las modificaciones que se quieran 
-            con migraciones. 
-        c. test.slite3: base de datos de test. Mejor usemos este siempre.
-        d. wallet_development.slite3: base de datos de todo el programa. Mejor no tocarlo.
+
+1. **Gemfile**: archivo que dice todas las dependencias/gemas que necesita la app para correr.  
+   Cuando corres `bundle install` se fija en este archivo para instalarlo.
+
+2. **Gemfile.lock**: es como el Gemfile pero "ejecutado".  
+   Si todos estamos en Ubuntu, no hay que tocarlo.  
+   Si alguno no está en Ubuntu, lo borra, y ejecuta nuevamente `bundle install`.
+
+3. **server.rb**: similar a "main". Es de donde se setea la página.  
+   Se muestra el mensaje de "hola mundo". Denota todas las dependencias que necesita la página para funcionar.
+
+4. **config.ru**: por lo que entendí es parte del framework de Rack.  
+   Básicamente sirve para decirle a las dependencias "che para run App necesito server" y que sería el archivo anterior.
+
+5. **Rakefile**: sirve para que la gema rake pueda manejar la base de datos.
+
+6. **config**: carpeta que tiene el archivo con la configuración de la base de datos.  
+   - **database.yml**: define qué motor de base de datos se va a usar (sqlite),  
+     y crea tres bases de datos diferentes:
+     - Producción  
+     - Desarrollo *(esta no sé por qué no se hizo, pero creo recordar que no hacía falta)*  
+     - Testing  
+
+7. **models**: carpeta con los modelos, o las clases, que tiene el programa.  
+   Esto se usa para que la base de datos pueda crear cada tabla de forma más eficiente.  
+   - **users.rb**: archivo con el perfil de esa clase.
+
+8. **db**: carpeta con todos los archivos relacionados a la base de datos.  
+   - **migrate**: carpeta donde se guardan las migraciones (no sé si todas o solo las propias)  
+   - **schema.rb**: esto es mejor no tocarlo. Recomendable hacer todas las modificaciones que se quieran con migraciones.  
+   - **test.sqlite3**: base de datos de test. Mejor usemos este siempre.  
+   - **wallet_development.sqlite3**: base de datos de todo el programa. Mejor no tocarlo.
 
  
  
 ### --- Pasos para seguir para ver si funciona ---
 
-* Aclaración: no sé si con esto se chequearía. Estos son los pasos que seguí uno por uno para chequear que se hicieron bien. Cualquier cosa a preguntar a nuestro amigo chatgpt. *
+> Aclaración: no sé si con esto se chequearía. Estos son los pasos que seguí uno por uno para chequear que se hicieron bien. Cualquier cosa a preguntar a nuestro amigo chatgpt.
 
-Deberías tener instalado: ruby 3.2.2 aprox
+## Requisitos previos
+Deberías tener instalado:
+* Ruby 3.2.2 (o una versión cercana)
+* Bundler (gem install bundler si no lo tenés)
+* SQLite3 (sudo apt install sqlite3 en Linux / usar Homebrew en macOS)
 
 
 1. Correr el server (con el comando que está abajo)
@@ -43,6 +55,12 @@ Deberías tener instalado: ruby 3.2.2 aprox
 3. Crear una tabla con una migracion
 4. Correr la migracion
 5. Correr un registro desde el intérprete
+
+## Confirmación de que todo anda
+1. Te abre la web con el mensaje de bienvenida.
+2. Rake te muestra tareas sin errores.
+3. Se crea y migra la base sin problemas.
+4. Podés usar el modelo User desde la consola.
 
 ### --- Comandos ---
 
@@ -183,4 +201,3 @@ En este contexto, se usa para ejecutar tareas de base de datos, como migraciones
 gem 'rake'
 ```
 
-```
