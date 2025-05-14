@@ -1,8 +1,8 @@
-```
---- Explicación de cómo manejarse en mi_app ---
 
-Estructura:
-    1. Gemfile: archivo que dice todas las dependencias/gemas que necesita la app para correr.
+### --- Explicación de cómo manejarse en mi_app ---
+
+## Estructura:
+    ** 1. Gemfile: **  archivo que dice todas las dependencias/gemas que necesita la app para correr.
         Cuando corres "bundle install" se fija en este archivo para instalarlo.
     2. Gemfile.lock: es como el Gemfile pero "ejecutado". Si todos estamos en Ubuntu, no hay que tocarlo. 
         Si alguno no está en Ubuntu, lo borra, y ejecuta nuevamente 'bundle install'.
@@ -31,8 +31,7 @@ Estructura:
  
 ### --- Pasos para seguir para ver si funciona ---
 
-Aclaración: no sé si con esto se chequearía. Estos son los pasos que seguí uno por uno para chequear que se hicieron bien.
-Cualquier cosa a preguntar a nuestro amigo chatgpt.
+* Aclaración: no sé si con esto se chequearía. Estos son los pasos que seguí uno por uno para chequear que se hicieron bien. Cualquier cosa a preguntar a nuestro amigo chatgpt. *
 
 Deberías tener instalado: ruby 3.2.2 aprox
 
