@@ -1,203 +1,193 @@
+## --- Guía para entender cómo funciona `mi_app` ---
 
-## --- Explicación de cómo manejarse en mi_app ---
+### Estructura del proyecto
 
-### Estructura:
+1. **Gemfile**
+   Lista todas las **gemas** (librerías) que necesita el proyecto para funcionar.
+   Cuando corrés `bundle install`, se usa este archivo para instalar esas gemas.
 
-1. **Gemfile**: archivo que dice todas las dependencias/gemas que necesita la app para correr.  
-   Cuando corres `bundle install` se fija en este archivo para instalarlo.
+2. **Gemfile.lock**
+   Es la "foto" exacta de las gemas instaladas (con sus versiones específicas).
+   Si todos usamos Ubuntu, no hay que modificarlo.
+   Si alguien usa otro sistema operativo, puede borrarlo y volver a correr `bundle install` para generar uno compatible.
 
-2. **Gemfile.lock**: es como el Gemfile pero "ejecutado".  
-   Si todos estamos en Ubuntu, no hay que tocarlo.  
-   Si alguno no está en Ubuntu, lo borra, y ejecuta nuevamente `bundle install`.
+3. **server.rb**
+   Es como el "punto de entrada" del proyecto.
+   Acá se configura la aplicación y se define qué muestra cuando alguien entra al sitio. También se cargan las dependencias necesarias.
 
-3. **server.rb**: similar a "main". Es de donde se setea la página.  
-   Se muestra el mensaje de "hola mundo". Denota todas las dependencias que necesita la página para funcionar.
+4. **config.ru**
+   Archivo usado por Rack (el sistema que corre la app).
+   Le dice a Rack cuál es el archivo principal de la app (en este caso, `server.rb`).
 
-4. **config.ru**: por lo que entendí es parte del framework de Rack.  
-   Básicamente sirve para decirle a las dependencias "che para run App necesito server" y que sería el archivo anterior.
+5. **Rakefile**
+   Permite usar comandos automáticos con `rake`, especialmente para trabajar con la base de datos.
 
-5. **Rakefile**: sirve para que la gema rake pueda manejar la base de datos.
+6. **config/**
+   Carpeta con archivos de configuración.
 
-6. **config**: carpeta que tiene el archivo con la configuración de la base de datos.  
-   - **database.yml**: define qué motor de base de datos se va a usar (sqlite),  
-     y crea tres bases de datos diferentes:
-     - Producción  
-     - Desarrollo *(esta no sé por qué no se hizo, pero creo recordar que no hacía falta)*  
-     - Testing  
+   * **database.yml**: define el tipo de base de datos (en este caso, SQLite) y las bases para cada entorno:
 
-7. **models**: carpeta con los modelos, o las clases, que tiene el programa.  
-   Esto se usa para que la base de datos pueda crear cada tabla de forma más eficiente.  
-   - **users.rb**: archivo con el perfil de esa clase.
+     * Producción *(no está creada, pero podría no ser necesaria)*
+     * Desarrollo 
+     * Testing
 
-8. **db**: carpeta con todos los archivos relacionados a la base de datos.  
-   - **migrate**: carpeta donde se guardan las migraciones (no sé si todas o solo las propias)  
-   - **schema.rb**: esto es mejor no tocarlo. Recomendable hacer todas las modificaciones que se quieran con migraciones.  
-   - **test.sqlite3**: base de datos de test. Mejor usemos este siempre.  
-   - **wallet_development.sqlite3**: base de datos de todo el programa. Mejor no tocarlo.
+7. **models/**
+   Contiene los **modelos** (clases que representan tablas en la base de datos).
 
- 
- 
-## --- Pasos para seguir para ver si funciona ---
+   * **users.rb**: define la clase `User`, que se convierte en una tabla.
 
-> Aclaración: no sé si con esto se chequearía. Estos son los pasos que seguí uno por uno para chequear que se hicieron bien. Cualquier cosa a preguntar a nuestro amigo chatgpt.
+8. **db/**
+   Carpeta con todo lo relacionado a la base de datos.
+
+   * **migrate/**: guarda las migraciones (scripts para crear/modificar tablas).
+   * **schema.rb**: representa el estado actual de la base. No debería editarse a mano.
+   * **test.sqlite3**: base de datos usada para hacer pruebas.
+   * **wallet\_development.sqlite3**: base de datos principal. Mejor no tocarla directamente.
+
+---
+
+## --- Pasos para comprobar que todo funciona ---
+
+> Nota: Estos son los pasos que usé para verificar que la app esté bien armada. Si algo no funciona, podés preguntar a nuestro amigo ChatGPT.
 
 ### Requisitos previos
-Deberías tener instalado:
+
+Debés tener instalado:
+
 * Ruby 3.2.2 (o una versión cercana)
-* Bundler (gem install bundler si no lo tenés)
-* SQLite3 (sudo apt install sqlite3 en Linux / usar Homebrew en macOS)
+* Bundler (`gem install bundler` si no lo tenés)
+* SQLite3 (`sudo apt install sqlite3` en Linux o usar Homebrew en macOS)
 
 ### Pasos
-1. Correr el server (con el comando que está abajo)
-    Te tendría que salir en la terminal que está corriendo, y un link. Cuando entrás, te sale la página en blanco con un msg de "Welcome to Obvio!".
-2. Fijarse si rake está funcionando
-    Así podes ver manejar después la base de datos. Te debería tirar una lista con todos los comandos q tiene rake. 
-3. Crear una tabla con una migracion
-4. Correr la migracion
-5. Correr un registro desde el intérprete
 
-### Confirmación de que todo anda
-1. Te abre la web con el mensaje de bienvenida.
-2. Rake te muestra tareas sin errores.
-3. Se crea y migra la base sin problemas.
-4. Podés usar el modelo User desde la consola.
+1. **Correr el servidor**
+   Te va a mostrar en consola que está corriendo y un link para abrir la página. Debería aparecer un mensaje tipo "Welcome to Obvio!".
 
-## --- Comandos ---
+2. **Ver si `rake` está funcionando**
+   Esto permite manejar tareas de base de datos. Debería mostrarte una lista de comandos disponibles.
 
-Correr el server usando Rackup:
-```Terminal
+3. **Crear una migración para una tabla**
+
+4. **Ejecutar la migración**
+
+5. **Probar la creación de un registro desde la consola**
+
+### Confirmación de que anda todo bien
+
+1. Se abre la web con el mensaje de bienvenida.
+2. `rake` responde con la lista de tareas.
+3. Se crea y migra la base sin errores.
+4. Podés usar el modelo `User` en la consola.
+
+---
+
+## --- Comandos útiles ---
+
+**Levantar el servidor**
+
+```bash
 bundle exec rackup -p 8000
 ```
 
-Fijarse si rake está funcionando:
-```Terminal
+**Ver tareas de `rake` disponibles**
+
+```bash
 bundle exec rake -T
 ```
 
-Crear la Base de Datos (no hace falta porq ya está hecha)
-```Terminal
-exec app bundle exec rake -T
+**(Opcional) Crear base de datos**
+(No hace falta si ya está creada)
+
+```bash
+bundle exec rake db:create
 ```
 
-Crear una migración para crear una tabla
-```Terminal
+**Crear una migración**
+
+```bash
 bundle exec rake db:create_migration NAME=create_users
 ```
 
-Correr la migración
-```Terminal
+**Ejecutar migración**
+
+```bash
 bundle exec rake db:migrate
 ```
 
-Crear una migración para crear una tabla en la base de datos de test
-```
-RACK_ENV=test bundle exec rake db:create_migration NAME=create_users
-```
+**Migraciones para entorno de prueba**
 
-Correr la migración
-```Terminal
+```bash
+RACK_ENV=test bundle exec rake db:create_migration NAME=create_users
 RACK_ENV=test bundle exec rake db:migrate
 ```
 
-Entrar a la consola de ruby con la app cargada para testear modelos.
-Por ejemplo:
-```Terminal
+**Entrar a la consola de Ruby con la app cargada**
+
+```bash
 bundle exec irb -I. -r server.rb
 ```
 
-Crear un usario en el intérprete por consola
-```
-u = new User.create(name: "Doble a")
+**Crear un usuario desde la consola**
+
+```ruby
+u = User.create(name: "Doble a")
 ```
 
-Comandos slite3
+---
 
-Este comando abre el archivo de base de datos wallet_development.sqlite3 en el cliente de SQLite. Cuando lo ejecutás,
- entrad en el entorno interactivo de SQLite, donde puedes ejecutar otros comandos
-```Terminal
-sqlite db/wallet_development.sqlite3
+## --- Comandos de SQLite3 ---
+
+**Abrir base de datos**
+
+```bash
+sqlite3 db/wallet_development.sqlite3
 ```
 
-Este comando muestra todas las tablas que existen en la base de datos SQLite actual. 
-```
+**Ver tablas existentes**
+
+```sql
 .tables
-```  
+```
 
-Este comando muestra el esquema completo de todas las tablas en la base de datos,
- es decir, las definiciones de las tablas y sus columnas.
-```  
+**Ver estructura de todas las tablas**
+
+```sql
 .schema
-```  
+```
 
-nose
-```  
+**Ver estructura de la tabla `users` con formato indentado**
+
+```sql
 .schema users --indent
 ```
 
-## --- Gemfile ---
+---
 
-Explicación de cada gema:
-Esta línea indica la versión de Ruby que se espera o se recomienda para este proyecto.
-En este caso, es la versión 3.2.2. Aunque esta es una convención común,
-```
-ruby '3.2.2'
-```
+## --- Explicación del `Gemfile` ---
 
-Esta línea es fundamental en cualquier Gemfile.
-Indica el origen de donde Bundler (la herramienta que lee y procesa el Gemfile)
-```
-source "https://rubygems.org"
-```
-Declara las dependencias del proyecto (gemas requeridas).
-Cada línea con `gem` especifica una gema y, opcionalmente, su versión o restricciones.
+**ruby '3.2.2'**
+Indica la versión recomendada de Ruby para este proyecto.
 
-Gema: sinatra
-Sinatra es un framework ligero para construir aplicaciones web en Ruby.
-La restricción '~> 4.1' indica que se usará la versión 4.1.x (cualquier versión 4.1 con parches, pero no 4.2 o superior).
-Esto garantiza compatibilidad con las funcionalidades esperadas sin introducir cambios mayores imprevistos.
-```
-gem 'sinatra', '~> 4.1'
-```
+**source "[https://rubygems.org](https://rubygems.org)"**
+Es el sitio desde donde se descargan las gemas.
 
-Gema: rackup
-`rackup` es una herramienta de línea de comandos incluida en la gema `rack`.
-Se usa para iniciar servidores web compatibles con Rack, como el servidor de Sinatra.
-Al incluir esta gema, aseguramos que el comando `rackup` esté disponible para ejecutar el archivo `config.ru`.
-Nota: No se especifica una versión, por lo que Bundler usará la última versión estable disponible.
-```
-gem 'rackup'
-```
+**gem 'sinatra', '\~> 4.1'**
+Framework web simple y liviano para Ruby. Esta versión garantiza compatibilidad con parches de la serie 4.1.
 
-Gema: puma
-Puma es un servidor web concurrente y de alto rendimiento para aplicaciones Ruby/Rack.
-Es comúnmente usado con Sinatra por su velocidad y capacidad para manejar múltiples solicitudes simultáneamente.
-```
-gem 'puma', '~> 6.6'
-```
+**gem 'rackup'**
+Herramienta para levantar servidores Rack. Permite ejecutar `config.ru`.
 
-Incluye la gema sinatra-contrib, que proporciona extensiones útiles para Sinatra, como recarga automática (reloader), helpers y herramientas de desarrollo.
-```
-gem 'sinatra-contrib'
-```
+**gem 'puma', '\~> 6.6'**
+Servidor web rápido y concurrente para apps Ruby.
 
-Gema: sinatra-activerecord
-Integra ActiveRecord (un ORM de Ruby) con Sinatra.
-Permite usar modelos y manejar bases de datos relacionales fácilmente
-```
-gem 'sinatra-activerecord'
-```
+**gem 'sinatra-contrib'**
+Agrega funcionalidades extras a Sinatra como recarga automática y helpers.
 
-Gema: sqlite3
-Proporciona una interfaz para usar SQLite, una base de datos ligera y sin servidor.
-Es ideal para desarrollo o aplicaciones pequeñas, ya que almacena datos en un solo archivo.
-```
-gem 'sqlite3'
-```
+**gem 'sinatra-activerecord'**
+Conecta Sinatra con ActiveRecord (el sistema ORM que maneja la base de datos).
 
-Gema: rake
-Herramienta para automatizar tareas en Ruby (similar a Make).
-En este contexto, se usa para ejecutar tareas de base de datos, como migraciones con ActiveRecord (ej. `rake db:migrate`).
-```
-gem 'rake'
-```
+**gem 'sqlite3'**
+Gema que permite usar SQLite desde Ruby.
 
+**gem 'rake'**
+Herramienta de automatización de tareas. Se usa para correr tareas como las migraciones de la base.
