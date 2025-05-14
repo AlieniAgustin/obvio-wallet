@@ -1,9 +1,15 @@
+require 'bundler/setup'
 require 'sinatra/base'
+require 'sinatra/reloader' if Sinatra::Base.environment == :development
 
-# Define una clase 'App' que hereda de 'Sinatra::Application',
-# convirtiéndola en una aplicación web Sinatra.
 class App < Sinatra::Application
-  # Define una ruta para solicitudes GET a la URL raíz ('/').
+  configure :development do
+    register Sinatra::Reloader
+    after_reload do
+      puts 'Reloaded...'
+    end
+  end
+
   get '/' do
     'Welcome'
   end
