@@ -1,5 +1,6 @@
 require 'bundler/setup'
 require 'sinatra/base'
+require 'sinatra/activerecord'
 require 'sinatra/reloader' if Sinatra::Base.environment == :development
 require 'logger'
 
