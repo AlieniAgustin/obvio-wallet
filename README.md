@@ -36,3 +36,10 @@ Este enfoque permite a los estudiantes adquirir experiencia real y completa en e
 ## 📚 Tecnologías y Herramientas
 
 > *(Agregar aquí las tecnologías utilizadas: lenguajes, frameworks, bases de datos, herramientas de diseño, etc.)*
+
+## 💻 Paginas Relacionadas
+
+Links utilizados en el análisis y desarrollo del proyecto
+
+[Miro](https://miro.com/app/board/uXjVIJrIsZI=/)
+[Figma](https://www.figma.com/design/R9SKk0O6SQDhrZx8vuOzT3/Obvio---Billetera-Virtual-Dise%C3%B1o?node-id=45-7&p=f&t=U81Fw5LVaP5IHIhB-0)
