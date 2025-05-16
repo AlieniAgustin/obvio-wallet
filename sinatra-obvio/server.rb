@@ -1,8 +1,11 @@
 require 'bundler/setup'
-require 'sinatra/base'
+require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/reloader' if Sinatra::Base.environment == :development
 require_relative 'models/user'
+
+set :views, File.expand_path('../views', __FILE__)
+set :public_folder, File.expand_path('../public', __FILE__)
 
 class App < Sinatra::Application
   configure :development do
@@ -18,6 +21,14 @@ class App < Sinatra::Application
   end
 
   get '/' do
-    'Welcome'
+    erb :landing
+  end
+
+  get '/login' do
+    erb :login
+  end
+
+  get '/register' do
+    erb :register
   end
 end
