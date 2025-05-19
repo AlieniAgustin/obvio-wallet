@@ -1,4 +1,6 @@
-## --- Guía para entender cómo funciona `mi_app` ---
+## --- Guía para entender cómo funciona `sinatra-obvio` ---
+
+Este markdown es una guía para los integrantes del grupo, así podemos entender y tener a mano todos los archivos relacionados al lenguaje Ruby a tener en cuenta a la hora del desarrollo de la aplicación `Obvio`.  
 
 ### Estructura del proyecto
 
@@ -54,7 +56,7 @@
 
 Debés tener instalado:
 
-* Ruby 3.2.2 (o una versión cercana)
+* Ruby 3.2.3 (o una versión cercana)
 * Bundler (`gem install bundler` si no lo tenés)
 * SQLite3 (`sudo apt install sqlite3` en Linux o usar Homebrew en macOS)
 
@@ -191,3 +193,7 @@ Gema que permite usar SQLite desde Ruby.
 
 **gem 'rake'**
 Herramienta de automatización de tareas. Se usa para correr tareas como las migraciones de la base.
+
+
+Estas notas están basadas en las presentaciones hechas en la materia.
+(Ruby.pdf)[https://drive.google.com/file/d/1Fur4MoUkoSe_q7EIcfuyf8rhW6iPCzBi/view]
