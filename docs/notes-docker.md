@@ -60,6 +60,20 @@ Esto:
 - Construye la imagen (si hace falta).
 - Levanta el contenedor en segundo plano.
 
+Para chequear que está corriendo podes aplicar
+
+```bash
+docker ps
+```
+
+Deberías ver un mensaje como este (con los datos de cómo configuraste tu imagen y contenedor):
+
+```bash
+CONTAINER ID   IMAGE               COMMAND                  CREATED         STATUS         PORTS                    NAMES
+bd965953ab69   sinatra-obvio-app   "bundle exec rackup …"   5 seconds ago   Up 4 seconds   0.0.0.0:8000->8000/tcp   sinatra-obvio-app-1
+```
+
+
 ---
 
 #### 📦 Instalar las dependencias de Ruby (gems)
