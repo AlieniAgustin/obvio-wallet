@@ -3,6 +3,8 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/reloader' if Sinatra::Base.environment == :development
 require_relative 'models/user'
+require_relative 'models/account'
+require_relative 'models/transaction'
 
 set :views, File.expand_path('../views', __FILE__)
 set :public_folder, File.expand_path('../public', __FILE__)
