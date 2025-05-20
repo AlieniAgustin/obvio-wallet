@@ -7,8 +7,7 @@ class CreateVouchers < ActiveRecord::Migration[7.2]
       t.decimal :importe, precision: 10, scale: 2
       t.string :description
 
-      #Descomentar cuaando se cree la entidad transfer
-      #t.references :transfer, null: false, foreing_key: true, unique: true
+      t.references :transfer, null: false, foreing_key: true, unique: true
       t.timestamps
     end
 
