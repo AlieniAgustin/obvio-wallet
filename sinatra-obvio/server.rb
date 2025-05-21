@@ -24,16 +24,17 @@ class App < Sinatra::Application
     end
   end
 
+  # Seccion web principal
   get '/' do
-    erb :landing
+    erb :'main/landing', layout: :'main/layout'
   end
 
   get '/login' do
-    erb :login
+    erb :'main/login', layout: :'main/layout'
   end
 
   get '/register' do
-    erb :register
+    erb :'main/register', layout: :'main/layout'
   end
   
 end
