@@ -35,7 +35,13 @@ Este enfoque permite a los estudiantes adquirir experiencia real y completa en e
 
 ## 📚 Tecnologías y Herramientas
 
-> *(Agregar aquí las tecnologías utilizadas: lenguajes, frameworks, bases de datos, herramientas de diseño, etc.)*
+> En este proyecto utilizamos las siguientes tecnologías y herramientas:
+
+- **Base de datos:** SQLite
+- **Lenguaje de programación:** Ruby
+- **Framework web:** Sinatra
+- **Contenedores:** Docker
+- **Frontend:** HTML, CSS
 
 ## 💻 Paginas Relacionadas
 
