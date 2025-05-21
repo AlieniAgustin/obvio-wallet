@@ -6,7 +6,7 @@ class MonthlySummary < ActiveRecord::Base
 	validates :account_id, presence: true
 	validates :initial_balance, presence: true
 	validates :final_balance, presence: true
-	validates :transaction_acount, presence: true
+	validates :transaction_count, presence: true
 	validates :balance_status, presence: true
 
 
