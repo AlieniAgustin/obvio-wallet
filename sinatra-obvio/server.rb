@@ -33,4 +33,5 @@ class App < Sinatra::Application
   get '/register' do
     erb :register
   end
+  
 end
