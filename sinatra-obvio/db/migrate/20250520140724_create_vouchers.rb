@@ -1,16 +1,12 @@
 class CreateVouchers < ActiveRecord::Migration[7.2]
   def change
-
     create_table :vouchers do |t|
-      t.date :dia
-      t.time :hora
-      t.decimal :importe, precision: 10, scale: 2
-      t.string :description
-
-      t.references :transfer, null: false, foreign_key: true, unique: true
+      t.string :code, null: false
+      t.references :wallet, null: false, foreign_key: true
       t.timestamps
     end
 
-
+    add_index :vouchers, :code, unique: true
+    add_index :vouchers, :wallet_id, unique: true  # Solo si querés que haya 1 voucher por wallet
   end
 end
