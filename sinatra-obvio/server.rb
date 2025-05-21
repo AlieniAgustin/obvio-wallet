@@ -7,6 +7,7 @@ require_relative 'models/account'
 require_relative 'models/transaction'
 require_relative 'models/contact_list'
 require_relative 'models/contact_list_account'
+require_relative 'models/monthly_sumary'
 
 set :views, File.expand_path('../views', __FILE__)
 set :public_folder, File.expand_path('../public', __FILE__)
