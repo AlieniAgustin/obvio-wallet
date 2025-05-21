@@ -7,7 +7,7 @@ class CreateAccounts < ActiveRecord::Migration[7.2]
       t.string :username      # Columna para nombre de usuario
       t.string :password      # Columna para contraseña
       t.integer :cvu          # Columna para cvu
-      t.string :alias 
+      t.string :alias         # Columna para alias
       t.timestamps           # Agrega created_at y updated_at automáticamente
     end
   end
