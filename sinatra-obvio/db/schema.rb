@@ -10,7 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema[7.2].define(version: 2025_05_20_230856) do
   create_table "accounts", force: :cascade do |t|
     t.integer "idAccount"
@@ -33,16 +32,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_20_230856) do
     t.datetime "updated_at", null: false
   end
 
-=======
-ActiveRecord::Schema[7.2].define(version: 2025_05_20_140724) do
->>>>>>> 4eb6a4bbdf4e268ec2feb77d9f3f8a250c3c37b9
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-<<<<<<< HEAD
-=======
 
   create_table "vouchers", force: :cascade do |t|
     t.date "dia"
@@ -52,5 +46,4 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_20_140724) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
->>>>>>> 4eb6a4bbdf4e268ec2feb77d9f3f8a250c3c37b9
 end
