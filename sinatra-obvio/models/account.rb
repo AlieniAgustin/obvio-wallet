@@ -1,7 +1,7 @@
 class Account < ActiveRecord::Base
     belongs_to :user  #pertenece a un usuario
-    has_one :contact_list, dependent: :destroy # If an account is deleted, its contact list is also deleted
-
+    has_one :monthly_summaries, :contact_list, dependent: :destroy # If an account is deleted, its contact list is also deleted
+    
     validates :id_account, presence: true, uniqueness: true
     validates :balance, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :email, presence: true, uniqueness: true 
