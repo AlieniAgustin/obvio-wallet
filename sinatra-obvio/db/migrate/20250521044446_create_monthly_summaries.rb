@@ -2,8 +2,8 @@ class CreateMonthlySummaries < ActiveRecord::Migration[7.2]
   def change
     create_table :monthly_summaries do |t|
       
-      t.decimal :initial_balance, precision: 15, scale: 2, null: false
-      t.decimal :final_balance, precision: 15, scale: 2, null: false
+      t.integer :initial_balance, null: false
+      t.integer :final_balance, null: false
       t.text :note
       t.string :balance_status
       t.integer :transaction_count

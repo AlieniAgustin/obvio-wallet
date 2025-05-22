@@ -6,7 +6,7 @@ class CreateReceipt < ActiveRecord::Migration[7.2]
       
       t.date :date
       t.time :time
-      t.decimal :amount, precision: 10, scale: 2
+      t.integer :amount
       t.string :description
 
       t.timestamps
