@@ -35,7 +35,18 @@ Este enfoque permite a los estudiantes adquirir experiencia real y completa en e
 
 ## 📚 Tecnologías y Herramientas
 
-> *(Agregar aquí las tecnologías utilizadas: lenguajes, frameworks, bases de datos, herramientas de diseño, etc.)*
+> En este proyecto empleamos diversas tecnologías y herramientas para el desarrollo, diseño y planificación:
+
+- **Base de datos:** SQLite  
+- **Lenguaje de programación:** Ruby  
+- **Framework web:** Sinatra  
+- **Contenedores:** Docker  
+- **Frontend:** HTML, CSS  
+
+- **Diseño gráfico:** Figma (para la elaboración de bocetos y prototipos visuales)  
+- **Modelado UML:** Lucidchart (para la creación de diagramas UML que estructuran el sistema)  
+- **Planificación y colaboración:** Miro (utilizado para diagramar el problema, identificar funcionalidades clave y realizar votaciones que definieron el orden de implementación tras finalizar las funcionalidades básicas)
+
 
 ## 💻 Paginas Relacionadas
 

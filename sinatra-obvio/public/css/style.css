@@ -156,7 +156,77 @@ header .button-register:hover {
 }
 
 /* Login y registro*/
-/*COMPLETAR*/
+.auth-form {
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.auth-form-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #222;
+    padding: 1rem;
+    margin: 2rem;
+    min-width: 35%;
+    border-radius: 8px;
+    max-width: 300px;
+    width: 100%;
+}
+
+.auth-form-content-header {
+    display: flex;
+    background-color: #333;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.auth-form-content form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.auth-form-content form * {
+    width: 100%;
+}
+
+.auth-form-content form input {
+    color: black;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #bbb;
+}
+
+.auth-form-content form input:focus {
+    outline: none;
+    background-color: #ddd;
+}
+
+.auth-form-content button {
+    background-color: #c79216;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-form-content button:hover {
+    background-color: #e5a81a;
+}
 
 /* Footer */
 footer {
