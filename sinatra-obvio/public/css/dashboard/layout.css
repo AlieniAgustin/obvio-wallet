@@ -1,0 +1,56 @@
+body {
+    background-color: #181A20;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    padding: 20px;
+    text-align: center;
+}
+
+.logo h1 {
+    color: var(--obvio-orange);
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.menu {
+    display: flex;
+    font-size: 1.3rem;
+    font-weight: 600;
+    flex-direction: column;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: #333;
+}
+
+.menu-item.active {
+    background-color: #333;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
