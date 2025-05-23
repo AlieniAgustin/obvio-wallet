@@ -7,6 +7,6 @@ class CreateVouchers < ActiveRecord::Migration[7.2]
     end
 
     add_index :vouchers, :code, unique: true
-    add_index :vouchers, :wallet_id, unique: true  # Solo si querés que haya 1 voucher por wallet
+    #add_index :vouchers, :wallet_id, unique: true  # Solo si querés que haya 1 voucher por wallet
   end
 end
