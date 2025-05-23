@@ -1,10 +1,11 @@
 body {
     background-color: #181A20;
+    display: flex;
 }
 
 .sidebar {
     width: 250px;
-    height: 100vh;
+    height: 100%;
     background-color: #000;
     color: white;
     display: flex;
