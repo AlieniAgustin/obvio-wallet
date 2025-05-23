@@ -73,4 +73,8 @@ class App < Sinatra::Application
     erb :'dashboard/opciones', layout: :'dashboard/layout'
   end
 
+  error 404 do 
+    erb :'main/404', layout: :'main/layout'
+  end
+
 end
