@@ -27,6 +27,8 @@ class App < Sinatra::Application
   end
 
   # Seccion web principal
+
+
   get '/' do
     erb :'main/landing', layout: :'main/layout'
   end
@@ -38,5 +40,37 @@ class App < Sinatra::Application
   get '/register' do
     erb :'main/register', layout: :'main/layout'
   end
-  
+
+  get '/dashboard' do 
+    erb :'dashboard/home', layout: :'dashboard/layout'
+  end 
+
+  get '/dashboard/home' do
+    erb :'dashboard/home', layout: :'dashboard/layout'
+  end
+
+  get '/dashboard/movimientos' do
+    erb :'dashboard/movimientos', layout: :'dashboard/layout'
+  end 
+
+  get '/dashboard/resumen' do 
+    erb :'dashboard/resumen', layout: :'dashboard/layout'
+  end 
+
+  get '/dashboard/cargar' do
+    erb :'dashboard/cargar', layout: :'dashboard/layout'
+  end 
+
+  get '/dashboard/contactos' do 
+    erb :'dashboard/contactos', layout: :'dashboard/layout'
+  end 
+
+  get '/dashboard/vaquitas' do 
+    erb :'dashboard/vaquitas', layout: :'dashboard/layout'
+  end 
+
+  get '/dashboard/opciones' do
+    erb :'dashboard/opciones', layout: :'dashboard/layout'
+  end
+
 end
