@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+ActiveRecord::Schema[7.2].define(version: 2025_05_20_230856) do
+=======
+ActiveRecord::Schema[7.2].define(version: 2025_05_21_231912) do
+>>>>>>> 3f175de8b85fead38261e5767140c3e4f21dd1ac
+=======
 ActiveRecord::Schema[7.2].define(version: 2025_05_22_124951) do
+>>>>>>> 1c5d32dde91c661387c33b14fddcf29ab15110f3
   create_table "accounts", force: :cascade do |t|
     t.integer "id_account"
     t.integer "balance"
@@ -89,12 +97,33 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_22_124951) do
     t.datetime "updated_at", null: false
   end
 
+<<<<<<< HEAD
+  create_table "vouchers", force: :cascade do |t|
+    t.date "dia"
+    t.time "hora"
+    t.decimal "importe", precision: 10, scale: 2
+    t.string "description"
+    t.integer "transfer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["transfer_id"], name: "index_vouchers_on_transfer_id"
+  end
+<<<<<<< HEAD
+=======
+
+=======
+>>>>>>> 1c5d32dde91c661387c33b14fddcf29ab15110f3
   add_foreign_key "accounts", "users"
   add_foreign_key "contact_list_accounts", "accounts"
   add_foreign_key "contact_list_accounts", "contact_lists"
   add_foreign_key "contact_lists", "accounts"
   add_foreign_key "monthly_summaries", "accounts"
+<<<<<<< HEAD
+  add_foreign_key "vouchers", "transfers"
+>>>>>>> 3f175de8b85fead38261e5767140c3e4f21dd1ac
+=======
   add_foreign_key "receipts", "transfers"
   add_foreign_key "transactions", "accounts", column: "source_account_id"
   add_foreign_key "transactions", "accounts", column: "target_account_id"
+>>>>>>> 1c5d32dde91c661387c33b14fddcf29ab15110f3
 end
