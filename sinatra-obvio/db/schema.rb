@@ -11,20 +11,36 @@
 # It's strongly recommended that you check this file into your version control system.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema[7.2].define(version: 2025_05_20_230856) do
 =======
 ActiveRecord::Schema[7.2].define(version: 2025_05_21_231912) do
 >>>>>>> 3f175de8b85fead38261e5767140c3e4f21dd1ac
+=======
+ActiveRecord::Schema[7.2].define(version: 2025_05_22_124951) do
+>>>>>>> 1c5d32dde91c661387c33b14fddcf29ab15110f3
   create_table "accounts", force: :cascade do |t|
-    t.integer "idAccount"
-    t.float "balance"
+    t.integer "id_account"
+    t.integer "balance"
     t.string "email"
     t.string "username"
     t.string "password"
+    t.string "cvu"
+    t.string "alias"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "contact_list_accounts", force: :cascade do |t|
+    t.integer "contact_list_id", null: false
+    t.integer "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_contact_list_accounts_on_account_id"
+    t.index ["contact_list_id", "account_id"], name: "index_contact_list_accounts_on_contact_list_id_and_account_id", unique: true
+    t.index ["contact_list_id"], name: "index_contact_list_accounts_on_contact_list_id"
   end
 
   create_table "contact_lists", force: :cascade do |t|
@@ -34,19 +50,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_21_231912) do
     t.index ["account_id"], name: "index_contact_lists_on_account_id"
   end
 
-  create_table "contact_lists_accounts", force: :cascade do |t|
-    t.integer "contact_list_id", null: false
-    t.integer "account_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_contact_lists_accounts_on_account_id"
-    t.index ["contact_list_id", "account_id"], name: "index_contact_lists_accounts_on_contact_list_id_and_account_id", unique: true
-    t.index ["contact_list_id"], name: "index_contact_lists_accounts_on_contact_list_id"
-  end
-
   create_table "monthly_summaries", force: :cascade do |t|
-    t.decimal "initial_balance", precision: 15, scale: 2, null: false
-    t.decimal "final_balance", precision: 15, scale: 2, null: false
+    t.integer "initial_balance", null: false
+    t.integer "final_balance", null: false
     t.text "note"
     t.string "balance_status"
     t.integer "transaction_count"
@@ -54,6 +60,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_21_231912) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_monthly_summaries_on_account_id"
+  end
+
+  create_table "receipts", force: :cascade do |t|
+    t.integer "transfer_id"
+    t.date "date"
+    t.time "time"
+    t.integer "amount"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["transfer_id"], name: "index_receipts_on_transfer_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -65,14 +82,22 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_21_231912) do
     t.string "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "source_account_id", null: false
+    t.integer "target_account_id", null: false
+    t.index ["source_account_id"], name: "index_transactions_on_source_account_id"
+    t.index ["target_account_id"], name: "index_transactions_on_target_account_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "dni"
+    t.string "address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+<<<<<<< HEAD
   create_table "vouchers", force: :cascade do |t|
     t.date "dia"
     t.time "hora"
@@ -86,11 +111,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_21_231912) do
 <<<<<<< HEAD
 =======
 
+=======
+>>>>>>> 1c5d32dde91c661387c33b14fddcf29ab15110f3
   add_foreign_key "accounts", "users"
+  add_foreign_key "contact_list_accounts", "accounts"
+  add_foreign_key "contact_list_accounts", "contact_lists"
   add_foreign_key "contact_lists", "accounts"
-  add_foreign_key "contact_lists_accounts", "accounts"
-  add_foreign_key "contact_lists_accounts", "contact_lists"
   add_foreign_key "monthly_summaries", "accounts"
+<<<<<<< HEAD
   add_foreign_key "vouchers", "transfers"
 >>>>>>> 3f175de8b85fead38261e5767140c3e4f21dd1ac
+=======
+  add_foreign_key "receipts", "transfers"
+  add_foreign_key "transactions", "accounts", column: "source_account_id"
+  add_foreign_key "transactions", "accounts", column: "target_account_id"
+>>>>>>> 1c5d32dde91c661387c33b14fddcf29ab15110f3
 end

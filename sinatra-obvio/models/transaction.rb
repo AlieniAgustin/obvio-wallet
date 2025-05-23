@@ -1,6 +1,7 @@
 class Transaction < ActiveRecord::Base
   belongs_to :source_account, class_name: 'Account'
   belongs_to :target_account, class_name: 'Account'
+  has_one :receipt
 
   validates :transfer_number, :date, :time, :amount, presence: true
   validates :amount, numericality: { greater_than: 0 }

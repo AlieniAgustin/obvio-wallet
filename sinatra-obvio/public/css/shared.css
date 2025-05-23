@@ -1,0 +1,27 @@
+:root {
+  --obvio-orange: #FEBB1B;
+  --obvio-orange-dark: #C79216;
+  --obvio-orange-dark-hover: #E5A81A;
+  --obvio-gray: #222;
+  --obvio-gray-light: #555;
+  --obvio-gray-lighter: #777;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    overscroll-behavior: none;
+}
+
+body {
+    height: 100%;
+    font-family: Urbanist, sans-serif;
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
