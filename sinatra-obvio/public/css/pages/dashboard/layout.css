@@ -1,5 +1,4 @@
 body {
-    background-color: #181A20;
     display: flex;
 }
 
@@ -10,8 +9,8 @@ main {
 .sidebar {
     width: 250px;
     height: 100%;
-    background-color: #000;
-    color: white;
+    background-color: black;
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
 }
