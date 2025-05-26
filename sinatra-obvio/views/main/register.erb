@@ -21,11 +21,19 @@
       <label for="reg_password">Contraseña</label>
       <input type="password" id="reg_password" name="password_digest" placeholder="Contraseña" required />
 
-      <label for="reg_password">Confirmar contraseña</label>
-      <input type="password" id="comfirm_pwd" name="password_digest" placeholder="Confirmar Contraseña" required />
+      <label for="confirmP">Confirmar contraseña</label>
+      <input type="password" id="confirmP" name="confirmP" placeholder="Confirmar Contraseña" required />
 
       <button type="submit">Registrarse</button>
     </form>
   </div>
+
+  <% if @error_messages %>
+    <p><%= @error_messages %></p>
+  <% end %>
+
+
 </section>
+
+
 
