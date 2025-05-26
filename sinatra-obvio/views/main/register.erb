@@ -26,11 +26,13 @@
 
       <button type="submit">Registrarse</button>
     </form>
+    <div class="auth-form-footer">
+      No tenés una cuenta? <a href="/register">Registrate</a>
+      <% if @error_messages %>
+        <p style="color: white;"><%= @error_messages %></p>
+      <% end %>
+    </div>
   </div>
-
-  <% if @error_messages %>
-    <p><%= @error_messages %></p>
-  <% end %>
 
 
 </section>
