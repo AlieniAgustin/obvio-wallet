@@ -13,9 +13,9 @@ class RegisterController < Sinatra::Base
 
   post '/register' do
 
-    if params[:password] != params[:confirmP]
-      @error_message = "Las contraseñas no coinciden"
-      return erb :register
+    if params[:password_digest] != params[:confirmP]
+      @error_messages = "Las contraseñas no coinciden"
+      return erb :'main/register', layout: :'main/layout'
     end
     
     @user = User.new(
@@ -24,15 +24,15 @@ class RegisterController < Sinatra::Base
       dni: params[:dni],
       address: params[:address],
       email: params[:email],
-      password: params[:password]
+      password_digest: params[:password_digest]
     )
 
     if @user.save
       redirect to('/login')
     else
        puts @user.errors.full_messages
-        @error_message = "Error al registrar usuario"
-        erb :register
+        @error_messages = "Error al registrar usuario"
+        erb :'main/register', layout: :'main/layout'
     end
 
   end
