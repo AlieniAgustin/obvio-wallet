@@ -19,11 +19,11 @@ class RegisterController < Sinatra::Base
     end
     
     @user = User.new(
-      first_name: params[:first_name],
-      last_name: params[:last_name],
-      dni: params[:dni],
-      address: params[:address],
-      email: params[:email],
+      first_name: params[:first_name].strip,
+      last_name: params[:last_name].strip,
+      dni: params[:dni].strip,
+      address: params[:address].strip,
+      email: params[:email].strip,
       password: params[:password]
     )
 

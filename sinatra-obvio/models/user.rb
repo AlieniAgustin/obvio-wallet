@@ -5,33 +5,33 @@ class User < ActiveRecord::Base
     validates :email, presence: true, uniqueness: true
 	validates :dni, :first_name, :last_name, :address, presence: true #para validar que todos sus campos sean obligatorios
 
-    # after_create :create_account
+    after_create :create_account
 
-    # private 
+    private 
 
-    # def create_account
-    #     Account.create!(
-    #         user: self,
-    #         balance: 0.0,
-    #         username: "#{first_name.downcase}.#{last_name.downcase}",
-    #         cvu: generate_unique_cvu,
-    #         alias: generate_unique_alias
-    #     )
-    # end
+    def create_account
+        name = "#{first_name.gsub(/\s+/, '_').downcase}.#{last_name.gsub(/\s+/, '_').downcase}"
+        Account.create!(
+            user: self,
+            balance: 0.0,
+            cvu: generate_unique_cvu,
+            alias: generate_unique_alias(name)
+        )
+    end
 
-    # # Podés agregar estos métodos como `private` también:
-    # def generate_unique_cvu
-    #     loop do
-    #         cvu = Array.new(22) { rand(0..9) }.join
-    #         break cvu unless Account.exists?(cvu: cvu)
-    #     end
-    # end
 
-    # def generate_unique_alias
-    #     loop do
-    #         alias_str = "#{first_name.downcase}_#{last_name.downcase}_#{rand(100..999)}"
-    #         break alias_str unless Account.exists?(alias: alias_str)
-    #     end
-    # end
+    def generate_unique_cvu
+        loop do
+            cvu = Array.new(22) { rand(0..9) }.join
+            break cvu unless Account.exists?(cvu: cvu)
+        end
+    end
+
+    def generate_unique_alias(name)
+        loop do
+            alias_str = "#{name}_#{rand(100..999)}.obvio"
+            break alias_str unless Account.exists?(alias: alias_str)
+        end
+    end
 
 end
