@@ -5,6 +5,7 @@ require 'sinatra/reloader' if Sinatra::Base.environment == :development
 
 require_relative 'controllers/register_controller'
 require_relative 'controllers/dashboard_controller'
+require_relative 'controllers/login_controller'
 
 require_relative 'models/user'
 require_relative 'models/account'
@@ -38,10 +39,8 @@ class App < Sinatra::Application
     erb :'main/landing', layout: :'main/layout'
   end
 
-  get '/login' do
-    erb :'main/login', layout: :'main/layout'
-  end
 
+  use LogInController
   use RegisterController
   use DashboardController
   
