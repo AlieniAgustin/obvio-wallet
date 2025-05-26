@@ -13,7 +13,7 @@ class RegisterController < Sinatra::Base
 
   post '/register' do
 
-    if params[:password_digest] != params[:confirmP]
+    if params[:password] != params[:confirmP]
       @error_messages = "Las contraseñas no coinciden"
       return erb :'main/register', layout: :'main/layout'
     end
@@ -24,7 +24,7 @@ class RegisterController < Sinatra::Base
       dni: params[:dni],
       address: params[:address],
       email: params[:email],
-      password_digest: params[:password_digest]
+      password: params[:password]
     )
 
     if @user.save
