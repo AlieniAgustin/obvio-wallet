@@ -12,6 +12,12 @@
     </form>
     <div class="auth-form-footer">
       No tenés una cuenta? <a href="/register">Registrate</a>
+      <% if @error_message %>
+        <p style="color: white;"><%= @error_message %></p>
+      <% end %>
+
     </div>
   </div>
+
+  
 </section>
