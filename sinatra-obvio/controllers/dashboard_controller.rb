@@ -36,6 +36,12 @@ class DashboardController < Sinatra::Base
     erb :'dashboard/opciones', layout: :'dashboard/layout'
   end
 
+  get '/dashboard/pago' do
+    erb :'dashboard/pago', layout: :'dashboard/layout'
+  end
 
+  get '/dashboard/receipt' do 
+    erb :'dashboard/receipt', layout: :'dashboard/layout'
+  end
 end
 
