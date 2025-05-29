@@ -1,73 +1,54 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vaquitas</title>
-  
-</head>
-<body>
+<div class="dashboard-container">
 
-  <div class="dashboard-container w-full">
-    <div class="main-content w-full">
-      <h1 class="page-title text-left">Vaquitas</h1>
+  <h1 class="section-header w-full">Vaquitas</h1>
 
-      <div class="new-vaquita-wrapper">
-        <button class="btn plus-button">
-          <span class="plus-icon">+</span>
-        </button>
-        <span class="new-vaquita-text">Nueva vaquita</span>
-      </div>
-
-      <div class="empty-state" style="display: none;">
-        <div class="empty-icon">🐄</div>
-        <p>Aún no creaste ninguna vaquita</p>
-      </div>
-
-      <div class="list vaquitas-list w-full" style="display: none;">
-        <!-- Se llenará con JS -->
+  <a href="#" class="h-auto flex align-self-start lightGrayBG border-radius-small justify-center spacing-m gap-m">
+    <div class="btn btn--orangeBG border-radius-small">
+      <div class="flex justify-center items-center spacing-s">
+        <img src="/assets/icons/plusSign.svg" class="icon-s">
       </div>
     </div>
+    <div class="flex justify-center items-center text-primary font-semibold text-l">Nueva vaquita</div>
+  </a>
+
+  <div class="empty-state flex justify-center items-cente text-gray-lighter text-center text-l " style="display: none;">
+    <div class="vaquita-empty-icon">🐄</div>
+    <p>Aún no creaste ninguna vaquita</p>
   </div>
 
-  <script>
-    const vaquitas = [
-      { img: "https://pbs.twimg.com/media/FtclnUDWAAAiMBr.jpg", titulo: "Vaquita 1", montoRecaudado: 3000, montoObjetivo: 5000 },
-      { img: "https://lastfm.freetls.fastly.net/i/u/ar0/ad2315f72833948829e015ba8ad0f4bd.jpg", titulo: "Vaquita 2", montoRecaudado: 1500, montoObjetivo: 2000 }
-    ];
+  <div class="list vaquitas-list w-full">
+    <!-- Se llenará con JS -->
+  </div>
+</div>
 
-    const emptyState = document.querySelector('.empty-state');
-    const vaquitasList = document.querySelector('.vaquitas-list');
+<!-- Esto va a ser en ruby, es solo para poder ver las dos vistas de la pagina (sin y con vaquitas)-->
+<script>
+   vaquitas = [
+    { img: "https://pbs.twimg.com/media/FtclnUDWAAAiMBr.jpg", titulo: "Vaquita 1", montoRecaudado: 3000, montoObjetivo: 5000 },
+    { img: "https://lastfm.freetls.fastly.net/i/u/ar0/ad2315f72833948829e015ba8ad0f4bd.jpg", titulo: "Vaquita 2", montoRecaudado: 1500, montoObjetivo: 2000 }
+  ];
+  // vaquitas = []; // descomentar para probar vista sin vaquitas
 
-    if (vaquitas.length === 0) {
-      emptyState.style.display = 'block';
-      vaquitasList.style.display = 'none';
-    } else {
-      emptyState.style.display = 'none';
-      vaquitasList.style.display = 'flex';
-      vaquitasList.innerHTML = '';
+  const emptyState = document.querySelector('.empty-state');
+  const vaquitasList = document.querySelector('.vaquitas-list');
 
-      vaquitas.forEach(v => {
-        const item = document.createElement('div');
-        item.className = 'list-item vaquita-item';
+  if (vaquitas.length === 0) {
+    emptyState.style.display = 'block';
+    vaquitasList.style.display = 'none';
+  } else {
+    emptyState.style.display = 'none';
+    vaquitasList.style.display = 'flex';
 
-        item.innerHTML = `
-          <div class="vaquita-content">
-            <div class="flex align-center gap-16">
-              <img src="${v.img}" alt="${v.titulo}" class="vaquita-image" />
-              <div class="vaquita-info">
-                <div class="vaquita-title">${v.titulo}</div>
-              </div>
-            </div>
-            <div class="vaquita-amount">
-              $${v.montoRecaudado} / $${v.montoObjetivo}
-            </div>
-          </div>
-        `;
-        vaquitasList.appendChild(item);
-      });
-    }
-  </script>
+    vaquitas.forEach(v => {
+      const item = document.createElement('div');
+      item.className = 'list-item spacing-m grid vaquita-item justify-center items-center text-primary text-l';
 
-</body>
-</html>
+      item.innerHTML = `
+        <img src="${v.img}" alt="${v.titulo}" class="vaquita-image border-radius-small"/>
+        <div class="font-semibold">${v.titulo}</div>
+        <div>$${v.montoRecaudado} / $${v.montoObjetivo}</div>
+      `;
+      vaquitasList.appendChild(item);
+    });
+  }
+</script>

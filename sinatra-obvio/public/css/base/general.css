@@ -24,6 +24,7 @@
 .text-primary { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }
 .text-gray { color: var(--text-gray); }
+.text-gray-lighter { color: var(--obvio-gray-lighter);}
 .text-s { font-size: var(--font-size-s); }
 .text-m { font-size: var(--font-size-m); }
 .text-l { font-size: var(--font-size-l); }
@@ -43,9 +44,12 @@
 .items-center { align-items: center; }
 .justify-center { justify-content: center; }
 .justify-between { justify-content: space-between; }
+.justify-self-start {justify-self: start;}
+.align-self-start {align-self: start;}
 
 .w-full { width: 100%; }
 .h-full { height: 100%; }
+.h-auto { height: auto;}
 
 .spacing-xs { padding: var(--spacing-xxxl); }
 .spacing-s { padding: var(--spacing-s); }
