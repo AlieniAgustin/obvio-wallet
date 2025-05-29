@@ -7,6 +7,7 @@
   --obvio-gray-lighter: #777;
   --obvio-gray-2: #FFFFFF10;
   --dashboard-gray: #181A20;
+  --warning-red: #FF4D4D;
 
   --text-primary: white;
   --text-secondary: var(--obvio-gray-lighter);

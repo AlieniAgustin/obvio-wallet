@@ -25,6 +25,7 @@
 .text-secondary { color: var(--text-secondary); }
 .text-gray { color: var(--text-gray); }
 .text-gray-lighter { color: var(--obvio-gray-lighter);}
+.text-warning { color: var(--warning-red); }
 .text-s { font-size: var(--font-size-s); }
 .text-m { font-size: var(--font-size-m); }
 .text-l { font-size: var(--font-size-l); }
