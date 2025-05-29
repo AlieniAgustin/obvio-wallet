@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    overscroll-behavior: none;
+}
+
+body {
+    height: 100%;
+    font-family: Urbanist, sans-serif;
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+a {
+    text-decoration: none;
+}

@@ -1,0 +1,31 @@
+.persona {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    padding: var(--spacing-m);
+    gap: var(--spacing-s);
+    text-decoration: none;
+    font-size: var(--font-size-l);
+}
+
+.persona__avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.persona__datosPersona {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: var(--spacing-m);
+}
+
+.persona__datosPersona .name {
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+}
+
+.persona__datosPersona .email {
+    color: var(--text-secondary);
+    font-size: var(--font-size-s);
+}

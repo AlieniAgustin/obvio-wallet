@@ -1,0 +1,15 @@
+.vaquita-image {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
+}
+
+.vaquita-empty-icon {
+  font-size: 4rem;
+  opacity: 0.5;
+}
+
+.vaquita-item {
+  grid-template-columns: auto 1fr auto;
+  border-bottom: 1px solid white;
+}

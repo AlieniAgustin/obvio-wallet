@@ -1,0 +1,24 @@
+.grid--pago {
+  grid-template-areas:
+    "prompt prompt prompt"
+    "persona datos datos";
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l);
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}
+
+.form-field__amount {
+  font-size: var(--font-size-xxl);
+  border-bottom: 1px solid var(--color-border-light);
+}

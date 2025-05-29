@@ -26,27 +26,27 @@ class App < Sinatra::Application
     logger.level = Logger::DEBUG if development?
     set :logger, logger
 
-    register Sinatra::Reloader
-    after_reload do
-      logger.info 'Reloaded!!!'
+      register Sinatra::Reloader
+      after_reload do
+        logger.info 'Reloaded!!!'
+      end
     end
-  end
 
-  # Seccion web principal
-
-
-  get '/' do
-    erb :'main/landing', layout: :'main/layout'
-  end
+    # Seccion web principal
 
 
-  use LogInController
-  use RegisterController
-  use DashboardController
+    get '/' do
+      erb :'main/landing', layout: :'main/layout'
+    end
+
+
+    use LogInController
+    use RegisterController
+    use DashboardController
   
 
-  error 404 do 
-    erb :'main/404', layout: :'main/layout'
-  end
+    error 404 do 
+      erb :'main/404', layout: :'main/layout'
+    end
 
-end
+  end
