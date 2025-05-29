@@ -1,0 +1,3 @@
+.movimientos-list {
+    height: 35vh; /* No es ideal que sea fija pero se ve bien en desktop ; hace falta para el scrollbar*/
+}

@@ -1,0 +1,15 @@
+/* ============================ AVATARES ============================ */
+.avatar {
+  border-radius: var(--border-radius-round);
+  object-fit: cover;
+}
+
+.avatar--s {
+  width: var(--avatar-s);
+  height: var(--avatar-s);
+}
+
+.avatar--m {
+  width: var(--avatar-m);
+  height: var(--avatar-m);
+}

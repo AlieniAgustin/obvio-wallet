@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OBVIO</title>
+    <link rel="icon" type="/image/png" href="/assets/icons/favicon-32x32.png" sizes="32x32">
+
+    <link rel="stylesheet" href="/css/base/reset.css">
+    <link rel="stylesheet" href="/css/base/variables.css">
+    <link rel="stylesheet" href="/css/base/general.css">
+
+    <link rel="stylesheet" href="/css/components/avatars.css">
+    <link rel="stylesheet" href="/css/components/buttons.css">
+    <link rel="stylesheet" href="/css/components/card.css">
+    <link rel="stylesheet" href="/css/components/inputs.css">
+    <link rel="stylesheet" href="/css/components/lists.css">
+    <link rel="stylesheet" href="/css/components/person.css">
+
+    <link rel="stylesheet" href="/css/pages/dashboard/layout.css">
+    
+    <link rel="stylesheet" href="/css/pages/dashboard/home.css">
+    <link rel="stylesheet" href="/css/pages/dashboard/movimientos.css">
+    <link rel="stylesheet" href="/css/pages/dashboard/pago.css">
+    <link rel="stylesheet" href="/css/pages/dashboard/receipt.css">
+    <link rel="stylesheet" href="/css/pages/dashboard/vaquitas.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+        <a href="/dashboard/home" class="logo-link">OBVIO</a>
+    </div>
+    <nav class="menu">
+      <a href="/dashboard/home" class="menu-item <%= 'active' if request.path_info == '/dashboard/home' %>">
+        <div class="icon">
+          <img src="/assets/icons/home.svg">
+        </div>
+        <span>Inicio</span>
+      </a>
+
+      <a href="/dashboard/movimientos" class="menu-item <%= 'active' if request.path_info == '/dashboard/movimientos' %>">
+        <div class="icon">
+          <img src="/assets/icons/money.svg">
+        </div>
+        <span>Movimientos</span>
+      </a>
+      
+      <a href="/dashboard/resumen" class="menu-item <%= 'active' if request.path_info == '/dashboard/resumen' %>">
+        <div class="icon">
+          <img src="/assets/icons/clipboard.svg">
+        </div>
+        <span>Resumen</span>
+      </a>
+      
+      <a href="/dashboard/cargar" class="menu-item <%= 'active' if request.path_info == '/dashboard/cargar' %>">
+        <div class="icon">
+          <img src="/assets/icons/arrowup.svg">
+        </div>
+        <span>Cargar plata</span>
+      </a>
+      
+      <a href="/dashboard/contactos" class="menu-item <%= 'active' if request.path_info == '/dashboard/contactos' %>">
+        <div class="icon">
+          <img src="/assets/icons/contact.svg">
+        </div>
+        <span>Contactos</span>
+      </a>
+      
+      <a href="/dashboard/vaquitas" class="menu-item <%= 'active' if request.path_info == '/dashboard/vaquitas' %>">
+        <div class="icon">
+          <img src="/assets/icons/vaquita.svg">
+        </div>
+        <span>Vaquitas</span>
+      </a>
+      
+      <a href="/dashboard/opciones" class="menu-item <%= 'active' if request.path_info == '/dashboard/opciones' %>">
+        <div class="icon"> 
+          <img src="/assets/icons/settings.svg">
+        </div>
+        <span>Opciones</span>
+      </a>
+
+      <a href="/" class="menu-item logout">
+        <div class="icon"> 
+          <img src="/assets/icons/logout.svg">
+        </div>
+        <span>Cerrar sesión</span>
+      </a>
+
+    </nav>
+  </div>
+
+  <main>
+    <%= yield %>
+  </main>
+
+</body>
+</html>

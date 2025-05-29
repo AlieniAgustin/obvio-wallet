@@ -1,0 +1,25 @@
+/* ============================ INPUTS ============================ */
+.input {
+  padding: 0.8rem;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: var(--font-size-m);
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input--search {
+  width: 100%;
+}
+
+.input--amount {
+  background-color: transparent;
+  color: var(--text-primary);
+  text-align: center;
+  font-size: var(--font-size-xxl);
+  width: 75%;
+  height: 100%;
+}

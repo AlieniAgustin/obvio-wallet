@@ -10,13 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_22_124951) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_25_145119) do
   create_table "accounts", force: :cascade do |t|
-    t.integer "id_account"
     t.integer "balance"
-    t.string "email"
-    t.string "username"
-    t.string "password"
     t.string "cvu"
     t.string "alias"
     t.datetime "created_at", null: false
@@ -87,6 +83,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_22_124951) do
     t.string "address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "password_digest"
   end
 
   add_foreign_key "accounts", "users"

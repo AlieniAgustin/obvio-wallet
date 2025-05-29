@@ -1,0 +1,53 @@
+:root {
+  /* Colores */
+  --obvio-orange: #FEBB1B;
+  --obvio-orange-dark: #C79216;
+  --obvio-gray: #222;
+  --obvio-gray-light: #555;
+  --obvio-gray-lighter: #777;
+  --obvio-gray-2: #FFFFFF10;
+  --dashboard-gray: #181A20;
+  --warning-red: #FF4D4D;
+
+  --text-primary: white;
+  --text-secondary: var(--obvio-gray-lighter);
+  --text-gray: var(--obvio-gray);
+
+  --color-border: white;
+  --color-border-light: var(--obvio-gray-lighter);
+
+  /* Espaciado */
+  --spacing-xs: 0.25rem;
+  --spacing-s: 0.5rem;
+  --spacing-m: 1rem;
+  --spacing-l: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 4rem;
+  --spacing-xxxl: 7rem;
+  
+  /* Texto */
+  --font-size-s: 1rem;
+  --font-size-m: 1.2rem;
+  --font-size-l: 1.5rem;
+  --font-size-xl: 2rem;
+  --font-size-xxl: 3rem;
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Bordes */
+  --border-radius-small: 5px;
+  --border-radius-round: 1000px; /* pongo un border radius muy grande */
+  
+  /* Tamaños fijos*/
+  --avatar-s: 85px;
+  --avatar-m: 125px;
+  --icon-s: 24px;
+  --icon-l: 64px;
+  --icon-xl: 96px;
+  
+  /* Transiciones */
+  --transition: 0.2s ease;
+}

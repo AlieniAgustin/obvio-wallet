@@ -1,0 +1,15 @@
+/* ============================ LISTAS (movimientos, contactos, etc) ============================ */
+.list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list--scrollable {
+  /* Para que salga la scroll bar la lista especifica deberia tener una altura maxima definida*/
+  overflow-y: auto;
+}
+
+.list-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}

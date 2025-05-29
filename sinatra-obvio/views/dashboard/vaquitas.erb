@@ -1,0 +1,54 @@
+<div class="dashboard-container">
+
+  <h1 class="section-header w-full">Vaquitas</h1>
+
+  <a href="#" class="h-auto flex align-self-start lightGrayBG border-radius-small justify-center spacing-m gap-m">
+    <div class="btn btn--orangeBG border-radius-small">
+      <div class="flex justify-center items-center spacing-s">
+        <img src="/assets/icons/plusSign.svg" class="icon-s">
+      </div>
+    </div>
+    <div class="flex justify-center items-center text-primary font-semibold text-l">Nueva vaquita</div>
+  </a>
+
+  <div class="empty-state flex justify-center items-cente text-gray-lighter text-center text-l " style="display: none;">
+    <div class="vaquita-empty-icon">🐄</div>
+    <p>Aún no creaste ninguna vaquita</p>
+  </div>
+
+  <div class="list vaquitas-list w-full">
+    <!-- Se llenará con JS -->
+  </div>
+</div>
+
+<!-- Esto va a ser en ruby, es solo para poder ver las dos vistas de la pagina (sin y con vaquitas)-->
+<script>
+   vaquitas = [
+    { img: "https://pbs.twimg.com/media/FtclnUDWAAAiMBr.jpg", titulo: "Vaquita 1", montoRecaudado: 3000, montoObjetivo: 5000 },
+    { img: "https://lastfm.freetls.fastly.net/i/u/ar0/ad2315f72833948829e015ba8ad0f4bd.jpg", titulo: "Vaquita 2", montoRecaudado: 1500, montoObjetivo: 2000 }
+  ];
+  // vaquitas = []; // descomentar para probar vista sin vaquitas
+
+  const emptyState = document.querySelector('.empty-state');
+  const vaquitasList = document.querySelector('.vaquitas-list');
+
+  if (vaquitas.length === 0) {
+    emptyState.style.display = 'block';
+    vaquitasList.style.display = 'none';
+  } else {
+    emptyState.style.display = 'none';
+    vaquitasList.style.display = 'flex';
+
+    vaquitas.forEach(v => {
+      const item = document.createElement('div');
+      item.className = 'list-item spacing-m grid vaquita-item justify-center items-center text-primary text-l';
+
+      item.innerHTML = `
+        <img src="${v.img}" alt="${v.titulo}" class="vaquita-image border-radius-small"/>
+        <div class="font-semibold">${v.titulo}</div>
+        <div>$${v.montoRecaudado} / $${v.montoObjetivo}</div>
+      `;
+      vaquitasList.appendChild(item);
+    });
+  }
+</script>
