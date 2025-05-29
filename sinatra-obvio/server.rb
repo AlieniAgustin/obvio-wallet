@@ -73,6 +73,14 @@
       erb :'dashboard/opciones', layout: :'dashboard/layout'
     end
 
+    get '/dashboard/opciones-info-personal' do
+      erb :'dashboard/opciones-info-personal', layout: :'dashboard/layout'
+    end
+
+    get '/dashboard/opciones-info-cuenta' do
+      erb :'dashboard/opciones-info-cuenta', layout: :'dashboard/layout'
+    end
+
     get '/dashboard/pago' do 
       erb :'dashboard/pago', layout: :'dashboard/layout'
     end

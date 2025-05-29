@@ -1,0 +1,44 @@
+.dashboard-container {
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.card a {
+    padding: 8px 50px;
+    font-size: 0.9rem;
+}
+
+.cardblack {
+  border-radius: 10px;
+  padding: var(--spacing-l);
+  background-color: var(--obvio-black);
+  color: var(--obvio-gray);
+  width: 40vw;
+  max-width: 400px;
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--spacing-s);
+  flex-shrink: 0;
+}
+
+.cardblack::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cardblack::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.cardblack::-webkit-scrollbar-thumb {
+  background-color: #555; 
+  border-radius: 4px;
+}
+
+.cardblack {
+  scrollbar-color: #555 transparent; 
+  scrollbar-width: thin;
+}
+

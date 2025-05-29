@@ -1,7 +1,7 @@
 <div class="dashboard-container">
-    <div class="profile-section">
-        <!-- Single Card containing everything -->
-        <div class="cardblack" style="background-color: var(--obvio-black); border-radius: var(--border-radius-small); padding: var(--spacing-l);">
+    <div class="cardblack w-full">
+        <!-- Tarjeta donde contiene todo -->
+        <div class="cardblack w-full" style="background-color: var(--obvio-black); border-radius: var(--border-radius-small); padding: var(--spacing-l);">
             
             <!-- Header with back button -->
             <div class="header-section" style="display: flex; align-items: center; margin-bottom: var(--spacing-xl); color: var(--text-primary);">
@@ -11,7 +11,7 @@
                 <h1 style="font-size: var(--font-size-l); font-weight: var(--font-weight-bold); margin: 0;">Datos de tu cuenta</h1>
             </div>
 
-            <!-- Account Information Form (Read-only)  -->
+            <!-- Información de la Cuenta (Read-only)  -->
             <form action="/dashboard/update_account_data" method="post">
                 <!-- Username Field -->
                 <div class="form-field" style="margin-bottom: var(--spacing-l);">
@@ -19,46 +19,31 @@
                     <div style="position: relative;">
                         <input type="text" name="username" value="<%= @account&.username || 'julivarea' %>" 
                                style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
-                        <button type="button" onclick="toggleEdit(this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer;">
-                            <img src="/assets/icons/edit.svg" alt="edit icon" class="icon">
-                        </button>
                     </div>
                 </div>
 
-                <!-- Email Field (Read-only) -->
-                <div class="form-field" style="margin-bottom: var(--spacing-l);">
-                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">E-mail</label>
-                    <div style="position: relative;">
-                        <input type="email" name="email" value="<%= @user&.email || 'julianvarea14@gmail.com' %>" 
-                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
-                        <button type="button" onclick="toggleEdit(this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer;">
-                            <img src="/assets/icons/edit.svg" alt="edit icon" class="icon">
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Alias Field -->
+                <!-- Alias  -->
                 <div class="form-field" style="margin-bottom: var(--spacing-l);">
                     <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Alias</label>
-                    <div style="position: relative;">
-                        <input type="text" name="alias" value="<%= @user&.alias || 'jvarea.obvio' %>" 
+                    <div class= "w-full grid" style="grid-template-columns: 1fr auto">
+                        <input type="text" name="alias" value="<%= @account&.alias || 'jvarea.obvio' %>" 
                                style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
-                        <button type="button" onclick="toggleEdit(this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer;">
-                            <img src="/assets/icons/edit.svg" alt="edit icon" class="icon">
-                        </button>
+                        <div class= "btn" onclick="toggleEdit(this)">
+                            <img src="/assets/icons/edit.svg" alt="edit icon">
+                        </div>
                     </div>
                 </div>
 
-                <!-- CVU Field (Read-only) -->
+                <!-- CVU  (Read-only) -->
                 <div class="form-field" style="margin-bottom: var(--spacing-l);">
                     <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">CVU</label>
                     <div style="position: relative;">
-                        <input type="text" name="cvu" value="<%= @user&.cvu || '0000007893203652478726' %>" 
+                        <input type="text" name="cvu" value="<%= @account&.cvu || '0000007893203652478726' %>" 
                                style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
                     </div>
                 </div>
 
-                <!-- Save Button (hidden by default) -->
+                <!-- Botón de Guardado (hidden by default) -->
                 <div class="save-section" style="display: none; margin-top: var(--spacing-l);">
                     <button type="submit" style="width: 100%; background-color: var(--obvio-orange); color: var(--obvio-gray); border: none; border-radius: var(--border-radius-small); padding: 12px; font-size: var(--font-size-m); font-weight: var(--font-weight-bold); cursor: pointer;">
                         Guardar cambios

@@ -1,0 +1,17 @@
+.cardblack::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cardblack::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.cardblack::-webkit-scrollbar-thumb {
+  background-color: #555; 
+  border-radius: 4px;
+}
+
+.cardblack {
+  scrollbar-color: #555 transparent; 
+  scrollbar-width: thin;
+}

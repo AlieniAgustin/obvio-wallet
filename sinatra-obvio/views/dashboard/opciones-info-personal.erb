@@ -1,9 +1,9 @@
 <div class="dashboard-container">
     <div class="cardblack w-full">
-        <!-- Single Card containing everything -->
-        <div class="cardblack w-full" style="background-color: var(--obvio-black); border-radius: var(--border-radius-small); padding: var(--spacing-l);">
+        <!-- Una sola tarjeta -->
+        <div class="cardblack w-full" style="background-color: var(--obvio-black); border-radius: var(--border-radius-small); padding: var(--spacing-l); max-height: calc(100vh - 80px); overflow-y: auto;">
             
-            <!-- Header with back button -->
+            <!-- Header con botón para atrás -->
             <div class="header-section" style="display: flex; align-items: center; margin-bottom: var(--spacing-l); color: var(--text-primary);">
                 <a href="/dashboard/opciones" style="color: var(--text-primary); text-decoration: none; margin-right: var(--spacing-m);">
                     <img src="/assets/icons/arrowleft.svg" alt="arrow left icon" class="icon">
@@ -11,70 +11,65 @@
                 <h1 style="font-size: var(--font-size-l); font-weight: var(--font-weight-bold); margin: 0;">Información personal</h1>
             </div>
 
-            <!-- Profile Avatar Section -->
-            <div class="avatar-section" style="display: flex; justify-content: center; margin-bottom: var(--spacing-xl);">
+            <!-- Sección de Perfil -->
+            <div class="persona__avatar">
                 <div style="position: relative;">
-                    <img src="/assets/defaultAvatar.svg" alt="Avatar de <%= @user&.name || 'Julian Varga' %>" class="avatar avatar--m">
-                    <div style="position: absolute; bottom: 0; right: 0; background-color: var(--obvio-orange); border-radius: var(--border-radius-round); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <img src="/assets/defaultAvatar.svg" alt="Avatar de <%= @user&.name || 'Julian Varga' %>" class="avatar avatar--s">
+                    <div style="position: absolute; bottom: 0; right: 0; background-color: var(--obvio-orange); border-radius: var(--border-radius-round); width: 24px; height: 24px; display: flex; align-items: ; justify-content: start;">
                         <img src="/assets/icons/edit.svg" alt="edit icon" class="icon">
                     </div>
                 </div>
             </div>
 
-            <!-- Personal Information Form -->
+            <!-- Información personal -->
             <form action="/dashboard/update_personal_info" method="post">
-                <!-- Name Field -->
+                <!-- Nombre -->
                 <div class="form-field" style="margin-bottom: var(--spacing-l);">
-                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Nombre y apellido</label>
+                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Nombre</label>
                     <div class= "w-full grid" style="grid-template-columns: 1fr auto">
-                        <input type="text" name="full_name" value="<%= @user&.name || 'Julian Varga' %>" 
+                        <input type="text" name="full_name" value="<%= @user&.first_name || 'Julian' %>" 
                                style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
-                        <div class= "btn" onclick="toggleEdit(this)">
-                            <img src="/assets/icons/edit.svg" alt="edit icon">
-                        </div>
                     </div>
                 </div>
 
-                <!-- DNI Field -->
+                <!-- Apellido -->
+                <div class="form-field" style="margin-bottom: var(--spacing-l);">
+                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Apellido</label>
+                    <div class= "w-full grid" style="grid-template-columns: 1fr auto">
+                        <input type="text" name="full_name" value="<%= @user&.last_name || 'Varga' %>" 
+                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
+                    </div>
+                </div>
+
+                <!-- DNI -->
                 <div class="form-field" style="margin-bottom: var(--spacing-l);">
                     <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">DNI</label>
                     <div class= "w-full grid" style="grid-template-columns: 1fr auto">
                         <input type="text" name="dni" value="<%= @user&.dni || '46309379' %>" 
                                style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
-                        <div class= "btn" onclick="toggleEdit(this)">
-                            <img src="/assets/icons/edit.svg" alt="edit icon">
-                        </div>
                     </div>
                 </div>
 
-                <!-- Phone Field -->
+                <!-- Email -->
                 <div class="form-field" style="margin-bottom: var(--spacing-l);">
                     <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Número de teléfono</label>
                     <div style="position: relative;">
-                        <input type="tel" name="phone" value="<%= @user&.phone || '+54 9 358 123 4567' %>" 
+                        <input type="tel" name="phone" value="<%= @user&.email || 'jvarea@gmail.com' %>" 
                                style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
-                        <button type="button" onclick="toggleEdit(this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer;">
-                            <img src="/assets/icons/edit.svg" alt="edit icon" class="icon">
-                        </button>
                     </div>
                 </div>
 
-                <!-- Birth Date Field -->
+                <!-- Direccion -->
                 <div class="form-field" style="margin-bottom: var(--spacing-l);">
-                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Fecha de nacimiento</label>
+                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Dirección</label>
                     <div style="position: relative;">
-                        <input type="date" name="birth_date" value="<%= @user&.birth_date || '2000-01-01' %>" 
-                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 70px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
-                        <div style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); display: flex; gap: 8px;">
-                            <img src="/assets/icons/calendar.svg" alt="calendar icon" class="icon">
-                            <button type="button" onclick="toggleEdit(this)" style="background: none; border: none; color: var(--text-secondary); cursor: pointer;">
-                                <img src="/assets/icons/edit.svg" alt="edit icon" class="icon">
-                            </button>
-                        </div>
+                        <input type="tel" name="phone" value="<%= @user&.address || 'San Martín' %>" 
+                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
                     </div>
                 </div>
 
-                <!-- Save Button (hidden by default) -->
+
+                <!-- Boton de Guardar (hidden by default) -->
                 <div class="save-section" style="display: none; margin-top: var(--spacing-l);">
                     <button type="submit" style="width: 100%; background-color: var(--obvio-orange); color: var(--obvio-gray); border: none; border-radius: var(--border-radius-small); padding: 12px; font-size: var(--font-size-m); font-weight: var(--font-weight-bold); cursor: pointer;">
                         Guardar cambios
