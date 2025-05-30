@@ -1,55 +1,50 @@
 <div class="dashboard-container">
-    <div class="cardblack w-full">
-        <!-- Tarjeta donde contiene todo -->
-        <div class="cardblack w-full" style="background-color: var(--obvio-black); border-radius: var(--border-radius-small); padding: var(--spacing-l);">
+    <!-- Una sola tarjeta -->
+    <div class="flex flex-col gap-l w-full blackBG border-radius-small spacing-l" style="max-height: calc(100vh - 80px); overflow-y: auto">
             
-            <!-- Header with back button -->
-            <div class="header-section" style="display: flex; align-items: center; margin-bottom: var(--spacing-xl); color: var(--text-primary);">
-                <a href="/dashboard/opciones" style="color: var(--text-primary); text-decoration: none; margin-right: var(--spacing-m);">
-                    <img src="/assets/icons/arrowleft.svg" alt="arrow left icon" class="icon">
-                </a>
-                <h1 style="font-size: var(--font-size-l); font-weight: var(--font-weight-bold); margin: 0;">Datos de tu cuenta</h1>
+        <!-- Header con botón para atrás -->
+        <div class="section-header flex items-center gap-m">
+            <a href="/dashboard/opciones">
+                <img src="/assets/icons/arrowleft.svg" alt="arrow left icon" class="icon">
+            </a>
+            <h1 class="text-l font-bold">Datos de tu cuenta</h1>
+        </div>
+
+        <!-- Información de la Cuenta (Read-only)  -->
+        <form action="/dashboard/update_account_data" method="post" class="text-primary flex flex-col gap-m">
+            <!-- Username Field -->
+            <div class="form-field">
+                <label>Nombre de usuario</label>
+                <div class="w-full">
+                    <input type="text" name="username" value="<%= @Account&.first_name || 'Julian' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                </div> 
             </div>
 
-            <!-- Información de la Cuenta (Read-only)  -->
-            <form action="/dashboard/update_account_data" method="post">
-                <!-- Username Field -->
-                <div class="form-field" style="margin-bottom: var(--spacing-l);">
-                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Nombre de usuario</label>
-                    <div style="position: relative;">
-                        <input type="text" name="username" value="<%= @account&.username || 'julivarea' %>" 
-                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
+            <!-- Alias  -->
+            <div class="form-field">
+                <label>Alias</label>
+                <div class= "w-full grid" style="grid-template-columns: 1fr auto">
+                    <input type="text" name="alias" value="<%= @account&.alias || 'jvarea.obvio' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                    <div class= "btn" onclick="toggleEdit(this)">
+                        <img src="/assets/icons/edit.svg" alt="edit icon">
                     </div>
                 </div>
+            </div>
 
-                <!-- Alias  -->
-                <div class="form-field" style="margin-bottom: var(--spacing-l);">
-                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Alias</label>
-                    <div class= "w-full grid" style="grid-template-columns: 1fr auto">
-                        <input type="text" name="alias" value="<%= @account&.alias || 'jvarea.obvio' %>" 
-                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
-                        <div class= "btn" onclick="toggleEdit(this)">
-                            <img src="/assets/icons/edit.svg" alt="edit icon">
-                        </div>
-                    </div>
+            <!-- CVU  (Read-only) -->
+            <div class="form-field">
+                <label>CVU</label>
+                <div>
+                    <input type="text" name="cvu" value="<%= @account&.cvu || '0000007893203652478726' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
                 </div>
+            </div>
 
-                <!-- CVU  (Read-only) -->
-                <div class="form-field" style="margin-bottom: var(--spacing-l);">
-                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">CVU</label>
-                    <div style="position: relative;">
-                        <input type="text" name="cvu" value="<%= @account&.cvu || '0000007893203652478726' %>" 
-                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
-                    </div>
-                </div>
-
-                <!-- Botón de Guardado (hidden by default) -->
-                <div class="save-section" style="display: none; margin-top: var(--spacing-l);">
-                    <button type="submit" style="width: 100%; background-color: var(--obvio-orange); color: var(--obvio-gray); border: none; border-radius: var(--border-radius-small); padding: 12px; font-size: var(--font-size-m); font-weight: var(--font-weight-bold); cursor: pointer;">
-                        Guardar cambios
-                    </button>
-                </div>
-            </form>
-        </div>
+            <!-- Botón de Guardado (hidden by default) -->
+            <div class="save-section" style="display: none; margin-top: var(--spacing-m);">
+                <button type="submit" class="btn btn--orangeBG w-full noOutline font-bold" style="cursor: pointer;">
+                    Guardar cambios
+                </button>
+            </div>
+        </form>
     </div>
 </div>

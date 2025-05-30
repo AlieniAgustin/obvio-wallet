@@ -20,3 +20,11 @@ body {
 a {
     text-decoration: none;
 }
+
+input {
+    /* Si no está esto, los inputs usan la fuente default del navegador */
+    font-family: Urbanist, sans-serif;
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
