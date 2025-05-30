@@ -1,0 +1,81 @@
+<div class="dashboard-container">
+    <div class="cardblack w-full">
+        <!-- Una sola tarjeta -->
+        <div class="cardblack w-full" style="background-color: var(--obvio-black); border-radius: var(--border-radius-small); padding: var(--spacing-l); max-height: calc(100vh - 80px); overflow-y: auto;">
+            
+            <!-- Header con botón para atrás -->
+            <div class="header-section" style="display: flex; align-items: center; margin-bottom: var(--spacing-l); color: var(--text-primary);">
+                <a href="/dashboard/opciones" style="color: var(--text-primary); text-decoration: none; margin-right: var(--spacing-m);">
+                    <img src="/assets/icons/arrowleft.svg" alt="arrow left icon" class="icon">
+                </a>
+                <h1 style="font-size: var(--font-size-l); font-weight: var(--font-weight-bold); margin: 0;">Información personal</h1>
+            </div>
+
+            <!-- Sección de Perfil -->
+            <div class="persona__avatar">
+                <div style="position: relative;">
+                    <img src="/assets/defaultAvatar.svg" alt="Avatar de <%= @user&.name || 'Julian Varga' %>" class="avatar avatar--s">
+                    <div style="position: absolute; bottom: 0; right: 0; background-color: var(--obvio-orange); border-radius: var(--border-radius-round); width: 24px; height: 24px; display: flex; align-items: ; justify-content: start;">
+                        <img src="/assets/icons/edit.svg" alt="edit icon" class="icon">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información personal -->
+            <form action="/dashboard/update_personal_info" method="post">
+                <!-- Nombre -->
+                <div class="form-field" style="margin-bottom: var(--spacing-l);">
+                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Nombre</label>
+                    <div class= "w-full grid" style="grid-template-columns: 1fr auto">
+                        <input type="text" name="full_name" value="<%= @user&.first_name || 'Julian' %>" 
+                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
+                    </div>
+                </div>
+
+                <!-- Apellido -->
+                <div class="form-field" style="margin-bottom: var(--spacing-l);">
+                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Apellido</label>
+                    <div class= "w-full grid" style="grid-template-columns: 1fr auto">
+                        <input type="text" name="full_name" value="<%= @user&.last_name || 'Varga' %>" 
+                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
+                    </div>
+                </div>
+
+                <!-- DNI -->
+                <div class="form-field" style="margin-bottom: var(--spacing-l);">
+                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">DNI</label>
+                    <div class= "w-full grid" style="grid-template-columns: 1fr auto">
+                        <input type="text" name="dni" value="<%= @user&.dni || '46309379' %>" 
+                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-field" style="margin-bottom: var(--spacing-l);">
+                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Número de teléfono</label>
+                    <div style="position: relative;">
+                        <input type="tel" name="phone" value="<%= @user&.email || 'jvarea@gmail.com' %>" 
+                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
+                    </div>
+                </div>
+
+                <!-- Direccion -->
+                <div class="form-field" style="margin-bottom: var(--spacing-l);">
+                    <label style="display: block; color: var(--text-primary); font-size: var(--font-size-s); margin-bottom: var(--spacing-s);">Dirección</label>
+                    <div style="position: relative;">
+                        <input type="tel" name="phone" value="<%= @user&.address || 'San Martín' %>" 
+                               style="width: 100%; background-color: var(--obvio-gray-light); border: none; border-radius: var(--border-radius-small); padding: 12px 40px 12px 12px; color: var(--text-primary); font-size: var(--font-size-m);" readonly>
+                    </div>
+                </div>
+
+
+                <!-- Boton de Guardar (hidden by default) -->
+                <div class="save-section" style="display: none; margin-top: var(--spacing-l);">
+                    <button type="submit" style="width: 100%; background-color: var(--obvio-orange); color: var(--obvio-gray); border: none; border-radius: var(--border-radius-small); padding: 12px; font-size: var(--font-size-m); font-weight: var(--font-weight-bold); cursor: pointer;">
+                        Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

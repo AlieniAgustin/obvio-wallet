@@ -44,7 +44,6 @@ class App < Sinatra::Application
     use RegisterController
     use DashboardController
   
-
     error 404 do 
       erb :'main/404', layout: :'main/layout'
     end

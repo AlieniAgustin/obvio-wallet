@@ -1,0 +1,31 @@
+  .form-field input:focus {
+        outline: 2px solid var(--obvio-orange);
+        background-color: var(--obvio-gray-2);
+    }
+
+    .form-field input[readonly] {
+        cursor: default;
+    }
+
+    .form-field input:not([readonly]) {
+        cursor: text;
+        background-color: var(--obvio-gray-2);
+    }
+
+    .cardblack::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cardblack::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.cardblack::-webkit-scrollbar-thumb {
+  background-color: #555; 
+  border-radius: 4px;
+}
+
+.cardblack {
+  scrollbar-color: #555 transparent; 
+  scrollbar-width: thin;
+}

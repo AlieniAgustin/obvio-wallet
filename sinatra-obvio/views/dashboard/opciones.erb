@@ -1,3 +1,60 @@
 <div class="dashboard-container">
+    <!-- Profile Card -->
+    <div class="cardblack w-full" style="background-color: var(--obvio-black); border-radius: var(--border-radius-small); padding: var(--spacing-m); margin-bottom: var(--spacing-m);">
+        <div class="persona">
+            <div class="persona__avatar">
+                <div style="position: relative;">
+                    <img src="/assets/defaultAvatar.svg" alt="Avatar de <%= @user&.name || 'Julian Varga' %>" class="avatar avatar--s">
+                    <div style="position: absolute; bottom: 0; right: 0; background-color: var(--obvio-orange); border-radius: var(--border-radius-round); width: 24px; height: 24px; display: flex; align-items: ; justify-content: start;">
+                        <img src="/assets/icons/edit.svg" alt="edit icon" class="icon">
+                    </div>
+                </div>
+            </div>
+            <div class="persona__datosPersona">
+                <p class="name"><%= @user&.name || 'Julian Varga' %></p>
+                <p class="email"><%= @user&.email || 'julianvarga4@gmail.com' %></p>
+            </div>
+        </div>
+    </div>
 
+    <!-- Datos Personales -->
+    <div class="cardblack w-full" style="background-color: var(--obvio-black); border-radius: var(--border-radius-small); padding: 0; overflow: hidden;">
+        <!-- Profile Information -->
+        <a href="opciones-info-personal" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; text-decoration: none; color: var(--text-primary); border-bottom: 1px solid var(--obvio-gray-light); transition: var(--transition);" onmouseover="this.style.backgroundColor='var(--obvio-gray-light)'" onmouseout="this.style.backgroundColor='transparent'">
+            <span style="font-size: 1rem;">Información personal</span>
+            <img src="/assets/icons/arrowright.svg" alt="edit icon" class="icon">
+        </a>
+
+        <!-- Datos de la cuenta-->
+        <a href="opciones-info-cuenta" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; text-decoration: none; color: var(--text-primary); border-bottom: 1px solid var(--obvio-gray-light); transition: var(--transition);" onmouseover="this.style.backgroundColor='var(--obvio-gray-light)'" onmouseout="this.style.backgroundColor='transparent'">
+            <span style="font-size: 1rem;">Datos de tu cuenta</span>
+            <img src="/assets/icons/arrowright.svg" alt="edit icon" class="icon">
+        </a>
+
+        <!-- Notificaciones -->
+        <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; text-decoration: none; color: var(--text-primary); border-bottom: 1px solid var(--obvio-gray-light); transition: var(--transition);" onmouseover="this.style.backgroundColor='var(--obvio-gray-light)'" onmouseout="this.style.backgroundColor='transparent'">
+            <span style="font-size: 1rem;">Notificaciones</span>
+            <img src="/assets/icons/arrowright.svg" alt="edit icon" class="icon">
+        </a>
+
+        <!-- Lorem -->
+        <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; text-decoration: none; color: var(--text-primary); border-bottom: 1px solid var(--obvio-gray-light); transition: var(--transition);" onmouseover="this.style.backgroundColor='var(--obvio-gray-light)'" onmouseout="this.style.backgroundColor='transparent'">
+            <span style="font-size: 1rem;">Lorem</span>
+            <img src="/assets/icons/arrowright.svg" alt="edit icon" class="icon">
+        </a>
+
+        <!-- Ipsum -->
+        <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; text-decoration: none; color: var(--text-primary); border-bottom: 1px solid var(--obvio-gray-light); transition: var(--transition);" onmouseover="this.style.backgroundColor='var(--obvio-gray-light)'" onmouseout="this.style.backgroundColor='transparent'">
+            <span style="font-size: 1rem;">Ipsum</span>
+            <img src="/assets/icons/arrowright.svg" alt="edit icon" class="icon">
+        </a>
+
+        <!-- Separator -->
+        <div style="border-top: 1px solid var(--obvio-gray-light); margin: 0;"></div>
+
+        <!-- Logout -->
+        <a href="#" style="display: flex; justify-content: flex-start; align-items: center; padding: 12px 16px; text-decoration: none; color: #ff4444; transition: var(--transition);" onmouseover="this.style.backgroundColor='rgba(255, 68, 68, 0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+            <span style="font-size: 1rem;">Cerrar sesión</span>
+        </a>
+    </div>
 </div>
