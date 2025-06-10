@@ -1,0 +1,49 @@
+<div class="dashboard-container">
+
+  <h1 class="section-header">Contactos</h1>
+
+  <input type="search" placeholder="Busca un contacto" class="input search-contact" />
+
+  <div class="filter-buttons spacing-m">
+    <button class="btn btn--orangeBG">Todos los contactos</button>
+    <button class="btn btn--grayBG">Favoritos</button>
+  </div>
+
+  <a href="#" class="new-contact-btn flex align-center spacing-m lightGrayBG border-radius-small">
+    <div class="btn btn--orangeBG border-radius-small">
+      <img src="/assets/icons/plusSign.svg" class="icon-s" alt="Agregar contacto" />
+    </div>
+    <span class="font-semibold text-primary text-l">Nuevo contacto</span>
+  </a>
+
+  <div class="list contacts-list w-full">
+    <!-- Aquí se agregan los contactos -->
+    <% contacts = [
+      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: true},
+      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: false},
+      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: false},
+      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: true}
+    ] %>
+
+    <% contacts.each do |contact| %>
+      <div class="list-item person spacing-m flex justify-between items-center border-bottom">
+        <div class="flex items-center gap-m">
+          <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar-small" />
+          <div>
+            <div class="font-semibold text-primary"><%= contact[:name] %></div>
+            <div class="text-gray-lighter text-sm"><%= contact[:email] %></div>
+          </div>
+        </div>
+        <div class="favorite-star">
+          <% if contact[:favorite] %>
+            <img src="/assets/icons/check.svg" alt="Favorito" class="icon-star filled" />
+          <% else %>
+            <img src="/assets/icons/check.svg" alt="No favorito" class="icon-star" />
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+</div>
+
