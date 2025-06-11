@@ -7,6 +7,7 @@
 
 .list--scrollable {
   /* Para que salga la scroll bar la lista especifica deberia tener una altura maxima definida*/
+  height: 100%;
   overflow-y: auto;
 }
 

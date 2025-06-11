@@ -1,49 +1,42 @@
 <div class="dashboard-container">
 
-  <h1 class="section-header">Contactos</h1>
+  <h1 class="section-header w-full">Contactos</h1>
 
-  <input type="search" placeholder="Busca un contacto" class="input search-contact" />
+  <input class="input input--search w-full" type="search" placeholder="Busca un contacto"/>
 
-  <div class="filter-buttons spacing-m">
-    <button class="btn btn--orangeBG">Todos los contactos</button>
-    <button class="btn btn--grayBG">Favoritos</button>
-  </div>
-
-  <a href="#" class="new-contact-btn flex align-center spacing-m lightGrayBG border-radius-small">
+  <a href="#" class="h-auto flex align-self-start lightGrayBG border-radius-small justify-center spacing-m gap-m">
     <div class="btn btn--orangeBG border-radius-small">
-      <img src="/assets/icons/plusSign.svg" class="icon-s" alt="Agregar contacto" />
+      <div class="flex justify-center items-center spacing-s">
+        <img src="/assets/icons/plusSign.svg" class="icon-s">
+      </div>
     </div>
-    <span class="font-semibold text-primary text-l">Nuevo contacto</span>
+    <div class="flex justify-center items-center text-primary font-semibold text-l">Nuevo contacto</div>
   </a>
 
-  <div class="list contacts-list w-full">
+  <div class="list list--scrollable w-full">
     <!-- Aquí se agregan los contactos -->
+    <!-- Cambiar por los contactos del usuario -->
     <% contacts = [
-      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: true},
-      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: false},
-      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: false},
-      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: true}
+      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com"},
+      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com"},
+      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com"},
+      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com"}
     ] %>
 
     <% contacts.each do |contact| %>
-      <div class="list-item person spacing-m flex justify-between items-center border-bottom">
-        <div class="flex items-center gap-m">
-          <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar-small" />
-          <div>
-            <div class="font-semibold text-primary"><%= contact[:name] %></div>
-            <div class="text-gray-lighter text-sm"><%= contact[:email] %></div>
+      <div class="list-item border-bottom-white">
+        <div class="persona">
+          <div class="persona__avatar">
+            <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
           </div>
-        </div>
-        <div class="favorite-star">
-          <% if contact[:favorite] %>
-            <img src="/assets/icons/check.svg" alt="Favorito" class="icon-star filled" />
-          <% else %>
-            <img src="/assets/icons/check.svg" alt="No favorito" class="icon-star" />
-          <% end %>
-        </div>
+          <div class="persona__datosPersona">
+            <p class="name"><%= contact[:name] %></p>
+            <p class="email"><%= contact[:email] %></p>
+          </div>  
+        </div> 
       </div>
     <% end %>
-  </div>
 
+  </div>
 </div>
 
