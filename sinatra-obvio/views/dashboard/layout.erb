@@ -34,6 +34,16 @@
     <div class="logo">
         <a href="/dashboard/home" class="logo-link">OBVIO</a>
     </div>
+    
+    <div class="current-user-info">
+      <div class="current-user-pfp">
+        <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--xs">
+      </div>
+      <div class="current-user-name">
+        <%= "#{current_user&.first_name} #{current_user&.last_name}" %>
+      </div>
+    </div>
+
     <nav class="menu">
       <a href="/dashboard/home" class="menu-item <%= 'active' if request.path_info == '/dashboard/home' %>">
         <div class="icon">
@@ -84,7 +94,7 @@
         <span>Opciones</span>
       </a>
 
-      <a href="/" class="menu-item logout">
+      <a href="/logout" class="menu-item logout">
         <div class="icon"> 
           <img src="/assets/icons/logout.svg">
         </div>

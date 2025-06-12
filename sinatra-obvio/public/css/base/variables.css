@@ -43,6 +43,7 @@
   --border-radius-round: 1000px; /* pongo un border radius muy grande */
   
   /* Tamaños fijos*/
+  --avatar-xs: 50px;
   --avatar-s: 85px;
   --avatar-m: 125px;
   --icon-s: 24px;
