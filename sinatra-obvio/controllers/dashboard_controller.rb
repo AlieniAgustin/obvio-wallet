@@ -1,9 +1,34 @@
 require 'sinatra/base'
 
 class DashboardController < Sinatra::Base
+  # Configuracion de las sesiones
+  enable :sessions
+  set :session_secret, 'clave-top-secret'
+
   set :views, File.expand_path('../../views', __FILE__) #Para que encuentre al register correctamente cuando centralize con el register_controller
   set :public_folder, File.expand_path('../public', __FILE__)
+
+  helpers do
+    def current_user
+      @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    end
+
+    def logged_in?
+      !!current_user
+    end
+
+    def require_login
+      unless logged_in?
+        redirect '/login'
+      end
+    end
+  end
   
+  # Esto hace que cada vez que tratamos de entrar a alguna pagina del dashboard ejecute require_login
+  before '/dashboard*' do
+    require_login
+  end
+
   get '/dashboard' do 
     erb :'dashboard/home', layout: :'dashboard/layout'
   end 
