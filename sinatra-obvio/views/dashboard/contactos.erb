@@ -4,20 +4,19 @@
 
   <input type="search" placeholder="Busca un contacto" class="input search-contact" />
 
-  <div class="filter-buttons spacing-m">
+  <div class="filter-buttons spacing-m flex gap-m">
     <button class="btn btn--orangeBG">Todos los contactos</button>
     <button class="btn btn--grayBG">Favoritos</button>
   </div>
 
-  <a href="#" class="new-contact-btn flex align-center spacing-m lightGrayBG border-radius-small">
+  <a href="#" class="lightGrayBG border-radius-small flex items-center gap-m p-s w-fit">
     <div class="btn btn--orangeBG border-radius-small">
       <img src="/assets/icons/plusSign.svg" class="icon-s" alt="Agregar contacto" />
     </div>
     <span class="font-semibold text-primary text-l">Nuevo contacto</span>
   </a>
 
-  <div class="list contacts-list w-full">
-    <!-- Aquí se agregan los contactos -->
+  <div class="list list--scrollable" style="max-height: 400px;">
     <% contacts = [
       {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: true},
       {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com", favorite: false},
@@ -26,19 +25,23 @@
     ] %>
 
     <% contacts.each do |contact| %>
-      <div class="list-item person spacing-m flex justify-between items-center border-bottom">
-        <div class="flex items-center gap-m">
-          <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar-small" />
-          <div>
-            <div class="font-semibold text-primary"><%= contact[:name] %></div>
-            <div class="text-gray-lighter text-sm"><%= contact[:email] %></div>
+      <div class="list-item flex justify-between items-center">
+
+        <a href="#" class="persona">
+          <div class="persona__avatar">
+            <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
           </div>
-        </div>
+          <div class="persona__datosPersona">
+            <div class="name"><%= contact[:name] %></div>
+            <div class="email"><%= contact[:email] %></div>
+          </div>
+        </a>
+
         <div class="favorite-star">
           <% if contact[:favorite] %>
-            <img src="/assets/icons/check.svg" alt="Favorito" class="icon-star filled" />
+            <img src="/assets/icons/star-yellow.svg" alt="Favorito" class="icon-star" />
           <% else %>
-            <img src="/assets/icons/check.svg" alt="No favorito" class="icon-star" />
+            <img src="/assets/icons/star-outline.svg" alt="No favorito" class="icon-star" />
           <% end %>
         </div>
       </div>
