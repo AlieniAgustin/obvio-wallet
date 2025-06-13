@@ -16,7 +16,7 @@
             <div class="form-field">
                 <label>Nombre de usuario</label>
                 <div class="w-full">
-                    <input type="text" name="username" value="<%= @Account&.first_name || 'Julian' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                    <input type="text" name="username" value="<%= current_account&.id %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
                 </div> 
             </div>
 
@@ -24,7 +24,7 @@
             <div class="form-field">
                 <label>Alias</label>
                 <div class= "w-full grid" style="grid-template-columns: 1fr auto">
-                    <input type="text" name="alias" value="<%= @account&.alias || 'jvarea.obvio' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                    <input type="text" name="alias" value="<%= current_account&.alias %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
                     <div class= "btn" onclick="toggleEdit(this)">
                         <img src="/assets/icons/edit.svg" alt="edit icon">
                     </div>
@@ -35,7 +35,7 @@
             <div class="form-field">
                 <label>CVU</label>
                 <div>
-                    <input type="text" name="cvu" value="<%= @account&.cvu || '0000007893203652478726' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                    <input type="text" name="cvu" value="<%= @current_account&.cvu %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
                 </div>
             </div>
 

@@ -13,7 +13,7 @@
         <!-- Sección de Perfil -->
         <div class="persona__avatar">
             <div style="position: relative;">
-                <img src="/assets/defaultAvatar.svg" alt="Avatar de <%= @user&.name || 'Julian Varga' %>" class="avatar avatar--s">
+                <img src="/assets/defaultAvatar.svg" alt="Avatar de <%= @current_user&.first_name %>" class="avatar avatar--s">
                 <div class="orangeBG border-radius-round icon-s flex justify-center items-center" style="position: absolute; bottom: 0; right: 0;">
                     <img src="/assets/icons/edit.svg" alt="edit icon" class="icon-s spacing-xs">
                 </div>
@@ -26,7 +26,7 @@
             <div class="form-field">
                 <label>Nombre</label>
                 <div class="w-full">
-                    <input type="text" name="full_name" value="<%= @user&.first_name || 'Julian' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                    <input type="text" name="full_name" value="<%= @current_user&.first_name %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
                 </div> 
             </div>
 
@@ -34,7 +34,7 @@
             <div class="form-field">
                 <label>Apellido</label>
                 <div class="w-full">
-                    <input type="text" name="full_name" value="<%= @user&.last_name || 'Varga' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                    <input type="text" name="full_name" value="<%= @current_user&.last_name %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
                 </div>
             </div>
 
@@ -42,7 +42,7 @@
             <div class="form-field">
                 <label>DNI</label>
                 <div class="w-full">
-                    <input type="text" name="dni" value="<%= @user&.dni || '46309379' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                    <input type="text" name="dni" value="<%= @current_user&.dni %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
                 </div>
             </div>
 
@@ -50,7 +50,7 @@
             <div class="form-field">
                 <label>Número de teléfono</label>
                 <div style="position: relative;">
-                    <input type="tel" name="phone" value="<%= @user&.email || 'jvarea@gmail.com' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                    <input type="tel" name="phone" value="<%= @current_user&.email %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
                 </div>
             </div>
 
@@ -58,7 +58,7 @@
             <div class="form-field">
                 <label>Dirección</label>
                 <div style="position: relative;">
-                    <input type="tel" name="phone" value="<%= @user&.address || 'San Martín' %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
+                    <input type="tel" name="phone" value="<%= @current_user&.address %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
                 </div>
             </div>
 

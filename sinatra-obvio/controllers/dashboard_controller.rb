@@ -13,6 +13,10 @@ class DashboardController < Sinatra::Base
       @current_user ||= User.find(session[:user_id]) if session[:user_id]
     end
 
+    # Para obtener los datos de la cuenta del usuario en los erb (Por ejemplo, @current_account&.cvu)
+    def current_account
+      @current_account ||= current_user&.account if current_user
+    end
     def logged_in?
       !!current_user
     end
