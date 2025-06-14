@@ -38,7 +38,7 @@
   <% contacts.each do |contact| %>
       <div class="list-item flex justify-between items-center">
 
-        <a href="#" class="persona">
+        <a href="pago/<%= contact.id %>" class="persona">
           <div class="persona__avatar">
             <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
           </div>
@@ -47,16 +47,9 @@
             <div class="email"><%= contact.user.email %></div>
             <div class="email"><%= contact.alias %></div>
             <div class="email"><%= contact.cvu %></div>
-          </div>
+          </div>  
         </a>
 
-        <div class="favorite-star">
-          <% if contact[:favorite] %>
-            <img src="/assets/icons/star-yellow.svg" alt="Favorito" class="icon-star" />
-          <% else %>
-            <img src="/assets/icons/star-outline.svg" alt="No favorito" class="icon-star" />
-          <% end %>
-        </div>
       </div>
     <% end %>
   </div>
