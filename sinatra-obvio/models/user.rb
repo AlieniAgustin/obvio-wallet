@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
         name = "#{first_name.gsub(/\s+/, '_').downcase}.#{last_name.gsub(/\s+/, '_').downcase}"
         Account.create!(
             user: self,
-            balance: 0.0,
+            balance: 1000000.0, # les damos 10000.00 pesos iniciales (en centavos)
             cvu: generate_unique_cvu,
             alias: generate_unique_alias(name)
         )

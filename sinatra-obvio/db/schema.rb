@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_25_145119) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_14_150625) do
   create_table "accounts", force: :cascade do |t|
     t.integer "balance"
     t.string "cvu"
@@ -63,8 +63,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_25_145119) do
 
   create_table "transactions", force: :cascade do |t|
     t.integer "transaction_number"
-    t.integer "date"
-    t.integer "time"
+    t.date "date"
+    t.time "time"
     t.integer "amount"
     t.string "description"
     t.string "reason"

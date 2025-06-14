@@ -6,7 +6,7 @@
         <span class="text-xxl font-bold">$</span>
         <span class="text-xxl font-bold">
             <!-- monto pagado -->
-            10.000
+            <%= amount_format(@transaction&.amount) %>
         </span> 
     </div>
     <div class="details flex flex-col gap-s justify-center gray2BG border- spacing-xxl w-full border-radius-small">
@@ -14,33 +14,32 @@
             <p>Para:</p>
             <p class="font-bold">
                 <!-- persona que recibe el pago -->
-                Pepe McPepe
+                <%= @transaction.target_account.user.first_name %> <%= @transaction.target_account.user.last_name %>
             </p>
         </div>
         <div class="flex justify-between">
             <p>Fecha:</p>
             <p class="font-bold">
                 <!-- fecha y hora del movimiento -->
-                23/05 - 10:38
+                <%= format_date(@transaction.date) %> - <%= format_time(@transaction.time) %>
             </p>
         </div>
         <div class="flex justify-between">
             <p>Alias:</p>
             <p class="font-bold">
                 <!-- alias de la persona que recibe el pago -->
-                pepe.mcPepe
+                <%= @transaction.target_account.alias %>
             </p>
         </div>
         <div class="flex justify-between">
-            <p>ID Movimiento:</p>
+            <p>Numero de movimiento:</p>
             <p class="font-bold">
                 <!-- id del movimiento -->
-                123456789
+                <%= @transaction.transaction_number %>
             </p>
         </div>
     </div>
     <div class="btn-group">
         <a href="/dashboard/home" class="btn btn--round btn--orangeOUTLINE text-primary">Volver</a>
-        <a href="#" class="btn btn--round btn--orangeBG text-gray">Compartir comprobante</a>
     </div>
 </div>

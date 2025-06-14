@@ -7,29 +7,64 @@
         <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--m">
         <p class="font-bold text-primary">
             <!-- persona que va a recibir el pago -->
-            Pepe McPepe
+            <%= @target_account.user.first_name %> <%= @target_account.user.last_name %>
         </p>
         <p class="text-s text-secondary">
             <!-- email de la persona que va a recibir el pago -->
-            pepemcpepe@gmail.com
+            <%= @target_account.user.email %>
         </p>
     </div>
     
-    <div class="form-section" style="grid-area: datos;">
-        <div class="form-field">
-            <div class="form-field__amount">
-                <span class="text-xxl text-primary">$</span>
-                <input type="text" class="input input--amount w-full" placeholder="0" min="0">
+    <div class="form-section" style="grid-area: datos;" id="paymentForm">
+        <form action="/dashboard/pago" method="post">
+            <input type="hidden" name="target_account_id" value="<%= @target_account.id %>"> <!-- Campo oculto para el ID de la cuenta destino -->
+            <div class="form-field">
+                <div class="form-field__amount">
+                    <span class="text-xxl text-primary">$</span>
+                    <input 
+                        type="text" 
+                        class="input input--amount w-full" 
+                        placeholder="0.00" 
+                        min="0" 
+                        max="<%= amount_format(@current_account&.balance) %>"
+                        step="0.01"
+                        pattern="^$|^(0|[1-9]\d*)(\.\d{0,2})?$"
+                        name="amount" 
+                        id="amount"
+                        required
+                    >
+                </div>
+                <div class="text-m text-secondary">
+                    <!-- saldo del usuario -->
+                    Disponible $<%= amount_format(@current_account&.balance) %>            
+                </div>
             </div>
-            <div class="text-m text-secondary">
-                <!-- saldo del usuario -->
-                Disponible $100.028,00
+            
+            <div class="btn-group">
+                <a href="/dashboard/contactos" class="btn btn--round orangeOUTLINE text-primary">Cancelar</a>
+                <button type="submit" class="btn btn--round btn--orangeBG text-gray">Pagar</a> 
             </div>
-        </div>
-        
-        <div class="btn-group">
-            <a href="#" class="btn btn--round orangeOUTLINE text-primary">Cancelar</a>
-            <a href="receipt" class="btn btn--round btn--orangeBG text-gray">Pagar</a> 
-        </div>
+        </form>
     </div> 
 </div>
+
+<script>
+    // Si bien el input solo admite entradas validas segun su pattern, visualmente no evita que el usuario escriba un valor no permitido, lo que podria confundirlo
+    // Con este script evitamos que el usuario escriba un valor no permitido, mostrando el valor anterior si no cumple con el patrón
+
+    const amountInput = document.getElementById('amount');
+
+    amountInput.addEventListener('keydown', function(e) {
+        const input = e.target;
+        const oldVal = input.value;
+        const pattern = new RegExp(input.getAttribute('pattern'));
+
+        // Usamos setTimeout para esperar que el valor se actualice luego del keydown
+        setTimeout(() => {
+            const newVal = input.value;
+            if (!pattern.test(newVal)) {
+                input.value = oldVal; // revertir al valor anterior si no cumple patrón
+            }
+        }, 1);
+    });
+</script>

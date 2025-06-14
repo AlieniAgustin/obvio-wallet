@@ -1,6 +1,8 @@
 <div class="dashboard-container">
     <div class="card">
-        <span class="text-xl font-bold"><%= current_account&.balance%></span>
+        <span class="text-xl font-bold">
+            <%= "$#{amount_format(current_account&.balance)}" %> 
+        </span>
         <div class="btn-group">
             <a href="/dashboard/cargar" class="btn btn--round btn--orangeBG grayOUTLINE">Cargar dinero</a>
             <a href="/dashboard/transferir" class="btn btn--round btn--grayBG">Transferir</a>
