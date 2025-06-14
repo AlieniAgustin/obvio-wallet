@@ -1,3 +1,66 @@
 <div class="dashboard-container">
+    <h1 class="section-header w-full text-center">
+        🤑Cargar dinero🤑
+    </h1>
+    <div class="main-content w-full h-full flex flex-col justify-center items-center gray2BG border-radius-small spacing-xl">
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel">
+                <div class="label">
+                    <span style="transform: rotate(30deg) translateY(-110px);">$100</span>
+                    <span style="transform: rotate(90deg) translateY(-110px);">$250</span>
+                    <span style="transform: rotate(150deg) translateY(-110px);">$400</span>
+                    <span style="transform: rotate(210deg) translateY(-110px);">$600</span>
+                    <span style="transform: rotate(270deg) translateY(-110px);">$800</span>
+                    <span style="transform: rotate(330deg) translateY(-110px);">$1000</span>
+                </div>
+            </div>
+        </div>
 
+        <button id="spinBtn">🎰 Girar ruleta</button>
+        <div id="result"></div>
+    </div>
 </div>
+
+<script>
+  const wheel = document.getElementById('wheel');
+  const btn = document.getElementById('spinBtn');
+  const result = document.getElementById('result');
+
+  const prizes = [
+    { label: "$100", amount: 100 },
+    { label: "$250", amount: 250 },
+    { label: "$400", amount: 400 },
+    { label: "$600", amount: 600 },
+    { label: "$800", amount: 800 },
+    { label: "$1000", amount: 1000 }
+  ];
+
+  let spinning = false;
+
+  btn.addEventListener('click', () => {
+    if (spinning) return;
+    spinning = true;
+    result.textContent = "";
+
+    const prizeIndex = Math.floor(Math.random() * prizes.length);
+    const anglePerSegment = 360 / prizes.length;
+    const extraSpins = 5;
+    const rotation = (extraSpins * 360) + (360 - prizeIndex * anglePerSegment - anglePerSegment / 2);
+
+    wheel.style.transform = `rotate(${rotation}deg)`;
+
+    setTimeout(() => {
+      const prize = prizes[prizeIndex];
+      result.textContent = `🎉 ¡Ganaste ${prize.label}!`;
+
+      fetch('/dashboard/cargar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `amount=${prize.amount}`
+      });
+
+      spinning = false;
+    }, 4000);
+  });
+</script>

@@ -82,6 +82,12 @@ class DashboardController < Sinatra::Base
     erb :'dashboard/cargar', layout: :'dashboard/layout'
   end 
 
+  post '/dashboard/cargar' do 
+    amount = toCents(params[:amount].to_i)
+    current_account.balance += amount
+    current_account.save
+  end
+
   get '/dashboard/contactos' do 
     erb :'dashboard/contactos', layout: :'dashboard/layout'
   end 
