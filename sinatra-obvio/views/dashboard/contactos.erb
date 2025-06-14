@@ -4,7 +4,7 @@
 
   <input class="input input--search w-full" type="search" placeholder="Busca un contacto"/>
 
-  <!-- Toggle between showing the button and the form -->
+  <!-- Alterna entre mostrar el botón de agregar y el formulario -->
   <div id="add-contact-button">
     <a href="#" class="h-auto flex align-self-start lightGrayBG border-radius-small justify-center spacing-m gap-m" onclick="showAddContactForm(); return false;">
       <div class="btn btn--orangeBG border-radius-small">
@@ -16,7 +16,7 @@
     </a>
   </div>
 
-  <!-- Add contact form (hidden by default) -->
+  <!-- Agregar contacto (escondido por defecto) -->
   <div id="add-contact-form" style="display: none;" class="lightGrayBG border-radius-small spacing-m">
     <form action="/dashboard/contactos" method="POST">
       <div class="form-field">
@@ -32,27 +32,31 @@
     </form>
   </div>
 
-  <div class="list list--scrollable w-full">
-    <!-- Display real contacts from the database -->
-    <% if current_account&.contact_list&.accounts&.any? %>
-      <% current_account.contact_list.accounts.each do |contact_account| %>
-        <div class="list-item border-bottom-white">
-          <div class="persona">
-            <div class="persona__avatar">
-              <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
-            </div>
-            <div class="persona__datosPersona">
-              <p class="name"><%= "#{contact_account.user.first_name} #{contact_account.user.last_name}" %></p>
-              <p class="email"><%= contact_account.user.email %></p>
-              <p class="email">Alias: <%= contact_account.alias %></p>
-              <p class="email">CVU: <%= contact_account.cvu %></p>
-            </div>  
-          </div> 
+ <div class="list list--scrollable" style="max-height: 400px;">
+    <% contacts = current_account.contact_list.accounts %>
+
+  <% contacts.each do |contact| %>
+      <div class="list-item flex justify-between items-center">
+
+        <a href="#" class="persona">
+          <div class="persona__avatar">
+            <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
+          </div>
+          <div class="persona__datosPersona">
+            <div class="name"><%= "#{contact.user.first_name} #{contact.user.last_name}" %></div>
+            <div class="email"><%= contact.user.email %></div>
+            <div class="email"><%= contact.alias %></div>
+            <div class="email"><%= contact.cvu %></div>
+          </div>
+        </a>
+
+        <div class="favorite-star">
+          <% if contact[:favorite] %>
+            <img src="/assets/icons/star-yellow.svg" alt="Favorito" class="icon-star" />
+          <% else %>
+            <img src="/assets/icons/star-outline.svg" alt="No favorito" class="icon-star" />
+          <% end %>
         </div>
-      <% end %>
-    <% else %>
-      <div class="list-item">
-        <p class="text-center text-gray">No tienes contactos agregados aún</p>
       </div>
     <% end %>
   </div>
