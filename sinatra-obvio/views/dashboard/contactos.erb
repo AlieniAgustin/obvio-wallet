@@ -4,39 +4,69 @@
 
   <input class="input input--search w-full" type="search" placeholder="Busca un contacto"/>
 
-  <a href="#" class="h-auto flex align-self-start lightGrayBG border-radius-small justify-center spacing-m gap-m">
-    <div class="btn btn--orangeBG border-radius-small">
-      <div class="flex justify-center items-center spacing-s">
-        <img src="/assets/icons/plusSign.svg" class="icon-s">
+  <!-- Toggle between showing the button and the form -->
+  <div id="add-contact-button">
+    <a href="#" class="h-auto flex align-self-start lightGrayBG border-radius-small justify-center spacing-m gap-m" onclick="showAddContactForm(); return false;">
+      <div class="btn btn--orangeBG border-radius-small">
+        <div class="flex justify-center items-center spacing-s">
+          <img src="/assets/icons/plusSign.svg" class="icon-s">
+        </div>
       </div>
-    </div>
-    <div class="flex justify-center items-center text-primary font-semibold text-l">Nuevo contacto</div>
-  </a>
+      <div class="flex justify-center items-center text-primary font-semibold text-l">Nuevo contacto</div>
+    </a>
+  </div>
+
+  <!-- Add contact form (hidden by default) -->
+  <div id="add-contact-form" style="display: none;" class="lightGrayBG border-radius-small spacing-m">
+    <form action="/dashboard/contactos" method="POST">
+      <div class="form-field">
+        <label for="contact_identifier">CVU o Alias del contacto:</label>
+        <input type="text" id="contact_identifier" name="contact_identifier" 
+               placeholder="Ingresa CVU o alias" 
+               class="input w-full" required>
+      </div>
+      <div class="flex gap-s">
+        <button type="submit" class="btn btn--orangeBG">Agregar Contacto</button>
+        <button type="button" class="btn btn--secondary" onclick="hideAddContactForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
 
   <div class="list list--scrollable w-full">
-    <!-- Aquí se agregan los contactos -->
-    <!-- Cambiar por los contactos del usuario -->
-    <% contacts = [
-      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com"},
-      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com"},
-      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com"},
-      {name: "Pepe McPepe", email: "pepemcpepe@hotmail.com"}
-    ] %>
-
-    <% contacts.each do |contact| %>
-      <div class="list-item border-bottom-white">
-        <div class="persona">
-          <div class="persona__avatar">
-            <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
-          </div>
-          <div class="persona__datosPersona">
-            <p class="name"><%= contact[:name] %></p>
-            <p class="email"><%= contact[:email] %></p>
-          </div>  
-        </div> 
+    <!-- Display real contacts from the database -->
+    <% if current_account&.contact_list&.accounts&.any? %>
+      <% current_account.contact_list.accounts.each do |contact_account| %>
+        <div class="list-item border-bottom-white">
+          <div class="persona">
+            <div class="persona__avatar">
+              <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
+            </div>
+            <div class="persona__datosPersona">
+              <p class="name"><%= "#{contact_account.user.first_name} #{contact_account.user.last_name}" %></p>
+              <p class="email"><%= contact_account.user.email %></p>
+              <p class="email">Alias: <%= contact_account.alias %></p>
+              <p class="email">CVU: <%= contact_account.cvu %></p>
+            </div>  
+          </div> 
+        </div>
+      <% end %>
+    <% else %>
+      <div class="list-item">
+        <p class="text-center text-gray">No tienes contactos agregados aún</p>
       </div>
     <% end %>
-
   </div>
 </div>
 
+<script>
+function showAddContactForm() {
+  document.getElementById('add-contact-button').style.display = 'none';
+  document.getElementById('add-contact-form').style.display = 'block';
+  document.getElementById('contact_identifier').focus();
+}
+
+function hideAddContactForm() {
+  document.getElementById('add-contact-form').style.display = 'none';
+  document.getElementById('add-contact-button').style.display = 'block';
+}
+</script>
