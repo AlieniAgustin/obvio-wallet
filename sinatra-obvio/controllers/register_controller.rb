@@ -19,7 +19,6 @@ class RegisterController < Sinatra::Base
   end
 
   get '/register' do
-    session.clear # Limpiamos la sesion para evitar datos viejos
     if logged_in?
       redirect '/dashboard'
     else

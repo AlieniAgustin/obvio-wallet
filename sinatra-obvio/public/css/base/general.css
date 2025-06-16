@@ -1,10 +1,14 @@
 /* Acá hay algunas clases utiles para usar directamente sobre los elementos html (similar a bootstrap) para evitar css redundante */
 
 .dashboard-container {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
   padding: var(--spacing-xxl) var(--spacing-xxxl);
   gap: var(--spacing-m);
   background-color: var(--dashboard-gray);
@@ -26,6 +30,8 @@
 .text-gray { color: var(--text-gray); }
 .text-gray-lighter { color: var(--obvio-gray-lighter);}
 .text-warning { color: var(--warning-red); }
+.text-red {color: var(--transaction-red);}
+.text-green {color: var(--transaction-green);}
 .text-s { font-size: var(--font-size-s); }
 .text-m { font-size: var(--font-size-m); }
 .text-l { font-size: var(--font-size-l); }

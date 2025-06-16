@@ -245,7 +245,7 @@ get '/dashboard/resumen/:year/:month' do
 
   # Validar mes y año (mínimo 1 y máximo 12 para mes)
   unless @month.between?(1,12) && @year > 0
-    halt 400, "Fecha inválida"
+    redirect '/dashboard/resumen'
   end
 
   # Fecha base del mes
@@ -280,10 +280,10 @@ get '/dashboard/resumen/:year/:month' do
                      .order(date: :desc)
 
   # Sumar ingresos y egresos
-  @income_total = @transactions.select { |t| t.target_account_id == current_user.account.id }
-                               .sum(&:amount)
-  @expense_total = @transactions.select { |t| t.source_account_id == current_user.account.id }
-                                .sum(&:amount)
+  @income_total = amount_format(@transactions.select { |t| t.target_account_id == current_user.account.id }
+                               .sum(&:amount))
+  @expense_total = amount_format(@transactions.select { |t| t.source_account_id == current_user.account.id }
+                                .sum(&:amount))
 
   erb :'dashboard/resumen', layout: :'dashboard/layout'
 end

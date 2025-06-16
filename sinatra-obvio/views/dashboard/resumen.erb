@@ -1,52 +1,79 @@
 <div class="dashboard-container">
-  <div class="w-full h-full flex flex-col grayBG p-6">
-    <div class="w-full flex justify-between items-center mb-6">
-      <a href="/dashboard/resumen/<%= @prev_year %>/<%= @prev_month %>" class="text-primary text-3xl">&larr;</a>
+  <h1 class="section-header w-full"> Resumen </h1>
+  <div class="w-full h-full flex flex-col items-center gray2BG spacing-m border-radius-small" style="overflow-y: auto">
 
-      <% mes_nombre = Date::MONTHNAMES[@month] || "Mes inválido" %>
-      <div class="text-4xl font-bold text-white"><%= mes_nombre %> <%= @year || '' %></div>
-
+    <!-- Navegacion de meses -->
+    <div class="w-full flex justify-center items-center gap-m text-xl">
+      <a href="/dashboard/resumen/<%= @prev_year %>/<%= @prev_month %>" class="text-primary">&larr;</a>
+      <span class="font-bold text-primary">
+        <% mes_nombre = Date::MONTHNAMES[@month] || "Mes invalido" %>
+        <%= mes_nombre %> <%= @year || '' %>
+      </span>
       <% if @next_year && @next_month %>
-        <a href="/dashboard/resumen/<%= @next_year %>/<%= @next_month %>" class="text-primary text-3xl">&rarr;</a>
-      <% else %>
-        <span class="text-primary text-3xl opacity-50 cursor-not-allowed">&rarr;</span>
+        <a href="/dashboard/resumen/<%= @next_year %>/<%= @next_month %>" class="text-primary">&rarr;</a>
       <% end %>
     </div>
 
-    <div class="text-center spacing-m mb-8">
-      <p class="text-white text-2xl font-semibold">Tu cuenta tuvo <%= @transactions.count %> movimientos</p>
-      <p class="text-primary text-xl mt-2">Recibiste: <strong>$<%= @income_total %></strong></p>
-      <p class="text-primary text-xl">Gastos: <strong>$<%= @expense_total %></strong></p>
+    <!-- Resumen de movimientos -->
+    <div class="w-full flex flex-col items-center gap-m text-center text-l text-primary spacing-m">
+      <p> Tu cuenta tuvo <%= @transactions.count %>
+        <% if @transactions.count == 1 %>
+          movimiento
+        <% else %>
+          movimientos
+        <% end %>
+      </p>
+      <p>Recibiste: <span class="font-bold">$<%= @income_total %></span class="font-bold"></p>
+      <p>Gastaste: <span class="font-bold">$<%= @expense_total %></span class="font-bold"></p>
     </div>
 
-    <div class="list list--scrollable">
-      <% @transactions.each do |tx| %>
-        <a href="/receipt/<%= tx.id %>" class="movimiento">
-          <div class="movimiento__detalles">
-            <div class="persona">
-              <div class="persona__avatar">
-                <img src="/assets/icons/defaultAvatar.svg" class="avatar avatar--xs">
-              </div>
-              <div class="persona__datosPersona">
-                <span class="name text-lg">
-                  <%= tx.source_account_id == current_user.account.id ? tx.target_account.user.full_name : tx.source_account.user.full_name %>
-                </span>
-                <span class="email text-sm">
-                  <%= tx.source_account_id == current_user.account.id ? tx.target_account.user.email : tx.source_account.user.email %>
-                </span>
-              </div>
+    <!-- Lista de movimientos -->
+    <div class="list list--scrollable" id="resumen__lista-movimientos">>
+
+      <!-- Generacion dinamica de movimientos -->
+      <% @transactions.each do |transaction| %>
+        <a href="/dashboard/receipt/<%= transaction.transaction_number %>" class="movimiento list-item">
+          <div class="persona">
+            <div class="persona__avatar">
+              <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s">
             </div>
-            <div class="text-right text-primary">
-              <p class="<%= tx.source_account_id == current_user.account.id ? 'text-warning text-lg' : 'text-lg' %>">
-                <%= tx.source_account_id == current_user.account.id ? '-' : '' %>$<%= tx.amount %>
+            <div class="persona__datosPersona">
+              <p class="name"> 
+                <%# Mostramos el nombre de la otra persona involucrada en la transacción %>
+                <% if transaction.source_account_id == current_user.account.id %>
+                  <%= transaction.target_account.user.first_name %> <%= transaction.target_account.user.last_name %>
+                <% else %>
+                  <%= transaction.source_account.user.first_name %> <%= transaction.source_account.user.last_name %>
+                <% end %>
               </p>
-              <p class="text-secondary text-s">
-                <%= tx.date.strftime('%-d/%-m') %> - <%= tx.time.strftime('%H:%Mhs') %>
+              <p class="email"> 
+                <%# Mostramos el email de la otra persona involucrada en la transacción %>
+                <% if transaction.source_account_id == current_user.account.id %>
+                  <%= transaction.target_account.user.email %>
+                <% else %>
+                  <%= transaction.source_account.user.email %>
+                <% end %>
               </p>
             </div>
           </div>
+          <div class="movimiento__detalles">
+            <p class="text-m">
+              <% formatted_amount = amount_format(transaction.amount) %>
+              <% if transaction.source_account_id == current_user.account.id %>
+                <span class="text-red">- <%= formatted_amount %></span>
+              <% else %>
+                <span class="text-green">+ <%= formatted_amount %></span>
+              <% end %>
+            </p>
+            <span class="text-s text-secondary">
+              <%= transaction.date.strftime('%-d/%-m') %> - <%= transaction.time.strftime('%H:%Mhs') %>
+            </span>
+          </div>
         </a>
       <% end %>
+
     </div>
+
   </div>
+
 </div>

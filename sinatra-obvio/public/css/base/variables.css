@@ -9,10 +9,14 @@
   --obvio-gray-2: #FFFFFF10;
   --dashboard-gray: #181A20;
   --warning-red: #FF4D4D;
+  --transaction-red: #FF4D4D;
+  --transaction-green: #67e54b;
 
   --text-primary: white;
   --text-secondary: var(--obvio-gray-lighter);
   --text-gray: var(--obvio-gray);
+  --text-red: var(--transaction-red);
+  --text-green: var(--transaction-green);
 
   --color-border: white;
   --color-border-light: var(--obvio-gray-lighter);
