@@ -48,13 +48,14 @@ class DashboardController < Sinatra::Base
 
     # Para mostrar campos de tipo Date en las views en formato AAAA-MM-DD
     def format_date(datetime)
-      datetime.strftime("%Y-%m-%d")
+      datetime.in_time_zone('America/Argentina/Buenos_Aires').strftime("%Y-%m-%d")
     end 
 
     # Para mostrar campos de tipo Time en las views en formato HH:MM
     def format_time(datetime)
-      datetime.strftime("%H:%M")
+      datetime.in_time_zone('America/Argentina/Buenos_Aires').strftime('%H:%M')    
     end
+    
   end
   
   # Esto hace que cada vez que tratamos de entrar a alguna pagina del dashboard ejecute require_login
@@ -277,7 +278,7 @@ get '/dashboard/resumen/:year/:month' do
 
   @transactions = current_user.account.transactions
                      .where(date: start_date..end_date)
-                     .order(date: :desc)
+                     .order(date: :desc, time: :desc)
 
   # Sumar ingresos y egresos
   @income_total = amount_format(@transactions.select { |t| t.target_account_id == current_user.account.id }

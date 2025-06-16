@@ -66,7 +66,7 @@
               <% end %>
             </p>
             <span class="text-s text-secondary">
-              <%= transaction.date.strftime('%-d/%-m') %> - <%= transaction.time.strftime('%H:%Mhs') %>
+              <%= format_date(transaction.date) %> - <%= format_time(transaction.time) %>
             </span>
           </div>
         </a>
