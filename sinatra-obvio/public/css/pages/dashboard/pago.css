@@ -1,7 +1,8 @@
 .grid--pago {
   grid-template-areas:
     "prompt prompt prompt"
-    "persona datos datos";
+    "persona datos datos"
+    "error error error";
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 }

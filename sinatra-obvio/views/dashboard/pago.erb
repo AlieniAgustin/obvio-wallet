@@ -34,15 +34,19 @@
                         required
                     >
                 </div>
-                <div class="text-m text-secondary">
+                <div class="text-m text-secondary flex flex-col gap-s">
                     <!-- saldo del usuario -->
-                    Disponible $<%= amount_format(@current_account&.balance) %>            
+                    <p>Disponible $<%= amount_format(@current_account&.balance) %> </p>
+                    <% if session[:error] %>
+                        <p class="text-red"><%= session[:error] %></p>
+                        <% session[:error] = nil %> <!-- Limpiar el mensaje de error después de mostrarlo -->
+                    <% end %>
                 </div>
             </div>
             
-            <div class="btn-group">
+            <div class="btn-group spacing-m">
                 <a href="/dashboard/contactos" class="btn btn--round orangeOUTLINE text-primary">Cancelar</a>
-                <button type="submit" class="btn btn--round btn--orangeBG text-gray">Pagar</a> 
+                <button type="submit" class="btn btn--round btn--orangeBG text-gray" style="border: none; outline: none;">Pagar</a> 
             </div>
         </form>
     </div> 

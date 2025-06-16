@@ -64,7 +64,7 @@ class DashboardController < Sinatra::Base
   end
 
   get '/dashboard' do 
-    erb :'dashboard/home', layout: :'dashboard/layout'
+    redirect '/dashboard/home'
   end 
 
   get '/dashboard/home' do
@@ -97,7 +97,8 @@ class DashboardController < Sinatra::Base
     
     if contact_identifier.nil? || contact_identifier.empty?
       # Manejo de error - Si el contacto no existe, lo anuncia
-      redirect '/dashboard/contactos?error=identifier_required'
+      session[:error] = "Identifier required"
+      redirect '/dashboard/contactos'
     end
     
     # Busca el contacto por cvu o alias
@@ -106,17 +107,20 @@ class DashboardController < Sinatra::Base
     
     if contact_account.nil?
       # Manejo de errores - Si el contacto no existe, lo dice
-      redirect '/dashboard/contactos?error=account_not_found'
+      session[:error] = "No se encontró una cuenta con los datos dados."
+      redirect '/dashboard/contactos'
     end
     
     # Chequea si el id del contacto no es el mismo que el del contacto actual
     if contact_account.id == current_account.id
-      redirect '/dashboard/contactos?error=cannot_add_self'
+      session[:error] = "No te podés agregar a vos mismo como contacto."
+      redirect '/dashboard/contactos'
     end
     
     # Chequea si el contacto ya existe
     if current_account.contact_list.contact_list_accounts.any? { |cla| cla.account_id == contact_account.id }
-      redirect '/dashboard/contactos?error=contact_exists'
+      session[:error] = "El contacto ingresado ya está en la lista."
+      redirect '/dashboard/contactos'
     end
     
     # Añade el contacto a la lista de contactos
@@ -125,10 +129,12 @@ class DashboardController < Sinatra::Base
         contact_list: current_account.contact_list,
         account: contact_account
       )
-      redirect '/dashboard/contactos?success=contact_added'
+      session[:success] = "Contacto agregado exitosamente."
+      redirect '/dashboard/contactos'
     rescue => e
       puts "Error adding contact: #{e.message}"
-      redirect '/dashboard/contactos?error=database_error'
+      session[:error] = "Error al agregar el contacto"
+      redirect '/dashboard/contactos'
     end
   end
 
@@ -155,11 +161,13 @@ class DashboardController < Sinatra::Base
     @target_account = Account.find_by(id: params[:target_account_id])
 
     if @target_account.nil?
+      session[:error] = "Cuenta destino no encontrada"
       redirect '/dashboard/contactos'
     end
 
     # Si la cuenta destino es la misma que la del usuario, redirigimos a contactos
     if @target_account.id == current_account.id
+      session[:error] = "No te podes transferir a vos mismo"
       redirect '/dashboard/contactos'
     end
 

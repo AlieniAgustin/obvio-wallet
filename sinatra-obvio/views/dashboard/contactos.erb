@@ -5,8 +5,8 @@
   <input class="input input--search w-full" type="search" placeholder="Busca un contacto"/>
 
   <!-- Alterna entre mostrar el botón de agregar y el formulario -->
-  <div id="add-contact-button">
-    <a href="#" class="h-auto flex align-self-start lightGrayBG border-radius-small justify-center spacing-m gap-m" onclick="showAddContactForm(); return false;">
+  <div id="add-contact-button" class="align-self-start">
+    <a href="#" class="h-auto flex lightGrayBG border-radius-small justify-center spacing-m gap-m" onclick="showAddContactForm(); return false;">
       <div class="btn btn--orangeBG border-radius-small">
         <div class="flex justify-center items-center spacing-s">
           <img src="/assets/icons/plusSign.svg" class="icon-s">
@@ -17,42 +17,55 @@
   </div>
 
   <!-- Agregar contacto (escondido por defecto) -->
-  <div id="add-contact-form" style="display: none;" class="lightGrayBG border-radius-small spacing-m">
-    <form action="/dashboard/contactos" method="POST">
+  <div id="add-contact-form" style="display: none;" class="lightGrayBG border-radius-small spacing-m align-self-start">
+    <form action="/dashboard/contactos" method="POST" class="flex flex-col gap-s">
       <div class="form-field">
-        <label for="contact_identifier">CVU o Alias del contacto:</label>
-        <input type="text" id="contact_identifier" name="contact_identifier" 
-               placeholder="Ingresa CVU o alias" 
-               class="input w-full" required>
+        <label for="contact_identifier" class="font-bold text-primary">CVU o Alias del contacto:</label>
+        <input 
+          type="text" 
+          id="contact_identifier" 
+          name="contact_identifier" 
+          placeholder="Ingresa CVU o alias" 
+          class="input w-full" 
+          required>
       </div>
-      <div class="flex gap-s">
-        <button type="submit" class="btn btn--orangeBG">Agregar Contacto</button>
-        <button type="button" class="btn btn--secondary" onclick="hideAddContactForm()">Cancelar</button>
+      <div class="btn-group">
+        <button type="submit" class="btn btn--orangeBG noOutline" style="cursor: pointer;">Agregar Contacto</button>
+        <button type="button" class="btn btn--grayBG noOutline" style="cursor: pointer;" onclick="hideAddContactForm()">Cancelar</button>
       </div>
     </form>
   </div>
 
- <div class="list list--scrollable" style="max-height: 400px;">
-    <% contacts = current_account.contact_list.accounts %>
+ <div class="list list--scrollable">
+    <% contacts = current_account.contact_list.accounts.sort_by { |c| [c.user.first_name.downcase, c.user.last_name.downcase] } %>
 
-  <% contacts.each do |contact| %>
-      <div class="list-item flex justify-between items-center">
-
-        <a href="pago/<%= contact.id %>" class="persona">
+    <% contacts.each do |contact| %>
+        <a href="pago/<%= contact.id %>" class="list-item border-bottom-white persona">
           <div class="persona__avatar">
             <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
           </div>
           <div class="persona__datosPersona">
             <div class="name"><%= "#{contact.user.first_name} #{contact.user.last_name}" %></div>
-            <div class="email"><%= contact.user.email %></div>
-            <div class="email"><%= contact.alias %></div>
-            <div class="email"><%= contact.cvu %></div>
+            <div class="email">Email: <%= contact.user.email %></div>
+            <div class="email">Alias: <%= contact.alias %></div>
+            <div class="email">CVU: <%= contact.cvu %></div>
           </div>  
         </a>
-
-      </div>
     <% end %>
   </div>
+  
+  <div class="w-full flex justify-center items-center text-center">
+    <% if session[:error] %>
+      <span class="text-red"><%= session[:error] %></span>
+      <% session[:error] = nil %> <!-- Limpiar el mensaje de error después de mostrarlo -->
+    <% end %>
+
+    <% if session[:success] %>
+      <span class="text-green"><%= session[:success] %></span>
+      <% session[:success] = nil %> <!-- Limpiar el mensaje de éxito después de mostrarlo -->
+    <% end %>
+  </div>
+
 </div>
 
 <script>
