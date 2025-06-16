@@ -19,6 +19,7 @@ class LogInController < Sinatra::Base
   	end
 
 	get '/login' do
+		session.clear # Limpiamos la sesion para evitar datos viejos
 		if logged_in?
 			redirect '/dashboard'
 		else

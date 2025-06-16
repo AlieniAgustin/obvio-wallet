@@ -74,10 +74,6 @@ class DashboardController < Sinatra::Base
     erb :'dashboard/movimientos', layout: :'dashboard/layout'
   end 
 
-  get '/dashboard/resumen' do 
-    erb :'dashboard/resumen', layout: :'dashboard/layout'
-  end 
-
   get '/dashboard/cargar' do
     erb :'dashboard/cargar', layout: :'dashboard/layout'
   end 
@@ -235,5 +231,62 @@ class DashboardController < Sinatra::Base
 
     erb :'dashboard/receipt', layout: :'dashboard/layout'
   end
+
+get '/dashboard/resumen' do
+  # Mostrar resumen del mes y año actual
+  today = Date.today
+  redirect to("/dashboard/resumen/#{today.year}/#{today.month}")
+end
+
+get '/dashboard/resumen/:year/:month' do
+  # Parseo parámetros
+  @year = params[:year].to_i
+  @month = params[:month].to_i
+
+  # Validar mes y año (mínimo 1 y máximo 12 para mes)
+  unless @month.between?(1,12) && @year > 0
+    halt 400, "Fecha inválida"
+  end
+
+  # Fecha base del mes
+  date = Date.new(@year, @month, 1) rescue halt(400, "Fecha inválida")
+
+  # No permitir ver meses futuros (comparar con hoy)
+  if date > Date.today.beginning_of_month
+    redirect to("/dashboard/resumen/#{Date.today.year}/#{Date.today.month}")
+  end
+
+  # Calcular meses anterior y siguiente para los links
+  prev_date = date << 1  # Un mes antes
+  next_date = date >> 1  # Un mes después
+
+  # No permitir mes siguiente después del actual
+  if next_date > Date.today.beginning_of_month
+    next_date = nil
+  end
+
+  @prev_year = prev_date.year
+  @prev_month = prev_date.month
+
+  @next_year = next_date&.year
+  @next_month = next_date&.month
+
+  # Consultar transacciones del usuario para ese mes
+  start_date = date
+  end_date = (date >> 1) - 1  # Último día del mes
+
+  @transactions = current_user.account.transactions
+                     .where(date: start_date..end_date)
+                     .order(date: :desc)
+
+  # Sumar ingresos y egresos
+  @income_total = @transactions.select { |t| t.target_account_id == current_user.account.id }
+                               .sum(&:amount)
+  @expense_total = @transactions.select { |t| t.source_account_id == current_user.account.id }
+                                .sum(&:amount)
+
+  erb :'dashboard/resumen', layout: :'dashboard/layout'
+end
+
 end
 
