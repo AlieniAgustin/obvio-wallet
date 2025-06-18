@@ -68,6 +68,7 @@ class DashboardController < Sinatra::Base
   end 
 
   get '/dashboard/home' do
+    @recent_transactions = current_account.recent_transactions
     erb :'dashboard/home', layout: :'dashboard/layout'
   end
 

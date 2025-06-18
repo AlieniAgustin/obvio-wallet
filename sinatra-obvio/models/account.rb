@@ -15,6 +15,10 @@ class Account < ActiveRecord::Base
     def transactions
         Transaction.where("source_account_id = ? OR target_account_id = ?", id, id)
     end
+    
+    def recent_transactions(limit = 10)
+        transactions.order(date: :desc, time: :desc).limit(limit)
+    end
 
     private # private section within class Account
 

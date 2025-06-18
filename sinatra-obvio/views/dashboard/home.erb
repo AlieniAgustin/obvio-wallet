@@ -12,72 +12,39 @@
     <div class="flex flex-col w-full gap-m">
         <h2 class="section-header">Últimos movimientos</h2>
         <input type="text" placeholder="Buscar" class="input input--search">
-        
-        <div class="list list--scrollable movimientos-list">
-            <!-- Ejemplos de movimientos, se deben generar dinamicamente con codigo ruby aca de acuerdo a la cuenta logueada -->
-            <a href="#" class="movimiento list-item">
-                <div class="persona">
-                    <div class="persona__avatar">
-                        <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s">
-                    </div>
-                    <div class="persona__datosPersona">
-                        <p class="name">Nombre Apellido</p>
-                        <p class="email">pepeMcPepe@gmail.com</p>
-                    </div>
-                </div>
-                <div class="movimiento__detalles">
-                    <p class="text-m text-primary">$37.200</p>
-                    <span class="text-s text-secondary">23/05 - 10:38</span>
-                </div>
-            </a>
+           
+        <div class="list list--scrollable movimientos-list w-full">
+  	  <% if @recent_transactions.empty? %>
+    	    <div class="empty-state flex justify-center items-center text-gray-lighter text-center text-l">
+      	      <p>Aún no tenés movimientos.</p>
+    	    </div>
+  	  <% else %>
+    	    <% @recent_transactions.each do |tx| %>
+      	      <% is_income = tx.target_account_id == current_account.id %>
+      	      <% other_account = is_income ? tx.source_account : tx.target_account %>
 
-            <a href="#" class="movimiento list-item">
-                <div class="persona">
-                    <div class="persona__avatar">
-                        <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s">
-                    </div>
-                    <div class="persona__datosPersona">
-                        <p class="name">Nombre Apellido</p>
-                        <p class="email">pepeMcPepe@gmail.com</p>
-                    </div>
-                </div>
-                <div class="movimiento__detalles">
-                    <p class="text-m text-primary">$37.200</p>
-                    <span class="text-s text-secondary">23/05 - 10:38</span>
-                </div>
-            </a>
+      	      <a href="/dashboard/receipt/<%= tx.transaction_number %>" class="movimiento list-item">
+        	<div class="persona">
+          	  <div class="persona__avatar">
+            	    <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s">
+          	  </div>
+          	  <div class="persona__datosPersona">
+            	    <p class="name"><%= other_account.user.first_name %> <%= other_account.user.last_name %></p>
+            	    <p class="email"><%= other_account.user.email %></p>
+          	  </div>
+        	</div>
+        	<div class="movimiento__detalles">
+          	  <p class="text-m text-primary">
+            	    <% if is_income %> + <% else %> - <% end %>$<%= amount_format(tx.amount) %>
+          	  </p>
+          	  <span class="text-s text-secondary">
+            	    <%= format_date(tx.date) %> - <%= format_time(tx.time) %>
+          	  </span>
+        	</div>
+      	      </a>
+    	    <% end %>
+  	  <% end %>
+	</div>
 
-            <a href="#" class="movimiento list-item">
-                <div class="persona">
-                    <div class="persona__avatar">
-                        <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s">
-                    </div>
-                    <div class="persona__datosPersona">
-                        <p class="name">Nombre Apellido</p>
-                        <p class="email">pepeMcPepe@gmail.com</p>
-                    </div>
-                </div>
-                <div class="movimiento__detalles">
-                    <p class="text-m text-primary">$37.200</p>
-                    <span class="text-s text-secondary">23/05 - 10:38</span>
-                </div>
-            </a>
-
-            <a href="#" class="movimiento list-item">
-                <div class="persona">
-                    <div class="persona__avatar">
-                        <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s">
-                    </div>
-                    <div class="persona__datosPersona">
-                        <p class="name">Nombre Apellido</p>
-                        <p class="email">pepeMcPepe@gmail.com</p>
-                    </div>
-                </div>
-                <div class="movimiento__detalles">
-                    <p class="text-m text-primary">$37.200</p>
-                    <span class="text-s text-secondary">23/05 - 10:38</span>
-                </div>
-            </a>
-        </div>
     </div>
 </div>
