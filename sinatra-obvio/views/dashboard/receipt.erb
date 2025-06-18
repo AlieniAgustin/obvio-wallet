@@ -1,6 +1,6 @@
 <div class="dashboard-container text-primary">
-    <div class="confirmed orangeBG whiteOUTLINE flex justify-center items-center border-radius-round">
-        <img src="/assets/icons/check.svg" class="icon--xl">
+    <div class="confirmed orangeBG whiteOUTLINE flex justify-center items-center" style="width: 100px; height: 100px; border-radius: 50%;">
+        <img src="/assets/icons/check.svg" class="icon--xl" style="width: 60px; height: 60px;" alt="Confirmado">
     </div>
     <div class="text-center">
         <span class="text-xxl font-bold">$</span>
@@ -11,17 +11,17 @@
     </div>
     <div class="details flex flex-col gap-s justify-center gray2BG border- spacing-xxl w-full border-radius-small">
         <div class="flex justify-between">
+            <p>De:</p>
+            <p class="font-bold">
+                <!-- persona que envia el pago -->
+                <%= @transaction.source_account.user.first_name %> <%= @transaction.source_account.user.last_name %>
+            </p>
+        </div>
+        <div class="flex justify-between">
             <p>Para:</p>
             <p class="font-bold">
                 <!-- persona que recibe el pago -->
                 <%= @transaction.target_account.user.first_name %> <%= @transaction.target_account.user.last_name %>
-            </p>
-        </div>
-        <div class="flex justify-between">
-            <p>Fecha:</p>
-            <p class="font-bold">
-                <!-- fecha y hora del movimiento -->
-                <%= format_date(@transaction.date) %> - <%= format_time(@transaction.time) %>
             </p>
         </div>
         <div class="flex justify-between">
@@ -32,10 +32,24 @@
             </p>
         </div>
         <div class="flex justify-between">
+            <p>Fecha:</p>
+            <p class="font-bold">
+                <!-- fecha y hora del movimiento -->
+                <%= format_date(@transaction.date) %> - <%= format_time(@transaction.time) %>
+            </p>
+        </div>
+        <div class="flex justify-between">
             <p>Numero de movimiento:</p>
             <p class="font-bold">
                 <!-- id del movimiento -->
                 <%= @transaction.transaction_number %>
+            </p>
+        </div>
+        <div class="flex justify-between">
+            <p>Descripción:</p>
+            <p class="font-bold">
+                <!-- id del movimiento -->
+                <%= @transaction.description %>
             </p>
         </div>
     </div>
