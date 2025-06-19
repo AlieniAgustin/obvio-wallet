@@ -28,15 +28,19 @@ class LogInController < Sinatra::Base
 
 	post '/login' do
 		user = User.find_by(email: params[:email])
-		if user && user.authenticate(params[:password])
-			# Autenticación exitosa
-			session[:user_id] = user.id
-			redirect '/dashboard'
+		if user 
+			if user.authenticate(params[:password])
+				# Autenticación exitosa
+				session[:user_id] = user.id
+				redirect '/dashboard'
+			else
+				# Falló la autenticación
+				@error_message = "contraseña incorrecta"
+				erb :'main/login', layout: :'main/layout'
+			end
 		else
-			# Falló la autenticación
-			@error_message = "Email o contraseña incorrectos"
-			erb :'main/login', layout: :'main/layout'
-		end
+			@error_message = "El email no está registrado"
+      erb :'main/login', layout: :'main/layout'
+		end	
 	end
 end
-
