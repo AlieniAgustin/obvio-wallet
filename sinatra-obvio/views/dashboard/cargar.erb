@@ -19,6 +19,16 @@
 
         <button id="spinBtn">🎰 Girar ruleta</button>
         <div id="result"></div>
+        <div class="w-full text-center spacing-m">
+          <% if session[:error] %>
+            <span class="text-red"><%= session[:error] %></span>
+            <% session[:error] = nil %> <!-- Limpiar el mensaje de error después de mostrarlo -->
+          <% end %>
+          <% if session[:success] %>
+            <span class="text-green"><%= session[:success] %></span>
+            <% session[:success] = nil %> <!-- Limpiar el mensaje de éxito después de mostrarlo -->
+          <% end %>
+        </div>
     </div>
 </div>
 

@@ -14,7 +14,13 @@ class Vaquita < ActiveRecord::Base
     validates :status, inclusion: { in: ['active', 'completed', 'withdrawn'] }
     
     def current_amount
-        contributions.sum(:amount)
+        read_attribute(:current_amount) || 0
+    end
+
+    def update_current_amount!
+        total = contributions.sum(:amount)
+        update_column(:current_amount, total)
+        total
     end
     
     def goal_reached?

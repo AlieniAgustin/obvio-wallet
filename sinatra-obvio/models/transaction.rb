@@ -20,12 +20,18 @@ class Transaction < ActiveRecord::Base
 
   def transfer_balance
     # Hacer todo en una transacción de DB para evitar inconsistencias
-    ActiveRecord::Base.transaction do
-      source_account.balance -= amount
-      source_account.save!
+    begin
+      ActiveRecord::Base.transaction do
+        source_account.update!(balance: source_account.balance - amount)
+        target_account.update!(balance: target_account.balance + amount)
 
-      target_account.balance += amount
-      target_account.save!
+        source_account.reload
+        target_account.reload   
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      source_account.reload
+      target_account.reload
+      raise e
     end
   end
 end

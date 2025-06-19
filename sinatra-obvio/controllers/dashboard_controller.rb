@@ -82,8 +82,17 @@ class DashboardController < Sinatra::Base
 
   post '/dashboard/cargar' do 
     amount = toCents(params[:amount].to_i)
-    current_account.balance += amount
-    current_account.save
+    begin
+      ActiveRecord::Base.transaction do
+        current_account.update!(balance: current_account.balance + amount)
+        session[:success] = "Carga exitosa de $#{amount_format(amount)}"
+      end
+    rescue => e
+      puts "Error cargando dinero: #{e.message}"
+      session[:error] = "Error al cargar dinero"
+    end
+
+    redirect '/dashboard/cargar'
   end
 
   get '/dashboard/contactos' do 
@@ -177,11 +186,12 @@ class DashboardController < Sinatra::Base
 
     if vaquita.save
       session[:success] = "Vaquita creada exitosamente"
+      redirect "/dashboard/vaquitas/#{new_vaquita_id}"
     else 
       session[:error] = "Error al crear la vaquita"
+      redirect "/dashboard/vaquitas"
     end 
 
-    redirect "/dashboard/vaquitas/:#{new_vaquita_id}"
   end 
   
   
@@ -267,6 +277,9 @@ class DashboardController < Sinatra::Base
 
     begin
       ActiveRecord::Base.transaction do
+        current_account.reload
+        contribution.reload
+
         # Acreditar saldo al usuario
         current_account.update!(balance: current_account.balance + monto_retiro_cents)
 
@@ -367,6 +380,12 @@ class DashboardController < Sinatra::Base
 
     begin
       ActiveRecord::Base.transaction do
+        # Chequeo nuevamente si puedo hacer el aporte dentro de la transaction de la base de datos
+        current_account.reload
+        if current_account.balance < amount_cents
+          raise ActiveRecord::Rollback, "Fondos insuficientes"
+        end
+
         # Descontar al usuario
         current_account.update!(balance: current_account.balance - amount_cents)
         
@@ -386,6 +405,8 @@ class DashboardController < Sinatra::Base
 
         session[:success] = "Aporte realizado exitosamente"
       end
+    rescue ActiveRecord::Rollback => e
+      session[:error] = e.message
     rescue => e
       puts "Error aportando a vaquita: #{e.message}"
       session[:error] = "No se pudo realizar el aporte"
@@ -527,6 +548,12 @@ class DashboardController < Sinatra::Base
             vaquita.creator.save!
           else  
             contributor = contrib.account
+            # Ya le habíamos restado el aporte al usuario al momento de aportar
+            # Dado que la transaccion le vuelve a restar el balance automáticamente al momento del pago con la vaquita,
+            # le devolvemos el aporte para evitar que le cobren dos veces
+            contributor.balance += contrib.amount 
+            contributor.save!
+
             Transaction.create!(
               transaction_number: new_transaction_number,
               date: Date.today,
@@ -539,14 +566,11 @@ class DashboardController < Sinatra::Base
             )
             new_transaction_number += 1
 
-            # Ya le habíamos restado el aporte al usuario al momento de aportar
-            # Dado que la transaccion le vuelve a restar el balance automáticamente al momento del pago con la vaquita,
-            # le devolvemos el aporte para evitar que le cobren dos veces
-            contributor.balance += contrib.amount 
-            contributor.save!
           end
         end
 
+        vaquita.creator.reload # lo reinicio para que la db considere todo el dinero de los aportes que recibió la cuenta
+        
         transaction = Transaction.create!(
           transaction_number: new_transaction_number,
           date: Date.today,
