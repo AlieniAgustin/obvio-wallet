@@ -1,7 +1,8 @@
 <div class="dashboard-container">
     <h1 class="section-header w-full"> Movimientos </h1>
     <input class="input input--search w-full" type="search" placeholder="Busca un movimiento"/>
-    <div class="list list--scrollable  w-full">
+
+    <div class="list list--scrollable w-full">
         <% if @transactions.empty? %>
             <div class="empty-state flex justify-center items-center text-gray-lighter text-center text-l">
                 <p>Aún no tenés movimientos.</p>
@@ -10,7 +11,7 @@
             <% @transactions.each do |transaction| %>
                 <% is_income = transaction.target_account_id == current_account.id %>
                 <% other_account = is_income ? transaction.source_account : transaction.target_account %>
-                <a href="/dashboard/receipt/<%= transaction.transaction_number %>" class="movimiento list-item">
+                <a href="/dashboard/receipt/<%= transaction.transaction_number %>" class="movimiento list-item" data-name="<%= "#{other_account.user.first_name} #{other_account.user.last_name}".downcase %>">
                     <div class="persona">
                         <div class="persona__avatar">
                             <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s">
@@ -37,3 +38,23 @@
         <% end %>
     </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputSearch = document.querySelector('.input--search');
+    const movimientos = document.querySelectorAll('.movimiento');
+
+    inputSearch.addEventListener('input', function() {
+      const filtro = this.value.toLowerCase().trim();
+
+      movimientos.forEach(movimiento => {
+        const nombre = movimiento.getAttribute('data-name');
+        if (nombre.includes(filtro)) {
+          movimiento.style.display = '';
+        } else {
+          movimiento.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

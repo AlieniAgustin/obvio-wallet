@@ -1,0 +1,101 @@
+<div class="dashboard-container">
+    <h1 class="section-header w-full">Vaquita</h1>
+    <div class="w-full h-full flex flex-col items-center gray2BG spacing-m border-radius-small text-primary" style="overflow-y: auto">
+        <h2 class="text-primary w-full text-center"> <%= @vaquita.name %> </h2>
+
+        <div class="flex flex-col gap-m spacing-m w-full">
+            <div class="w-full lightGrayBG border-radius-round" style="height: 20px; overflow: hidden;">
+                <div id="vaquita-progress-fill" class="h-full orangeBG" style="width: <%= @vaquita.percentage_complete %>%; transition: width 0.5s ease-in-out;"></div>
+            </div>
+            <p class="text-center text-l text-primary" id="vaquita-progress-text"> <%= amount_format(@vaquita.current_amount) %> / <%= amount_format(@vaquita.goal) %> </p>
+        </div>
+
+        <div class="w-full flex flex-col gap-m text-m detalles" style="padding: 0 20%;">
+            <div class="w-full flex justify-between gap-m text-m">
+                <p class="font-bold">Descripcion: </p>
+                <p>
+                    <%= @vaquita.description %>
+                </p>
+            </div>
+            <div class="w-full flex justify-between gap-m text-m">
+                <p class="font-bold">Fecha de creación: </p>
+                <p>
+                    <%= @vaquita.created_at.in_time_zone('America/Argentina/Buenos_Aires').strftime("%Y-%m-%d") %>
+                </p>
+            </div>
+            <div class="w-full flex justify-between gap-m text-m">
+                <p class="font-bold">Monto a recaudar: </p>
+                <p>
+                    $<%= amount_format(@vaquita.goal) %>
+                </p>
+            </div>
+            <div class="w-full flex justify-between gap-m text-m">
+                <p class="font-bold">Creada por: </p>
+                <p>
+                    <% creator = Account.find_by(id: @vaquita.creator_account_id) %>
+                    <%= creator.user.first_name %> <%= creator.user.last_name %>
+                </p>
+            </div>
+            <div class="w-full flex justify-between gap-m text-m">
+                <p class="font-bold">ID de la vaquita: </p>
+                <p>
+                    <%= @vaquita.idVaquita %>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Formularios -->
+        <div class="w-full flex justify-between items-center">
+            <!-- Aportar --> 
+            <div class="w-full flex flex-col justify-center spacing-m">
+                <form action="/dashboard/vaquitas/aportar" method="POST" class="flex flex-col gap-s w-full lightGrayBG border-radius-small spacing-m">
+                    <input type="hidden" name="idVaquita" value="<%= @vaquita.idVaquita %>">
+                    <label for="monto" class="text-primary font-bold">Aportar a esta vaquita:</label>
+                    <input type="number" name="monto" id="monto" min=0.01 step=0.01 class="input w-full" placeholder="Ej: 500" required>
+                    <button type="submit" class="btn btn--orangeBG noOutline">Aportar</button>
+                </form>
+                <p class="text-secondary spacing-s text-center"> 
+                    Saldo disponible: $<%= amount_format(current_account.balance) %> 
+                </p>
+            </div>
+            
+            <!-- Retirar aporte -->
+            <div class="w-full flex flex-col justify-center spacing-m">
+                <form action="/dashboard/vaquitas/retirarAporte" method="POST" class="flex flex-col gap-s w-full lightGrayBG border-radius-small spacing-m">
+                    <input type="hidden" name="idVaquita" value="<%= @vaquita.idVaquita %>">
+                    <label for="montoRetiro" class="text-primary font-bold">Retirar aporte:</label>
+                    <input type="number" name="montoRetiro" id="montoRetiro" step=0.01 class="input w-full" placeholder="Ej: 200" required>
+                    <button type="submit" class="btn btn--orangeBG noOutline">Retirar</button>
+                </form>
+                <p class="text-secondary spacing-s text-center"> 
+                    <% contributions = @vaquita.contributions.select { |c| c.account_id == current_account.id } %>
+                    Monto aportado: $<%= amount_format(contributions.sum(&:amount)) %>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="w-full flex justify-center items-center text-center">
+            <% if session[:error] %>
+                <span class="text-red"><%= session[:error] %></span>
+                <% session[:error] = nil %> <!-- Limpiar el mensaje de error después de mostrarlo -->
+            <% end %>
+
+            <% if session[:success] %>
+                <span class="text-green"><%= session[:success] %></span>
+                <% session[:success] = nil %> <!-- Limpiar el mensaje de éxito después de mostrarlo -->
+            <% end %>
+        </div>
+
+        <!-- Botón para eliminar (solo si el creador es el current_account) -->
+        <% if @vaquita.creator_account_id == current_account.id %>
+            <div class="w-full flex justify-center">
+                <form action="/dashboard/vaquitas/eliminar" method="POST" onsubmit="return confirm('¿Estás seguro de que querés eliminar esta vaquita?');">
+                    <input type="hidden" name="idVaquita" value="<%= @vaquita.idVaquita %>">
+                    <button type="submit" class="text-primary text-m noOutline spacing-m border-radius-small" style="cursor: pointer; background-color: var(--warning-red);">🗑 Eliminar vaquita</button>
+                </form>
+            </div>
+        <% end %>
+
+    </div>
+</div>
