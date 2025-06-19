@@ -1,3 +1,42 @@
 <div class="dashboard-container">
+    <h1 class="section-header w-full"> Movimientos </h1>
 
+    <input class="input input--search w-full" type="search" placeholder="Buscar actividad"/>
+
+    <div class="list list--scrollable movimientos-list w-full">
+        <% if @transactions.empty? %>
+            <div class="empty-state flex justify-center items-center text-gray-lighter text-center text-l">
+                <p>Aún no tenés movimientos.</p>
+            </div>
+        <% else %>
+            <% @transactions.each do |transaction| %>
+                <% is_income = transaction.target_account_id == current_account.id %>
+                <% other_account = is_income ? transaction.source_account : transaction.target_account %>
+
+                <a href="/dashboard/receipt/<%= transaction.transaction_number %>" class="movimiento list-item">
+                    <div class="persona">
+                        <div class="persona__avatar">
+                            <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s">
+                        </div>
+                        <div class="persona__datosPersona">
+                            <p class="name"><%= other_account.user.first_name %> <%= other_account.user.last_name %></p>
+                            <p class="email"><%= other_account.user.email %></p>
+                        </div>
+                    </div>
+                    <div class="movimiento__detalles">
+                        <p class="text-m">
+                            <% if is_income %> 
+                                <span class="text-green font-bold">+ $<%= amount_format(transaction.amount) %> </span>
+                            <% else %>
+                                <span class="text-red font-bold">- $<%= amount_format(transaction.amount) %> </span>
+                            <% end %>
+                        </p>
+                        <span class="text-s text-secondary">
+                            <%= format_date(transaction.date) %> - <%= format_time(transaction.time) %>
+                        </span>
+                    </div>
+                </a>
+            <% end %>
+        <% end %>
+    </div>
 </div>
