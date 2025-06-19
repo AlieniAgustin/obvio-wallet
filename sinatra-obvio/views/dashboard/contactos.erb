@@ -40,7 +40,7 @@
     <% contacts = current_account.contact_list.accounts.sort_by { |c| [c.user.first_name.downcase, c.user.last_name.downcase] } %>
 
     <% contacts.each do |contact| %>
-        <a href="pago/<%= contact.id %>" class="list-item border-bottom-white persona">
+        <a href="pago/<%= contact.id %>" class="list-item border-bottom-white persona" data-name="<%= "#{contact.user.first_name} #{contact.user.last_name}".downcase %>">
           <div class="persona__avatar">
             <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
           </div>
@@ -79,4 +79,24 @@
     document.getElementById('add-contact-form').style.display = 'none';
     document.getElementById('add-contact-button').style.display = 'block';
   }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputSearch = document.querySelector('.input--search');
+    const contactos = document.querySelectorAll('.list-item.persona');
+
+    inputSearch.addEventListener('input', function() {
+      const filtro = this.value.toLowerCase().trim();
+
+      contactos.forEach(contacto => {
+        const nombre = contacto.getAttribute('data-name');
+        if (nombre.includes(filtro)) {
+          contacto.style.display = '';
+        } else {
+          contacto.style.display = 'none';
+        }
+      });
+    });
+  });
 </script>
