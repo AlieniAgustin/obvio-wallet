@@ -1,13 +1,3 @@
-.dashboard-container {
-    max-width: 450px;
-    margin: 0 auto;
-}
-
-.card a {
-    padding: 8px 50px;
-    font-size: 0.9rem;
-}
-
 .cardblack {
   border-radius: 10px;
   padding: var(--spacing-l);
@@ -22,6 +12,8 @@
   justify-content: space-between;
   gap: var(--spacing-s);
   flex-shrink: 0;
+  scrollbar-color: #555 transparent; 
+  scrollbar-width: thin;
 }
 
 .cardblack::-webkit-scrollbar {
@@ -36,9 +28,3 @@
   background-color: #555; 
   border-radius: 4px;
 }
-
-.cardblack {
-  scrollbar-color: #555 transparent; 
-  scrollbar-width: thin;
-}
-

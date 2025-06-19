@@ -1,35 +1,231 @@
-<div class="dashboard-container grid grid--pago">
+<div class="dashboard-container grid grid--pago" style="overflow-y: auto;">
     <h1 class="section-header text-center" style="grid-area: prompt;">
-        ¿Cuánto desea pagar?
+        ¿Cómo desea pagar?
     </h1>
     
     <div class="flex flex-col justify-center items-center gap-s" style="grid-area: persona;">
         <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--m">
         <p class="font-bold text-primary">
             <!-- persona que va a recibir el pago -->
-            Pepe McPepe
+            <%= @target_account.user.first_name %> <%= @target_account.user.last_name %>
         </p>
         <p class="text-s text-secondary">
             <!-- email de la persona que va a recibir el pago -->
-            pepemcpepe@gmail.com
+            <%= @target_account.user.email %>
         </p>
     </div>
     
-    <div class="form-section" style="grid-area: datos;">
-        <div class="form-field">
-            <div class="form-field__amount">
-                <span class="text-xxl text-primary">$</span>
-                <input type="text" class="input input--amount w-full" placeholder="0" min="0">
+    <div class="form-section" style="grid-area: datos;" id="paymentForm">
+        <!-- Selector de método de pago -->
+        <div class="flex flex-col gap-s w-full text-m text-primary">
+            <div class="w-full flex justify-between spacing-m gray2BG payment-option" style="cursor: pointer;" data-option="cuenta">
+                <p>Usar dinero de la cuenta</p>
+                <span>&rarr;</span>
             </div>
-            <div class="text-m text-secondary">
-                <!-- saldo del usuario -->
-                Disponible $100.028,00
+            <div class="w-full flex justify-between spacing-m gray2BG payment-option" style="cursor: pointer;" data-option="vaquita">
+                <p>Usar vaquitas</p>
+                <span>&rarr;</span>
             </div>
         </div>
-        
-        <div class="btn-group">
-            <a href="#" class="btn btn--round orangeOUTLINE text-primary">Cancelar</a>
-            <a href="receipt" class="btn btn--round btn--orangeBG text-gray">Pagar</a> 
+
+        <!-- Selector de vaquitas -->
+        <div class="list vaquitas-list w-full" id="form-vaquita" style="display: none;">
+            <% if @vaquitas.empty? %>
+                <div class="empty-state flex justify-center items-center text-gray-lighter text-center text-l">
+                    <p>No tenés vaquitas</p>
+                </div>
+            <% else %>
+                <h2 class="text-primary text-center"> Vaquitas disponibles </h2>
+                <% @vaquitas.each do |vaquita| %>
+                    <div class="list-item spacing-m grid vaquita-item justify-center items-center text-primary text-l gap-m" style="cursor: pointer;" data-vaquita-id="<%= vaquita.idVaquita %>" data-vaquita-name="<%= vaquita.name %>" data-vaquita-amount="<%= vaquita.current_amount %>">
+                        <p class="text-xxl">🐄</p>
+                        <div class="vaquita-details flex flex-col justify-self-start justify-start gap-s">
+                            <div class="font-semibold">
+                                <%= vaquita.name %>
+                            </div>
+                            <div class="text-gray-lighter">
+                                ID: <%= vaquita.idVaquita %>
+                            </div>
+                            <div class="text-gray-lighter">
+                                <% creator = Account.find_by(id: vaquita.creator_account_id) %>
+                                Creada por: <%= creator.user.first_name %> <%= creator.user.last_name %>
+                            </div>
+                        </div>
+                        <div>
+                            $<%= amount_format(vaquita.current_amount) %> / $<%= amount_format(vaquita.goal) %>
+                        </div>
+                    </div>
+                <% end %>
+            <% end %>
         </div>
+
+        <!-- Boton de volver -->
+        <div class="btn-group spacing-m" id="volver-btn" style="display: none;">
+            <button type="button" class="btn btn--round orangeOUTLINE text-primary spacing-m w-full" onclick="volver()" style="cursor: pointer;">Volver</button>
+        </div>
+
+        <!-- Pago con dinero de la cuenta -->
+        <form action="/dashboard/pago" method="post" id="form-cuenta" style="display: none;">
+            <input type="hidden" name="target_account_id" value="<%= @target_account.id %>"> <!-- Campo oculto para el ID de la cuenta destino -->
+            <div class="form-field">
+                <div class="form-field__amount">
+                    <span class="text-xxl text-primary">$</span>
+                    <input 
+                        type="text" 
+                        class="input input--amount w-full" 
+                        placeholder="0.00" 
+                        min="0" 
+                        max="<%= amount_format(@current_account&.balance) %>"
+                        step="0.01"
+                        pattern="^$|^(0|[1-9]\d*)(\.\d{0,2})?$"
+                        name="amount" 
+                        id="amount"
+                        required
+                    >
+                </div>
+                <div class="text-m text-secondary flex flex-col gap-s">
+                    <!-- saldo del usuario -->
+                    <p>Disponible $<%= amount_format(@current_account&.balance) %> </p>
+                    <% if session[:error] %>
+                        <p class="text-red"><%= session[:error] %></p>
+                        <% session[:error] = nil %> <!-- Limpiar el mensaje de error después de mostrarlo -->
+                    <% end %>
+                </div>
+            </div>
+            
+            <div class="btn-group spacing-m">
+                <button type="button" class="btn btn--round orangeOUTLINE text-primary" onclick="volver()" style="cursor: pointer;">Volver</button>
+                <button type="submit" class="btn btn--round btn--orangeBG text-gray" style="border: none; outline: none; cursor: pointer;">Pagar</a> 
+            </div>
+        </form>
+
+        <!-- Pago con vaquitas -->
+        <form action="/dashboard/pago/conVaquita" method="post" id="form-pago-vaquita" style="display: none;">
+            <p class="text-primary" id="vaquita-info-label" style="margin-bottom: 1rem;"></p>
+            <input type="hidden" name="idVaquita" id="selected-vaquita-id"> <!-- Campo oculto para el ID de la vaquita seleccionada -->
+            <input type="hidden" name="target_account_id" value="<%= @target_account.id %>"> <!-- Campo oculto para el ID de la cuenta destino -->
+            <div class="form-field">
+                <div class="form-field__amount">
+                    <span class="text-xxl text-primary">$</span>
+                    <input 
+                        type="text" 
+                        class="input input--amount w-full" 
+                        placeholder="0.00" 
+                        min="0" 
+
+                        step="0.01"
+                        pattern="^$|^(0|[1-9]\d*)(\.\d{0,2})?$"
+                        name="amount" 
+                        id="amount"
+                        required
+                    >
+                </div>
+                <div class="text-m text-secondary flex flex-col gap-s">
+                    <!-- saldo de la vaquita -->
+                    <p id="saldo-vaquita">Disponible en la vaquita: $ </p>
+                    <% if session[:error] %>
+                        <p class="text-red"><%= session[:error] %></p>
+                        <% session[:error] = nil %> <!-- Limpiar el mensaje de error después de mostrarlo -->
+                    <% end %>
+                </div>
+            </div>
+            
+            <div class="btn-group spacing-m">
+                <button type="button" class="btn btn--round orangeOUTLINE text-primary" onclick="volver()" style="cursor: pointer;">Volver</button>
+                <button type="submit" class="btn btn--round btn--orangeBG text-gray" style="border: none; outline: none; cursor: pointer;">Pagar</a> 
+            </div>
+        </form>
     </div> 
 </div>
+
+<script>
+    // Si bien el input solo admite entradas validas segun su pattern, visualmente no evita que el usuario escriba un valor no permitido, lo que podria confundirlo
+    // Con este script evitamos que el usuario escriba un valor no permitido, mostrando el valor anterior si no cumple con el patrón
+
+    const amountInput = document.getElementById('amount');
+
+    amountInput.addEventListener('keydown', function(e) {
+        const input = e.target;
+        const oldVal = input.value;
+        const pattern = new RegExp(input.getAttribute('pattern'));
+
+        // Usamos setTimeout para esperar que el valor se actualice luego del keydown
+        setTimeout(() => {
+            const newVal = input.value;
+            if (!pattern.test(newVal)) {
+                input.value = oldVal; // revertir al valor anterior si no cumple patrón
+            }
+        }, 1);
+    });
+</script>
+
+<script>
+    // Script para manejar la selección de métodos de pago y vaquitas
+
+    const paymentOptions = document.querySelectorAll('.payment-option');
+    const formCuenta = document.getElementById('form-cuenta');
+    const formVaquita = document.getElementById('form-vaquita');
+    const pagoVaquitaForm = document.getElementById('form-pago-vaquita');
+    const volverBtn = document.getElementById('volver-btn');
+    const selectorSection = document.querySelector('.form-section > .flex'); // el bloque de selección
+
+    const vaquitaItems = document.querySelectorAll('.vaquita-item');
+    const hiddenVaquitaIdInput = document.getElementById('selected-vaquita-id');
+    const vaquitaInfoLabel = document.getElementById('vaquita-info-label');
+
+    function volver() {
+        // Ocultar todos los formularios y vistas intermedias
+        formCuenta.style.display = 'none';
+        formVaquita.style.display = 'none';
+        pagoVaquitaForm.style.display = 'none';
+        volverBtn.style.display = 'none';
+
+        // Mostrar el selector de método de pago
+        selectorSection.style.display = 'flex';
+
+        // Limpiar info de vaquita seleccionada
+        vaquitaInfoLabel.textContent = '';
+    }
+
+    paymentOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const selected = option.dataset.option;
+
+            // Ocultar selector de método de pago
+            selectorSection.style.display = 'none';
+
+            // Mostrar la opción seleccionada
+            if (selected === 'cuenta') {
+                formCuenta.style.display = 'block';
+                volverBtn.style.display = 'none';
+            } else if (selected === 'vaquita') {
+                formVaquita.style.display = 'block';
+                volverBtn.style.display = 'flex'; 
+            }
+        });
+    });
+
+
+    vaquitaItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const idVaquita = item.dataset.vaquitaId;
+            const nameVaquita = item.dataset.vaquitaName;
+            const amountVaquita = item.dataset.vaquitaAmount;
+
+            // Ocultar lista de vaquitas y mostrar form de pago con vaquita
+            formVaquita.style.display = 'none';
+            volverBtn.style.display = 'none'; // Ocultar botón volver al seleccionar una vaquita
+            pagoVaquitaForm.style.display = 'block';
+            hiddenVaquitaIdInput.value = idVaquita;
+
+            vaquitaInfoLabel.textContent = `Pagando con vaquita "${nameVaquita}" (ID: ${idVaquita})`;
+
+            const saldoVaquita = document.getElementById('saldo-vaquita');
+            saldoVaquita.textContent = `Saldo disponible: $${(amountVaquita / 100).toFixed(2)}`;
+
+            // Visual feedback
+            vaquitaItems.forEach(i => i.classList.remove('selected-option'));
+            item.classList.add('selected-option');
+        });
+    });
+</script>

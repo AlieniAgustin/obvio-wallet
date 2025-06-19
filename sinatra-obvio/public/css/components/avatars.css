@@ -13,3 +13,8 @@
   width: var(--avatar-m);
   height: var(--avatar-m);
 }
+
+.avatar--xs {
+  width: var(--avatar-xs);
+  height: var(--avatar-xs);
+}

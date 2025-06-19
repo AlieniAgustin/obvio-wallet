@@ -1,0 +1,102 @@
+<div class="dashboard-container" style="overflow-y: auto;">
+
+  <h1 class="section-header w-full">Contactos</h1>
+
+  <input class="input input--search w-full" type="search" placeholder="Busca un contacto"/>
+
+  <!-- Alterna entre mostrar el botón de agregar y el formulario -->
+  <div id="add-contact-button" class="align-self-start">
+    <a href="#" class="h-auto flex lightGrayBG border-radius-small justify-center spacing-m gap-m" onclick="showAddContactForm(); return false;">
+      <div class="btn btn--orangeBG border-radius-small">
+        <div class="flex justify-center items-center spacing-s">
+          <img src="/assets/icons/plusSign.svg" class="icon-s">
+        </div>
+      </div>
+      <div class="flex justify-center items-center text-primary font-semibold text-l">Nuevo contacto</div>
+    </a>
+  </div>
+
+  <!-- Agregar contacto (escondido por defecto) -->
+  <div id="add-contact-form" style="display: none;" class="lightGrayBG border-radius-small spacing-m align-self-start">
+    <form action="/dashboard/contactos" method="POST" class="flex flex-col gap-s">
+      <div class="form-field">
+        <label for="contact_identifier" class="font-bold text-primary">CVU o Alias del contacto:</label>
+        <input 
+          type="text" 
+          id="contact_identifier" 
+          name="contact_identifier" 
+          placeholder="Ingresa CVU o alias" 
+          class="input w-full" 
+          required>
+      </div>
+      <div class="btn-group">
+        <button type="submit" class="btn btn--orangeBG noOutline" style="cursor: pointer;">Agregar Contacto</button>
+        <button type="button" class="btn btn--grayBG noOutline" style="cursor: pointer;" onclick="hideAddContactForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+ <div class="list">
+    <% contacts = current_account.contact_list.accounts.sort_by { |c| [c.user.first_name.downcase, c.user.last_name.downcase] } %>
+
+    <% contacts.each do |contact| %>
+        <a href="pago/<%= contact.id %>" class="list-item border-bottom-white persona" data-name="<%= "#{contact.user.first_name} #{contact.user.last_name}".downcase %>">
+          <div class="persona__avatar">
+            <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
+          </div>
+          <div class="persona__datosPersona">
+            <div class="name"><%= "#{contact.user.first_name} #{contact.user.last_name}" %></div>
+            <div class="email">Email: <%= contact.user.email %></div>
+            <div class="email">Alias: <%= contact.alias %></div>
+            <div class="email">CVU: <%= contact.cvu %></div>
+          </div>  
+        </a>
+    <% end %>
+  </div>
+  
+  <div class="w-full flex justify-center items-center text-center">
+    <% if session[:error] %>
+      <span class="text-red"><%= session[:error] %></span>
+      <% session[:error] = nil %> <!-- Limpiar el mensaje de error después de mostrarlo -->
+    <% end %>
+
+    <% if session[:success] %>
+      <span class="text-green"><%= session[:success] %></span>
+      <% session[:success] = nil %> <!-- Limpiar el mensaje de éxito después de mostrarlo -->
+    <% end %>
+  </div>
+
+</div>
+
+<script>
+  function showAddContactForm() {
+    document.getElementById('add-contact-button').style.display = 'none';
+    document.getElementById('add-contact-form').style.display = 'block';
+    document.getElementById('contact_identifier').focus();
+  }
+
+  function hideAddContactForm() {
+    document.getElementById('add-contact-form').style.display = 'none';
+    document.getElementById('add-contact-button').style.display = 'block';
+  }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputSearch = document.querySelector('.input--search');
+    const contactos = document.querySelectorAll('.list-item.persona');
+
+    inputSearch.addEventListener('input', function() {
+      const filtro = this.value.toLowerCase().trim();
+
+      contactos.forEach(contacto => {
+        const nombre = contacto.getAttribute('data-name');
+        if (nombre.includes(filtro)) {
+          contacto.style.display = '';
+        } else {
+          contacto.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

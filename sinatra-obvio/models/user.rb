@@ -2,8 +2,12 @@ class User < ActiveRecord::Base
     has_secure_password
 	has_one :account #tiene una cuenta
         
-    validates :email, presence: true, uniqueness: true
-	validates :dni, :first_name, :last_name, :address, presence: true #para validar que todos sus campos sean obligatorios
+    validates :email, presence: true, uniqueness: { message: "El mail ya está registrado" }
+    validates :dni, presence: true, uniqueness: { message: "El dni ya está registrado" }
+	validates :first_name, :last_name, :address, presence: true #para validar que todos sus campos sean obligatorios
+    validates :dni, length: {is:8, message: "el dni debe tener exactamente 8 caracteres"}
+    #validacion solo de backend. La del cliente la hace el navegador 
+    validates :email, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "formato mail no válido" }
 
     after_create :create_account
 
@@ -13,7 +17,7 @@ class User < ActiveRecord::Base
         name = "#{first_name.gsub(/\s+/, '_').downcase}.#{last_name.gsub(/\s+/, '_').downcase}"
         Account.create!(
             user: self,
-            balance: 0.0,
+            balance: 1000000, # les damos 10000.00 pesos iniciales (en centavos)
             cvu: generate_unique_cvu,
             alias: generate_unique_alias(name)
         )

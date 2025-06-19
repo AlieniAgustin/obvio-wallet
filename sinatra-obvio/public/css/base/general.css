@@ -1,10 +1,14 @@
 /* Acá hay algunas clases utiles para usar directamente sobre los elementos html (similar a bootstrap) para evitar css redundante */
 
 .dashboard-container {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
   padding: var(--spacing-xxl) var(--spacing-xxxl);
   gap: var(--spacing-m);
   background-color: var(--dashboard-gray);
@@ -26,6 +30,8 @@
 .text-gray { color: var(--text-gray); }
 .text-gray-lighter { color: var(--obvio-gray-lighter);}
 .text-warning { color: var(--warning-red); }
+.text-red {color: var(--transaction-red);}
+.text-green {color: var(--transaction-green);}
 .text-s { font-size: var(--font-size-s); }
 .text-m { font-size: var(--font-size-m); }
 .text-l { font-size: var(--font-size-l); }
@@ -73,10 +79,15 @@
 .grayBG { background-color: var(--obvio-gray); }
 .lightGrayBG { background-color: var(--obvio-gray-light); }
 .gray2BG { background-color: var(--obvio-gray-2); }
+.blackBG { background-color: var(--obvio-black); }
+.whiteBG { background-color: white; }
 
 .orangeOUTLINE { border: 3px solid var(--obvio-orange); }
 .grayOUTLINE { border: 3px solid var(--obvio-gray); }
 .whiteOUTLINE { border: 3px solid white; }
+.noOutline { border: none; outline: none; }
+.border-bottom-white { border-bottom: 1px solid white; }
+.border-bottom-light-gray { border-bottom: 1px solid var(--obvio-gray-light); }
 
 .icon-l { width: var(--icon-l); height: var(--icon-l); }
 .icon-s { width: var(--icon-s); height: var(--icon-s); }
@@ -84,3 +95,5 @@
 
 .border-radius-small { border-radius: var(--border-radius-small); }
 .border-radius-round { border-radius: var(--border-radius-round); }
+
+.transition-smooth { transition: var(--transition); }

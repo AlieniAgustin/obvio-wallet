@@ -27,6 +27,28 @@ main {
     font-size: 2rem;
 }
 
+.current-user-info {
+    background-color: #FFFFFF08;
+    position: relative;
+    bottom: 0;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    padding: 1rem 2rem;
+}
+
+.current-user-pfp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.current-user-name {
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+}
+
 .menu {
     display: flex;
     font-size: 1.3rem;

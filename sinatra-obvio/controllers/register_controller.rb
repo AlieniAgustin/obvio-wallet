@@ -1,18 +1,33 @@
 require 'sinatra/base'
 require_relative '../models/user'
 
-
-
 class RegisterController < Sinatra::Base
+  # Configuracion de las sesiones
+  enable :sessions
+  set :session_secret, 'clave-top-secret'
+
   set :views, File.expand_path('../../views', __FILE__)
 
+  helpers do
+		def current_user
+			@current_user ||= User.find(session[:user_id]) if session[:user_id]
+		end
+
+		def logged_in?
+			!!current_user
+		end
+  end
+
   get '/register' do
-    erb :'main/register', layout: :'main/layout'
+    if logged_in?
+      redirect '/dashboard'
+    else
+      erb :'main/register', layout: :'main/layout'
+    end
   end
 
 
   post '/register' do
-
     if params[:password] != params[:confirmP]
       @error_messages = "Las contraseñas no coinciden"
       return erb :'main/register', layout: :'main/layout'
@@ -28,13 +43,20 @@ class RegisterController < Sinatra::Base
     )
 
     if @user.save
-      redirect to('/login')
+      session[:user_id] = @user.id
+      redirect to('/dashboard')
     else
-       puts @user.errors.full_messages
+      puts @user.errors.full_messages
+      if @user.errors[:dni].any?
+        @error_messages = @user.errors[:dni].join(', ')
+      elsif @user.errors[:email].any?
+        @error_messages = @user.errors[:email].join(', ')
+      else
         @error_messages = "Error al registrar usuario"
+      end
         erb :'main/register', layout: :'main/layout'
     end
-
   end
+
 end
 

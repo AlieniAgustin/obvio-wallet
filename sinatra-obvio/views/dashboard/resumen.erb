@@ -1,3 +1,69 @@
 <div class="dashboard-container">
+  <h1 class="section-header w-full"> Resumen </h1>
+  <div class="w-full h-full flex flex-col items-center gray2BG spacing-m border-radius-small" style="overflow-y: auto">
 
+    <!-- Navegacion de meses -->
+    <div class="w-full flex justify-center items-center gap-m text-xl">
+      <a href="/dashboard/resumen/<%= @prev_year %>/<%= @prev_month %>" class="text-primary">&larr;</a>
+      <span class="font-bold text-primary">
+        <% mes_nombre = Date::MONTHNAMES[@month] || "Mes invalido" %>
+        <%= mes_nombre %> <%= @year || '' %>
+      </span>
+      <% if @next_year && @next_month %>
+        <a href="/dashboard/resumen/<%= @next_year %>/<%= @next_month %>" class="text-primary">&rarr;</a>
+      <% end %>
+    </div>
+
+    <!-- Resumen de movimientos -->
+    <div class="w-full flex flex-col items-center gap-m text-center text-l text-primary spacing-m">
+      <p> Tu cuenta tuvo <%= @transactions.count %>
+        <% if @transactions.count == 1 %>
+          movimiento
+        <% else %>
+          movimientos
+        <% end %>
+      </p>
+      <p>Recibiste: <span class="font-bold">$<%= @income_total %></span class="font-bold"></p>
+      <p>Gastaste: <span class="font-bold">$<%= @expense_total %></span class="font-bold"></p>
+    </div>
+
+    <!-- Lista de movimientos -->
+    <div class="list list--scrollable" id="resumen__lista-movimientos">>
+      <!-- Generacion dinamica de movimientos -->
+			<% if @transactions.empty? %>
+				<div class="empty-state flex justify-center items-center text-gray-lighter text-center text-l">
+					<p>Aún no tenés movimientos.</p>
+				</div>
+			<% else %>
+				<% @transactions.each do |transaction| %>
+					<% is_income = transaction.target_account_id == current_account.id %>
+					<% other_account = is_income ? transaction.source_account : transaction.target_account %>
+
+					<a href="/dashboard/receipt/<%= transaction.transaction_number %>" class="movimiento list-item">
+						<div class="persona">
+							<div class="persona__avatar">
+								<img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s">
+							</div>
+							<div class="persona__datosPersona">
+								<p class="name"><%= other_account.user.first_name %> <%= other_account.user.last_name %></p>
+								<p class="email"><%= other_account.user.email %></p>
+							</div>
+						</div>
+						<div class="movimiento__detalles">
+							<p class="text-m">
+								<% if is_income %> 
+									<span class="text-green font-bold">+ $<%= amount_format(transaction.amount) %> </span>
+								<% else %>
+									<span class="text-red font-bold">- $<%= amount_format(transaction.amount) %> </span>
+								<% end %>
+							</p>
+						<span class="text-s text-secondary">
+							<%= format_date(transaction.date) %> - <%= format_time(transaction.time) %>
+						</span>
+						</div>
+					</a>
+				<% end %>
+			<% end %>
+    </div>
+  </div>
 </div>
