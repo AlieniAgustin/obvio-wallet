@@ -314,6 +314,7 @@ class DashboardController < Sinatra::Base
 
   # Solo accesible con una cuenta de destino como parametro
   get '/dashboard/pago/:target_account_id' do
+    @vaquitas = current_account.created_vaquitas.where(status: 'active')
     
     # Buscamos la cuenta destino por el id pasado como parametro
     @target_account = Account.find_by(id: params[:target_account_id])
