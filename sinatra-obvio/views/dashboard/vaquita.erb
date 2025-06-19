@@ -90,8 +90,9 @@
         <!-- Botón para eliminar (solo si el creador es el current_account) -->
         <% if @vaquita.creator_account_id == current_account.id %>
             <div class="w-full flex justify-center">
-                <form action="/dashboard/vaquita/<%=@vaquita.idVaquita%>/eliminar" method="POST" onsubmit="return confirm('¿Estás seguro de que querés eliminar esta vaquita?');">
-                <button type="submit" class="text-primary text-m noOutline spacing-m border-radius-small" style="cursor: pointer; background-color: var(--warning-red);">🗑 Eliminar vaquita</button>
+                <form action="/dashboard/vaquitas/eliminar" method="POST" onsubmit="return confirm('¿Estás seguro de que querés eliminar esta vaquita?');">
+                    <input type="hidden" name="idVaquita" value="<%= @vaquita.idVaquita %>">
+                    <button type="submit" class="text-primary text-m noOutline spacing-m border-radius-small" style="cursor: pointer; background-color: var(--warning-red);">🗑 Eliminar vaquita</button>
                 </form>
             </div>
         <% end %>

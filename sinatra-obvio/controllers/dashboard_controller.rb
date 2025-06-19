@@ -219,6 +219,12 @@ class DashboardController < Sinatra::Base
       session[:error] = "Vaquita no encontrada"
       redirect '/dashboard/vaquitas'
     end
+
+    if @vaquita.status != 'active'
+      session[:error] = "Esa vaquita no está activa"
+      redirect '/dashboard/vaquitas'
+    end
+    
     erb :'dashboard/vaquita', layout: :'dashboard/layout'
   end 
 
@@ -283,9 +289,45 @@ class DashboardController < Sinatra::Base
     redirect "/dashboard/vaquitas/#{vaquita_id}"
   end
 
-  # post '/dashboard/vaquitas/:id/eliminar'
+  post '/dashboard/vaquitas/eliminar' do
+    vaquita_id = params[:idVaquita]
+    vaquita = Vaquita.find_by(idVaquita: vaquita_id)
 
-  # end
+    if vaquita.nil?
+      session[:error] = "Vaquita a eliminar no encontrada"
+      redirect '/dashboard/vaquitas'
+    end 
+
+    if vaquita.creator_account_id != current_account.id
+      session[:error] = "Solo el creador de la vaquita puede eliminarla"
+      redirect "/dashboard/vaquitas/#{vaquita_id}"
+    end
+
+    if vaquita.status != 'active'
+      session[:error] = "Solo se puede eliminar una vaquita activa"
+      redirect "/dashboard/vaquitas"
+    end
+
+    begin
+      ActiveRecord::Base.transaction do 
+        # Devolver contribuciones a todos
+        vaquita.contributions.each do |contrib|
+          account = contrib.account
+          account.balance += contrib.amount
+          account.save!
+        end
+
+        vaquita.update!(status: 'withdrawn')
+
+        session[:success] = "Vaquita eliminada exitosamente. Se devolvieron los fondos a los aportantes."
+      end
+    rescue => e
+      puts "Error al eliminar vaquita: #{e.message}"
+      session[:error] = "Ocurrió un error al eliminar la vaquita"
+    end
+
+    redirect "/dashboard/vaquitas"
+  end
 
 
   post '/dashboard/vaquitas/aportar' do
