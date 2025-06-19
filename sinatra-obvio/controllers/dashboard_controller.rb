@@ -299,6 +299,67 @@ class DashboardController < Sinatra::Base
     redirect "/dashboard/vaquitas/#{vaquita_id}"
   end
 
+  post '/dashboard/vaquitas/retirarAporte' do
+    vaquita_id = params[:idVaquita].to_i
+    monto_retiro_str = params[:montoRetiro]&.gsub(',', '.')
+    monto_retiro_cents = (monto_retiro_str.to_f * 100).round
+
+    # Validar monto mayor a cero
+    if monto_retiro_cents <= 0
+      session[:error] = "El monto a retirar debe ser mayor a cero."
+      redirect "/dashboard/vaquitas/#{vaquita_id}"
+    end
+
+    # Buscar la vaquita por ID 
+    vaquita = Vaquita.find_by(idVaquita: vaquita_id)
+    if vaquita.nil?
+      session[:error] = "Vaquita no encontrada."
+      redirect "/dashboard/vaquitas"
+    end
+
+    # Validar que la vaquita este activa 
+    if vaquita.status != 'active'
+      session[:error] = "No se puede retirar de una vaquita inactiva."
+      redirect "/dashboard/vaquitas/#{vaquita_id}"
+    end
+
+    # Buscar la contribución del usuario en esa vaquita
+    contribution = Contribution.find_by(account_id: current_account.id, vaquita_id: vaquita_id)
+    if contribution.nil?
+      session[:error] = "No tenés aportes en esta vaquita."
+      redirect "/dashboard/vaquitas/#{vaquita_id}"
+    end
+
+    # Validar que el monto a retirar no sea mayor a lo aportado
+    if monto_retiro_cents > contribution.amount
+      session[:error] = "No podés retirar más de lo que aportaste."
+      redirect "/dashboard/vaquitas/#{vaquita_id}"
+    end
+
+    begin
+      ActiveRecord::Base.transaction do
+        # Acreditar saldo al usuario
+        current_account.update!(balance: current_account.balance + monto_retiro_cents)
+
+        if monto_retiro_cents == contribution.amount
+          # Si retira todo, eliminar la contribución
+          contribution.destroy!
+        else
+          # Si retira una parte, restar del amount
+          contribution.update!(amount: contribution.amount - monto_retiro_cents)
+        end
+
+        session[:success] = "Retiro exitoso de $#{amount_format(monto_retiro_cents)}."
+      end
+    rescue => e
+      puts "Error al retirar aporte: #{e.message}"
+      session[:error] = "Ocurrió un error al procesar el retiro."
+    end
+
+    # Redirigir nuevamente a la pagina de la vaquita
+    redirect "/dashboard/vaquitas/#{vaquita_id}"
+  end
+
 
   get '/dashboard/opciones' do
     erb :'dashboard/opciones', layout: :'dashboard/layout'
