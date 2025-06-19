@@ -102,7 +102,7 @@
         <!-- Pago con vaquitas -->
         <form action="/dashboard/pago/conVaquita" method="post" id="form-pago-vaquita" style="display: none;">
             <p class="text-primary" id="vaquita-info-label" style="margin-bottom: 1rem;"></p>
-            <input type="hidden" name="vaquita_id" id="selected-vaquita-id"> <!-- Campo oculto para el ID de la vaquita seleccionada -->
+            <input type="hidden" name="idVaquita" id="selected-vaquita-id"> <!-- Campo oculto para el ID de la vaquita seleccionada -->
             <input type="hidden" name="target_account_id" value="<%= @target_account.id %>"> <!-- Campo oculto para el ID de la cuenta destino -->
             <div class="form-field">
                 <div class="form-field__amount">

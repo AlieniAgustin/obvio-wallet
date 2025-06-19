@@ -475,6 +475,99 @@ class DashboardController < Sinatra::Base
     end
   end
 
+  post '/dashboard/pago/conVaquita' do
+    amount_str = params[:amount] # Obtiene de los parametros del form la cantidad (dada como un string en pesos)
+    amount_str = amount_str.gsub(',', '.') # Convertimos comas a puntos (algunos navegadores te dejan poner , para indicar puntos decimales, pero rompe todo en ruby)
+    amount_cents = (amount_str.to_f * 100).round # Convertimos a float y multiplicamos por 100 para trabajar con centavos. Redondeamos para evitar problemas de los float
+
+    
+    target_account = Account.find_by(id: params[:target_account_id])
+    if target_account.nil?
+      session[:error] = "Cuenta destino no encontrada"
+      return redirect "/dashboard/contactos"
+    end
+    
+    if target_account.id == current_account.id
+      session[:error] = "No te podes transferir a vos mismo"
+      return redirect "/dashboard/contactos"
+    end 
+    
+    if amount_cents <= 0
+      session[:error] = "Monto invalido"
+      return redirect "/dashboard/pago/#{params[:target_account_id]}"
+    end
+    
+    vaquita_id = params[:idVaquita]
+    vaquita = Vaquita.find_by(idVaquita: vaquita_id)
+
+    if vaquita.nil?
+      session[:error] = "Vaquita no encontrada"
+      return redirect "/dashboard/pago/#{params[:target_account_id]}"
+    end 
+
+    if vaquita.creator_account_id != current_account.id 
+      session[:error] = "Solo el creador de la vaquita puede usarla para pagar"
+      return redirect "/dashboard/pago/#{params[:target_account_id]}"
+    end
+
+    if amount_cents > vaquita.current_amount
+      session[:error] = "Fondos insuficientes"
+      return redirect "/dashboard/pago/#{params[:target_account_id]}"
+    end
+
+    # Si llegamos acá está todo bien. Pagamos con la vaquita
+    begin 
+      ActiveRecord::Base.transaction do
+        new_transaction_number = (Transaction.maximum(:transaction_number) || 0) + 1
+
+        # Hago una transaccion por cada aportante excepto el creador
+        vaquita.contributions.each do |contrib|
+          if contrib.account_id == vaquita.creator_account_id
+            vaquita.creator.balance += contrib.amount
+            vaquita.creator.save!
+          else  
+            contributor = contrib.account
+            Transaction.create!(
+              transaction_number: new_transaction_number,
+              date: Date.today,
+              time: Time.now,
+              amount: contrib.amount,
+              description: "Aporte de #{contributor.user.first_name} #{contributor.user.last_name} a vaquita '#{vaquita.name}'",
+              reason: "-",
+              source_account_id: contributor.id,
+              target_account_id: current_account.id
+            )
+            new_transaction_number += 1
+
+            # Ya le habíamos restado el aporte al usuario al momento de aportar
+            # Dado que la transaccion le vuelve a restar el balance automáticamente al momento del pago con la vaquita,
+            # le devolvemos el aporte para evitar que le cobren dos veces
+            contributor.balance += contrib.amount 
+            contributor.save!
+          end
+        end
+
+        transaction = Transaction.create!(
+          transaction_number: new_transaction_number,
+          date: Date.today,
+          time: Time.now,
+          amount: amount_cents,
+          description: "Pago a #{target_account.user.first_name} #{target_account.user.last_name} usando vaquita '#{vaquita.name}'",
+          reason: "-",
+          source_account_id: current_account.id,
+          target_account_id: target_account.id
+        )
+
+        vaquita.update!(status: 'completed') # La marcamos como usada
+        redirect "/dashboard/receipt/#{transaction.transaction_number}"
+      end
+    rescue => e
+      puts "Error al pagar con la vaquita: #{e.message}"
+      session[:error] = "Ocurrió un error al pagar con la vaquita"
+      redirect "/dashboard/pago/#{params[:target_account_id]}"
+    end
+  end
+
   get '/dashboard/receipt/:transaction_number' do 
     @transaction = Transaction.find_by(transaction_number: params[:transaction_number])
     
