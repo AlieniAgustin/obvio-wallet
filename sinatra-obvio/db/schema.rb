@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_18_232321) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_19_003930) do
   create_table "accounts", force: :cascade do |t|
     t.integer "balance"
     t.string "cvu"
@@ -36,6 +36,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_18_232321) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_contact_lists_on_account_id"
+  end
+
+  create_table "contributions", force: :cascade do |t|
+    t.integer "account_id"
+    t.integer "vaquita_id"
+    t.integer "idContribution"
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_contributions_on_account_id"
+    t.index ["vaquita_id"], name: "index_contributions_on_vaquita_id"
   end
 
   create_table "monthly_summaries", force: :cascade do |t|
@@ -98,6 +109,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_18_232321) do
   add_foreign_key "contact_list_accounts", "accounts"
   add_foreign_key "contact_list_accounts", "contact_lists"
   add_foreign_key "contact_lists", "accounts"
+  add_foreign_key "contributions", "accounts"
+  add_foreign_key "contributions", "vaquita", column: "vaquita_id"
   add_foreign_key "monthly_summaries", "accounts"
   add_foreign_key "receipts", "transfers"
   add_foreign_key "transactions", "accounts", column: "source_account_id"
