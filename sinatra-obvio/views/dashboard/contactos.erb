@@ -40,34 +40,37 @@
     <% contacts = current_account.contact_list.accounts.sort_by { |c| [c.user.first_name.downcase, c.user.last_name.downcase] } %>
 
     <% contacts.each do |contact| %>
-        <a href="#" class="list-item border-bottom-white persona" onclick="showMetodoPagoModal(<%= contact.id %>)">
-          <div class="persona__avatar">
-            <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
-          </div>
-          <div class="persona__datosPersona">
-            <div class="name"><%= "#{contact.user.first_name} #{contact.user.last_name}" %></div>
-            <div class="email">Email: <%= contact.user.email %></div>
-            <div class="email">Alias: <%= contact.alias %></div>
-            <div class="email">CVU: <%= contact.cvu %></div>
-          </div>  
-        </a>
+      <div class="list-item border-bottom-white persona" onclick="showMetodoPagoModal()">
+        <div class="persona__avatar">
+          <img src="/assets/defaultAvatar.svg" alt="Avatar" class="avatar avatar--s" />
+        </div>
+        <div class="persona__datosPersona">
+          <div class="name"><%= "#{contact.user.first_name} #{contact.user.last_name}" %></div>
+          <div class="email">Email: <%= contact.user.email %></div>
+          <div class="email">Alias: <%= contact.alias %></div>
+          <div class="email">CVU: <%= contact.cvu %></div>
+        </div>  
+      </div>
+
+      <div id="metodoPagoModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:#181A20; padding:2rem; border-radius:8px; min-width:300px; text-align:center;">
+          <p class="text-primary">¿Con qué método quieres pagar?</p>
+          <form id="metodoPagoForm" method="get" action="/dashboard/pago/<%= contact.id %>">
+            <div class="flex">
+              <button type="submit" name="metodo_pago" value="cuenta" class="btn btn--orangeBG" style="margin: 0.5rem;">Dinero de la cuenta</button>
+              <button type="submit" name="metodo_pago" value="vaquita" class="btn btn--grayBG" style="margin: 0.5rem;">Plata vaquita</button>
+            </div>
+            <div class="flex justify-center" style="margin-top: 1rem;">
+              <button type="button" onclick="hideMetodoPagoModal()" class="btn btn--grayBG" style="margin: 0.5rem;">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+        
     <% end %>
   </div>
 
-  <div id="metodoPagoModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:1000; justify-content:center; align-items:center;">
-    <div style="background:#181A20; padding:2rem; border-radius:8px; min-width:300px; text-align:center;">
-      <p class="text-primary">¿Con qué método quieres pagar?</p>
-      <form id="metodoPagoForm" method="get">
-        <div class="flex">
-          <button type="submit" name="metodo_pago" value="cuenta" class="btn btn--orangeBG" style="margin: 0.5rem;">Dinero de la cuenta</button>
-          <button type="submit" name="metodo_pago" value="vaquita" class="btn btn--grayBG" style="margin: 0.5rem;">Plata vaquita</button>
-        </div>
-        <div class="flex justify-center" style="margin-top: 1rem;">
-          <button type="button" onclick="hideMetodoPagoModal()" class="btn btn--grayBG" style="margin: 0.5rem;">Cancelar</button>
-        </div>
-      </form>
-    </div>
-  </div>
+
   
   <div class="w-full flex justify-center items-center text-center">
     <% if session[:error] %>
@@ -96,10 +99,8 @@ function hideAddContactForm() {
 }
 
 
-function showMetodoPagoModal(contactId) {
+function showMetodoPagoModal() {
   document.getElementById('metodoPagoModal').style.display = 'flex';
-  document.getElementById('modalContactId').value = contactId;
-  document.getElementById('metodoPagoForm').action = "/pago/" + contactId;
 }
 function hideMetodoPagoModal() {
   document.getElementById('metodoPagoModal').style.display = 'none';
