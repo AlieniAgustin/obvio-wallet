@@ -27,6 +27,12 @@ class Account < ActiveRecord::Base
         transactions.order(date: :desc, time: :desc).limit(limit)
     end
 
+    def vaquitaContributionsSum
+        Contribution.joins(:vaquita)
+                    .where(account_id: id, vaquitas: { status: 'active' })
+                    .sum(:amount)    
+    end
+
     private # Seccion privata en la clase Accoun
 
     def create_contact_list

@@ -1,4 +1,4 @@
-<div class="dashboard-container">
+<div class="dashboard-container" style="overflow-y: auto;">
 
   <h1 class="section-header w-full">Contactos</h1>
 
@@ -36,7 +36,7 @@
     </form>
   </div>
 
- <div class="list list--scrollable">
+ <div class="list">
     <% contacts = current_account.contact_list.accounts.sort_by { |c| [c.user.first_name.downcase, c.user.last_name.downcase] } %>
 
     <% contacts.each do |contact| %>
