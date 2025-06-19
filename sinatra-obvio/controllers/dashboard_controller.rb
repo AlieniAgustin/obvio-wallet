@@ -312,7 +312,7 @@ end
 
   # Solo accesible con una cuenta de destino como parametro
   get '/dashboard/pago/:target_account_id' do
-    
+    metodo = params[:metodo_pago]
     # Buscamos la cuenta destino por el id pasado como parametro
     @target_account = Account.find_by(id: params[:target_account_id])
 
@@ -328,8 +328,13 @@ end
     end
 
     # Si llegamos aca, todo esta bien. Mostramos el formulario de pago
-    erb :'dashboard/pago', layout: :'dashboard/layout'
-  end
+    if metodo == "cuenta"
+      erb :'dashboard/pago', layout: :'dashboard/layout'
+    else  
+      erb :'dashboard/pagoConVaquita', layout: :'dashboard/layout'
+  
+    end
+  end 
 
   post '/dashboard/pago' do 
     amount_str = params[:amount] # Obtiene de los parametros del form la cantidad (dada como un string en pesos)
@@ -451,7 +456,6 @@ get '/dashboard/resumen/:year/:month' do
                                 .sum(&:amount))
 
   erb :'dashboard/resumen', layout: :'dashboard/layout'
-end
+  end
 
 end
-
