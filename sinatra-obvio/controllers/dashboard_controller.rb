@@ -230,6 +230,74 @@ class DashboardController < Sinatra::Base
 
   # end
 
+
+post '/dashboard/pago/usandoVaquita' do
+
+  vaquita_id = params[:vaquita_id].to_i # Convertir id a entero
+  amount_str = params[:amount]&.gsub(',', '.') # Comas a puntos
+  amount_cents = (amount_str.to_f * 100).round # Transformar a centavos
+
+  # Validar datos
+  if vaquita_id <= 0 || amount_cents <= 0 
+    session[:error] = "Datos inválidos"
+    redirect '/dashboard/vaquitas'
+  end
+
+  # Buscar vaquita por id
+  vaquita = Vaquita.find_by(idVaquita: vaquita_id)
+  if vaquita.nil?
+    session[:error] = "Vaquita no encontrada"
+    redirect '/dashboard/vaquitas'
+  end
+
+  # Verificar que el usuario tenga saldo suficiente
+  if current_account.balance < amount_cents
+    session[:error] = "Fondos insuficientes"
+    redirect "/dashboard/vaquitas/#{vaquita_id}"
+  end
+
+  begin
+    ActiveRecord::Base.transaction do
+      # Descontar al usuario
+      current_account.update!(balance: current_account.balance - amount_cents)
+
+      # Sumar a la vaquita
+      vaquita.update!(current_amount: vaquita.current_amount + amount_cents)
+
+      # Registrar la contribución
+      Contribution.create!(
+        vaquita: vaquita,
+        account: current_account,
+        amount: amount_cents
+      )
+
+      # Crea una transacción interna para registro.
+      # La plata no se transfiere a otra cuenta, pero queda registrado 
+      # que el usuario hizo el aporte, asi se puede usar para
+      # mostrarlo en movimientos o resumen mensual
+      new_transaction_number = (Transaction.maximum(:transaction_number) || 0) + 1
+      Transaction.create!(
+        transaction_number: new_transaction_number,
+        date: Date.today,
+        time: Time.now,
+        amount: amount_cents,
+        description: "Aporte a vaquita #{vaquita.name}",
+        reason: "Vaquita",
+        source_account_id: current_account.id,
+        target_account_id: nil # No va a otra cuenta
+      )
+    end
+
+    session[:success] = "Aporte realizado exitosamente"
+  rescue => e
+    puts "Error aportando a vaquita: #{e.message}"
+    session[:error] = "No se pudo realizar el aporte"
+  end
+
+  redirect "/dashboard/vaquitas/#{vaquita_id}"
+end
+
+
   get '/dashboard/opciones' do
     erb :'dashboard/opciones', layout: :'dashboard/layout'
   end
