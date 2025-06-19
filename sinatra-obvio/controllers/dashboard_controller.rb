@@ -222,81 +222,6 @@ class DashboardController < Sinatra::Base
     erb :'dashboard/vaquita', layout: :'dashboard/layout'
   end 
 
-  # post '/dashboard/vaquitas/:id/aportar'
-
-  # end
-
-  # post '/dashboard/vaquitas/:id/eliminar'
-
-  # end
-
-
-post '/dashboard/pago/usandoVaquita' do
-
-  vaquita_id = params[:vaquita_id].to_i # Convertir id a entero
-  amount_str = params[:amount]&.gsub(',', '.') # Comas a puntos
-  amount_cents = (amount_str.to_f * 100).round # Transformar a centavos
-
-  # Validar datos
-  if vaquita_id <= 0 || amount_cents <= 0 
-    session[:error] = "Datos inválidos"
-    redirect '/dashboard/vaquitas'
-  end
-
-  # Buscar vaquita por id
-  vaquita = Vaquita.find_by(idVaquita: vaquita_id)
-  if vaquita.nil?
-    session[:error] = "Vaquita no encontrada"
-    redirect '/dashboard/vaquitas'
-  end
-
-  # Verificar que el usuario tenga saldo suficiente
-  if current_account.balance < amount_cents
-    session[:error] = "Fondos insuficientes"
-    redirect "/dashboard/vaquitas/#{vaquita_id}"
-  end
-
-  begin
-    ActiveRecord::Base.transaction do
-      # Descontar al usuario
-      current_account.update!(balance: current_account.balance - amount_cents)
-
-      # Sumar a la vaquita
-      vaquita.update!(current_amount: vaquita.current_amount + amount_cents)
-
-      # Registrar la contribución
-      Contribution.create!(
-        vaquita: vaquita,
-        account: current_account,
-        amount: amount_cents
-      )
-
-      # Crea una transacción interna para registro.
-      # La plata no se transfiere a otra cuenta, pero queda registrado 
-      # que el usuario hizo el aporte, asi se puede usar para
-      # mostrarlo en movimientos o resumen mensual
-      new_transaction_number = (Transaction.maximum(:transaction_number) || 0) + 1
-      Transaction.create!(
-        transaction_number: new_transaction_number,
-        date: Date.today,
-        time: Time.now,
-        amount: amount_cents,
-        description: "Aporte a vaquita #{vaquita.name}",
-        reason: "Vaquita",
-        source_account_id: current_account.id,
-        target_account_id: nil # No va a otra cuenta
-      )
-    end
-
-    session[:success] = "Aporte realizado exitosamente"
-  rescue => e
-    puts "Error aportando a vaquita: #{e.message}"
-    session[:error] = "No se pudo realizar el aporte"
-  end
-
-  redirect "/dashboard/vaquitas/#{vaquita_id}"
-end
-
   post '/dashboard/vaquitas/retirarAporte' do
     vaquita_id = params[:idVaquita].to_i
     monto_retiro_str = params[:montoRetiro]&.gsub(',', '.')
@@ -356,7 +281,76 @@ end
 
     # Redirigir nuevamente a la pagina de la vaquita
     redirect "/dashboard/vaquitas/#{vaquita_id}"
-   end
+  end
+
+  # post '/dashboard/vaquitas/:id/eliminar'
+
+  # end
+
+
+  post '/dashboard/vaquitas/aportar' do
+
+    vaquita_id = params[:idVaquita].to_i # Convertir id a entero
+    amount_str = params[:monto]&.gsub(',', '.') # Comas a puntos
+    amount_cents = (amount_str.to_f * 100).round # Transformar a centavos
+
+    # Validar datos
+    if vaquita_id <= 0 || amount_cents <= 0 
+      session[:error] = "Datos inválidos"
+      redirect '/dashboard/vaquitas'
+    end
+
+    # Buscar vaquita por id
+    vaquita = Vaquita.find_by(idVaquita: vaquita_id)
+    if vaquita.nil?
+      session[:error] = "Vaquita no encontrada"
+      redirect '/dashboard/vaquitas'
+    end
+
+    if vaquita.status != 'active'
+      session[:error] = "La vaquita no está activa"
+      redirect '/dashboard/vaquitas'
+    end
+
+    # Verificar que el usuario tenga saldo suficiente
+    if current_account.balance < amount_cents
+      session[:error] = "Fondos insuficientes"
+      redirect "/dashboard/vaquitas/#{vaquita_id}"
+    end
+
+    if vaquita.current_amount + amount_cents > vaquita.goal 
+      session[:error] = "No podes hacer un aporte que exceda el monto objetivo de la vaquita"
+      redirect "/dashboard/vaquitas/#{vaquita_id}"
+    end
+
+    begin
+      ActiveRecord::Base.transaction do
+        # Descontar al usuario
+        current_account.update!(balance: current_account.balance - amount_cents)
+        
+        existing_contribution = Contribution.find_by(account_id: current_account.id, vaquita_id: vaquita_id)
+
+        if existing_contribution
+          existing_contribution.update!(amount: existing_contribution.amount + amount_cents)
+        else
+          new_contribution_id = (Contribution.maximum(:idContribution) || 0) + 1
+          Contribution.create!(
+            account_id: current_account.id,
+            vaquita_id: vaquita_id,
+            idContribution: new_contribution_id,
+            amount: amount_cents
+          )
+        end
+
+        session[:success] = "Aporte realizado exitosamente"
+      end
+    rescue => e
+      puts "Error aportando a vaquita: #{e.message}"
+      session[:error] = "No se pudo realizar el aporte"
+    end
+
+    redirect "/dashboard/vaquitas/#{vaquita_id}"
+  end
 
   get '/dashboard/opciones' do
     erb :'dashboard/opciones', layout: :'dashboard/layout'
@@ -373,7 +367,6 @@ end
   # Solo accesible con una cuenta de destino como parametro
   get '/dashboard/pago/:target_account_id' do
     @vaquitas = current_account.created_vaquitas.where(status: 'active')
-    metodo = params[:metodo_pago]
     # Buscamos la cuenta destino por el id pasado como parametro
     @target_account = Account.find_by(id: params[:target_account_id])
 
@@ -389,12 +382,7 @@ end
     end
 
     # Si llegamos aca, todo esta bien. Mostramos el formulario de pago
-    if metodo == "cuenta"
-      erb :'dashboard/pago', layout: :'dashboard/layout'
-    else  
-      erb :'dashboard/pagoConVaquita', layout: :'dashboard/layout'
-  
-    end
+    erb :'dashboard/pago', layout: :'dashboard/layout'
   end 
 
   post '/dashboard/pago' do 
