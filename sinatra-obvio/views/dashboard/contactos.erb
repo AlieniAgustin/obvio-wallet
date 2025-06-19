@@ -1,4 +1,4 @@
-<div class="dashboard-container">
+<div class="dashboard-container" style="overflow-y: auto;">
 
   <h1 class="section-header w-full">Contactos</h1>
 
@@ -36,7 +36,7 @@
     </form>
   </div>
 
- <div class="list list--scrollable">
+ <div class="list">
     <% contacts = current_account.contact_list.accounts.sort_by { |c| [c.user.first_name.downcase, c.user.last_name.downcase] } %>
 
     <% contacts.each do |contact| %>
@@ -69,14 +69,14 @@
 </div>
 
 <script>
-function showAddContactForm() {
-  document.getElementById('add-contact-button').style.display = 'none';
-  document.getElementById('add-contact-form').style.display = 'block';
-  document.getElementById('contact_identifier').focus();
-}
+  function showAddContactForm() {
+    document.getElementById('add-contact-button').style.display = 'none';
+    document.getElementById('add-contact-form').style.display = 'block';
+    document.getElementById('contact_identifier').focus();
+  }
 
-function hideAddContactForm() {
-  document.getElementById('add-contact-form').style.display = 'none';
-  document.getElementById('add-contact-button').style.display = 'block';
-}
+  function hideAddContactForm() {
+    document.getElementById('add-contact-form').style.display = 'none';
+    document.getElementById('add-contact-button').style.display = 'block';
+  }
 </script>

@@ -12,26 +12,15 @@
 
         <!-- Información de la Cuenta (Read-only)  -->
         <form action="/dashboard/update_account_data" method="post" class="text-primary flex flex-col gap-m">
-            <!-- Username Field -->
-            <div class="form-field">
-                <label>Nombre de usuario</label>
-                <div class="w-full">
-                    <input type="text" name="username" value="<%= current_account&.id %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
-                </div> 
-            </div>
-
             <!-- Alias  -->
             <div class="form-field">
                 <label>Alias</label>
                 <div class= "w-full grid" style="grid-template-columns: 1fr auto">
                     <input type="text" name="alias" value="<%= current_account&.alias %>" class="w-full lightGrayBG border-radius-small text-m text-primary spacing-s noOutline" readonly>
-                    <div class= "btn" onclick="toggleEdit(this)">
-                        <img src="/assets/icons/edit.svg" alt="edit icon">
-                    </div>
                 </div>
             </div>
 
-            <!-- CVU  (Read-only) -->
+            <!-- CVU -->
             <div class="form-field">
                 <label>CVU</label>
                 <div>
@@ -39,12 +28,6 @@
                 </div>
             </div>
 
-            <!-- Botón de Guardado (hidden by default) -->
-            <div class="save-section" style="display: none; margin-top: var(--spacing-m);">
-                <button type="submit" class="btn btn--orangeBG w-full noOutline font-bold" style="cursor: pointer;">
-                    Guardar cambios
-                </button>
-            </div>
         </form>
     </div>
 </div>
