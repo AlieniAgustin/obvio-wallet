@@ -73,6 +73,7 @@ class DashboardController < Sinatra::Base
   end
 
   get '/dashboard/movimientos' do
+    @transactions = current_account.transactions
     erb :'dashboard/movimientos', layout: :'dashboard/layout'
   end 
 
