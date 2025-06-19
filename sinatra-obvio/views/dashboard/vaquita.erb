@@ -7,7 +7,7 @@
             <div class="w-full lightGrayBG border-radius-round" style="height: 20px; overflow: hidden;">
                 <div id="vaquita-progress-fill" class="h-full orangeBG" style="width: <%= @vaquita.percentage_complete %>%; transition: width 0.5s ease-in-out;"></div>
             </div>
-            <p class="text-center text-l text-primary" id="vaquita-progress-text">$0 / $0</p>
+            <p class="text-center text-l text-primary" id="vaquita-progress-text"> <%= amount_format(@vaquita.current_amount) %> / <%= amount_format(@vaquita.goal) %> </p>
         </div>
 
         <div class="w-full flex flex-col gap-m text-m detalles" style="padding: 0 20%;">
@@ -44,14 +44,36 @@
             </div>
         </div>
         
-        <!-- Formulario para aportar -->
-        <div class="w-full flex justify-center spacing-l">
-            <form action="/dashboard/vaquita/<%= @vaquita.idVaquita %>/aportar" method="POST" class="flex flex-col gap-s w-full lightGrayBG border-radius-small spacing-m">
-                <label for="monto" class="text-primary font-bold">Aportar a esta vaquita:</label>
-                <input type="number" name="monto" id="monto" class="input w-full" placeholder="Ej: 500" required>
-                <button type="submit" class="btn btn--orangeBG noOutline">Aportar</button>
-            </form>
+        <!-- Formularios -->
+        <div class="w-full flex justify-between items-center">
+            <!-- Aportar --> 
+            <div class="w-full flex flex-col justify-center spacing-m">
+                <form action="/dashboard/vaquitas/aportar" method="POST" class="flex flex-col gap-s w-full lightGrayBG border-radius-small spacing-m">
+                    <input type="hidden" name="idVaquita" value="<%= @vaquita.idVaquita %>">
+                    <label for="monto" class="text-primary font-bold">Aportar a esta vaquita:</label>
+                    <input type="number" name="monto" id="monto" min=0.01 step=0.01 class="input w-full" placeholder="Ej: 500" required>
+                    <button type="submit" class="btn btn--orangeBG noOutline">Aportar</button>
+                </form>
+                <p class="text-secondary spacing-s text-center"> 
+                    Saldo disponible: $<%= amount_format(current_account.balance) %> 
+                </p>
+            </div>
+            
+            <!-- Retirar aporte -->
+            <div class="w-full flex flex-col justify-center spacing-m">
+                <form action="/dashboard/vaquitas/retirarAporte" method="POST" class="flex flex-col gap-s w-full lightGrayBG border-radius-small spacing-m">
+                    <input type="hidden" name="idVaquita" value="<%= @vaquita.idVaquita %>">
+                    <label for="montoRetiro" class="text-primary font-bold">Retirar aporte:</label>
+                    <input type="number" name="montoRetiro" id="montoRetiro" step=0.01 class="input w-full" placeholder="Ej: 200" required>
+                    <button type="submit" class="btn btn--orangeBG noOutline">Retirar</button>
+                </form>
+                <p class="text-secondary spacing-s text-center"> 
+                    <% contributions = @vaquita.contributions.select { |c| c.account_id == current_account.id } %>
+                    Monto aportado: $<%= amount_format(contributions.sum(&:amount)) %>
+                </p>
+            </div>
         </div>
+
 
         <div class="w-full flex justify-center items-center text-center">
             <% if session[:error] %>
