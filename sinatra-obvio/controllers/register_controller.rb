@@ -47,7 +47,11 @@ class RegisterController < Sinatra::Base
       redirect to('/dashboard')
     else
         puts @user.errors.full_messages
-        @error_messages = "Error al registrar usuario"
+        if @user.errors[:dni].any?
+          @error_messages = @user.errors[:dni].join(', ')
+        else
+          @error_messages = "Error al registrar usuario"
+        end
         erb :'main/register', layout: :'main/layout'
     end
   end

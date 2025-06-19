@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
         
     validates :email, presence: true, uniqueness: true
 	validates :dni, :first_name, :last_name, :address, presence: true #para validar que todos sus campos sean obligatorios
+    validates :dni, length: {is:8, message: "el dni debe tener exactamente 8 caracteres"}
 
     after_create :create_account
 
