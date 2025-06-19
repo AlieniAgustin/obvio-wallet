@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_19_003930) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_19_033547) do
   create_table "accounts", force: :cascade do |t|
     t.integer "balance"
     t.string "cvu"
@@ -45,6 +45,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_19_003930) do
     t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id", "vaquita_id"], name: "index_contributions_on_account_id_and_vaquita_id", unique: true
     t.index ["account_id"], name: "index_contributions_on_account_id"
     t.index ["vaquita_id"], name: "index_contributions_on_vaquita_id"
   end
@@ -100,9 +101,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_19_003930) do
 
   create_table "vaquitas", force: :cascade do |t|
     t.integer "idVaquita"
-    t.integer "balance"
+    t.integer "current_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "creator_account_id"
+    t.string "status", default: "active"
+    t.integer "goal"
+    t.string "name"
+    t.string "description"
+    t.index ["creator_account_id"], name: "index_vaquitas_on_creator_account_id"
+    t.index ["status"], name: "index_vaquitas_on_status"
   end
 
   add_foreign_key "accounts", "users"
@@ -110,9 +118,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_19_003930) do
   add_foreign_key "contact_list_accounts", "contact_lists"
   add_foreign_key "contact_lists", "accounts"
   add_foreign_key "contributions", "accounts"
-  add_foreign_key "contributions", "vaquita", column: "vaquita_id"
+  add_foreign_key "contributions", "vaquitas"
   add_foreign_key "monthly_summaries", "accounts"
   add_foreign_key "receipts", "transfers"
   add_foreign_key "transactions", "accounts", column: "source_account_id"
   add_foreign_key "transactions", "accounts", column: "target_account_id"
+  add_foreign_key "vaquitas", "accounts", column: "creator_account_id"
 end

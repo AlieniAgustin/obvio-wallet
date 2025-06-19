@@ -10,8 +10,8 @@ class Account < ActiveRecord::Base
     # Vaquitas creadas por la cuenta actual
     has_many :created_vaquitas, class_name: 'Vaquita', foreign_key: 'creator_account_id', dependent: :destroy
     # Vaquitas a las que esta cuenta esta contribuyendo
-    has_many :contributed_vaquitas, through: :contributions, source: :vaquita
     has_many :contributions, dependent: :destroy
+    has_many :contributed_vaquitas, through: :contributions, source: :vaquita
     
     validates :cvu, presence: true, uniqueness: true
     validates :alias, presence: true, uniqueness: true

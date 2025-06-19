@@ -1,4 +1,6 @@
 class Vaquita < ActiveRecord::Base
+    self.table_name = 'vaquitas'  # Fuerza el uso de la tabla 'vaquitas'
+    
     belongs_to :creator, class_name: 'Account', foreign_key: 'creator_account_id'
     has_many :contributions, dependent: :destroy
     has_many :contributors, through: :contributions, source: :account
