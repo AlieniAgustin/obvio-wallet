@@ -140,8 +140,95 @@ class DashboardController < Sinatra::Base
   end
 
   get '/dashboard/vaquitas' do 
+    created = current_account.created_vaquitas.where(status: 'active')
+    contributed = current_account.contributed_vaquitas.where(status: 'active')
+    @vaquitas = (created + contributed).uniq
     erb :'dashboard/vaquitas', layout: :'dashboard/layout'
   end 
+
+  post '/dashboard/vaquitas/crear' do 
+    name = params[:name].strip
+    description = params[:description].strip
+    goalString = params[:goal]
+    goalCents = (goalString.to_f * 100).round
+
+    if name.empty? || description.empty?
+      session[:error] = "Datos incompletos"
+      redirect '/dashboard/vaquitas'
+    end 
+
+    if goalCents <= 0
+      session[:error] = "Monto objetivo inválido"
+      redirect '/dashboard/vaquitas'
+    end 
+
+    last_vaquita_id = Vaquita.maximum(:idVaquita) || 0
+    new_vaquita_id = last_vaquita_id + 1
+
+    vaquita = Vaquita.new(
+      idVaquita: new_vaquita_id,
+      current_amount: 0,
+      creator_account_id: current_account.id,
+      status: "active",
+      goal: goalCents,
+      name: name,
+      description: description
+    )
+
+    if vaquita.save
+      session[:success] = "Vaquita creada exitosamente"
+    else 
+      session[:error] = "Error al crear la vaquita"
+    end 
+
+    redirect "/dashboard/vaquitas/:#{new_vaquita_id}"
+  end 
+  
+  
+  post '/dashboard/vaquitas/buscar' do 
+    vaquita_id = params[:vaquita_id].strip
+
+    if vaquita_id.nil? || vaquita_id.empty?
+      session[:error] = "Se necesita el ID de la vaquita"
+      redirect '/dashboard/vaquitas'
+    end
+
+    vaquita = Vaquita.find_by(idVaquita: vaquita_id)
+    
+    if vaquita
+      created = current_account.created_vaquitas.where(status: 'active')
+      contributed = current_account.contributed_vaquitas.where(status: 'active')
+      @vaquitas = (created + contributed).uniq
+      
+      if @vaquitas.any? {|v| v.idVaquita == vaquita_id.to_i}
+        session[:error] = "La vaquita ya está en la lista"
+        redirect '/dashboard/vaquitas'
+      else 
+          redirect "/dashboard/vaquitas/#{vaquita.idVaquita}"
+      end
+    else
+      session[:error] = "No se encontro una vaquita con ese ID"
+      redirect '/dashboard/vaquitas'
+    end
+
+  end
+
+  get '/dashboard/vaquitas/:id' do 
+    @vaquita = Vaquita.find_by(idVaquita: params[:id])
+    if @vaquita.nil?
+      session[:error] = "Vaquita no encontrada"
+      redirect '/dashboard/vaquitas'
+    end
+    erb :'dashboard/vaquita', layout: :'dashboard/layout'
+  end 
+
+  # post '/dashboard/vaquitas/:id/aportar'
+
+  # end
+
+  # post '/dashboard/vaquitas/:id/eliminar'
+
+  # end
 
   get '/dashboard/opciones' do
     erb :'dashboard/opciones', layout: :'dashboard/layout'

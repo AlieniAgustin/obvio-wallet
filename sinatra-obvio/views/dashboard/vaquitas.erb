@@ -2,53 +2,123 @@
 
   <h1 class="section-header w-full">Vaquitas</h1>
 
-  <a href="#" class="h-auto flex align-self-start lightGrayBG border-radius-small justify-center spacing-m gap-m">
-    <div class="btn btn--orangeBG border-radius-small">
-      <div class="flex justify-center items-center spacing-s">
-        <img src="/assets/icons/plusSign.svg" class="icon-s">
+  <!-- Botón principal -->
+  <div id="new-vaquita-button" class="align-self-start">
+    <a href="#" onclick="toggleVaquitaOptions(); return false;" class="h-auto flex lightGrayBG border-radius-small justify-center spacing-m gap-m">
+      <div class="btn btn--orangeBG border-radius-small">
+        <div class="flex justify-center items-center spacing-s">
+          <img src="/assets/icons/plusSign.svg" class="icon-s">
+        </div>
       </div>
-    </div>
-    <div class="flex justify-center items-center text-primary font-semibold text-l">Nueva vaquita</div>
-  </a>
-
-  <div class="empty-state flex justify-center items-cente text-gray-lighter text-center text-l " style="display: none;">
-    <div class="vaquita-empty-icon">🐄</div>
-    <p>Aún no creaste ninguna vaquita</p>
+      <div class="flex justify-center items-center text-primary font-semibold text-l">Nueva vaquita</div>
+    </a>
   </div>
 
-  <div class="list vaquitas-list w-full">
-    <!-- Se llenará con JS -->
+  <!-- Opciones: Crear o Aportar -->
+  <div id="vaquita-options" style="display: none;" class="flex flex-col gap-s spacing-m w-full lightGrayBG border-radius-small">
+    <div onclick="showCreateForm()" class="btn btn--grayBG w-full">➕ Crear vaquita</div>
+    <div onclick="showContributeForm()" class="btn btn--grayBG w-full">💸 Aportar a vaquita</div>
+    <div onclick="hideAllForms()" class="btn btn--grayBG">✖ Cancelar</div>
+  </div>
+
+  <!-- Formulario para crear una vaquita -->
+  <div id="create-vaquita-form" style="display: none;" class="lightGrayBG border-radius-small spacing-m w-full">
+    <form action="/dashboard/vaquitas/crear" method="POST" class="flex flex-col gap-s">
+      <label class="font-bold text-primary">Nombre:</label>
+      <input type="text" name="name" placeholder="Ej: Cumple de Nico" class="input w-full" required>
+
+      <label class="font-bold text-primary">Descripción:</label>
+      <input type="text" name="description" placeholder="Escribí una breve descripción..." class="input w-full" required>
+
+      <label class="font-bold text-primary">Monto a recaudar:</label>
+      <input type="number" name="goal" min=0 placeholder="Ej: 1000" class="input w-full" required>
+
+      <div class="btn-group">
+        <button type="submit" class="btn btn--orangeBG noOutline">Crear vaquita</button>
+        <button type="button" class="btn btn--grayBG noOutline" onclick="hideAllForms()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Formulario para aportar a una vaquita existente (busca una vaquita segun su ID) -->
+  <div id="contribute-vaquita-form" style="display: none;" class="lightGrayBG border-radius-small spacing-m w-full">
+    <form action="/dashboard/vaquitas/buscar" method="POST" class="flex flex-col gap-s">
+      <label class="font-bold text-primary">ID de la vaquita:</label>
+      <input type="number" name="vaquita_id" placeholder="Ej: 12" class="input w-full" required>
+
+      <div class="btn-group">
+        <button type="submit" class="btn btn--orangeBG noOutline">Buscar vaquita</button>
+        <button type="button" class="btn btn--grayBG noOutline" onclick="hideAllForms()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Lista de vaquitas (solo se muestran las creadas por el usuario, o a las que aportó) -->
+  <% if @vaquitas.empty? %>
+    <div class="flex justify-center items-center text-gray-lighter text-center text-l">
+      <div class="vaquita-empty-icon spacing-s">🐄</div>
+      <p>Aún no creaste ninguna vaquita</p>
+    </div>
+  <% else %>
+    <div class="list vaquitas-list w-full">
+      <% @vaquitas.each do |vaquita| %>
+        <a href="/dashboard/vaquitas/<%= vaquita.idVaquita %>" class="list-item spacing-m grid vaquita-item justify-center items-center text-primary text-l gap-m">
+          <p class="text-xxl">🐄</p>
+          <div class="vaquita-details flex flex-col justify-self-start justify-start gap-s">
+            <div class="font-semibold">
+              <%= vaquita.name %>
+            </div>
+            <div class="text-gray-lighter">
+              ID: <%= vaquita.idVaquita %>
+            </div>
+            <% creator = Account.find_by(id: vaquita.creator_account_id) %>
+            <div class="text-gray-lighter">
+              Creada por: <%= creator.user.first_name %> <%= creator.user.last_name %>
+            </div>
+          </div>
+          <div>
+            $<%= amount_format(vaquita.current_amount) %> / $<%= amount_format(vaquita.goal) %>
+          </div>
+        </a>
+      <% end %>
+    </div>
+  <% end %>    
+
+  <div class="w-full flex justify-center items-center text-center">
+    <% if session[:error] %>
+      <span class="text-red"><%= session[:error] %></span>
+      <% session[:error] = nil %> <!-- Limpiar el mensaje de error después de mostrarlo -->
+    <% end %>
+
+    <% if session[:success] %>
+      <span class="text-green"><%= session[:success] %></span>
+      <% session[:success] = nil %> <!-- Limpiar el mensaje de éxito después de mostrarlo -->
+    <% end %>
   </div>
 </div>
 
-<!-- Esto va a ser en ruby, es solo para poder ver las dos vistas de la pagina (sin y con vaquitas)-->
+
+<!-- Scripts para mostrar u ocultar formularios -->
 <script>
-   vaquitas = [
-    { img: "https://pbs.twimg.com/media/FtclnUDWAAAiMBr.jpg", titulo: "Vaquita 1", montoRecaudado: 3000, montoObjetivo: 5000 },
-    { img: "https://lastfm.freetls.fastly.net/i/u/ar0/ad2315f72833948829e015ba8ad0f4bd.jpg", titulo: "Vaquita 2", montoRecaudado: 1500, montoObjetivo: 2000 }
-  ];
-  // vaquitas = []; // descomentar para probar vista sin vaquitas
+  function toggleVaquitaOptions() {
+    document.getElementById('new-vaquita-button').style.display = 'none';
+    document.getElementById('vaquita-options').style.display = 'flex';
+  }
 
-  const emptyState = document.querySelector('.empty-state');
-  const vaquitasList = document.querySelector('.vaquitas-list');
+  function showCreateForm() {
+    document.getElementById('vaquita-options').style.display = 'none';
+    document.getElementById('create-vaquita-form').style.display = 'block';
+  }
 
-  if (vaquitas.length === 0) {
-    emptyState.style.display = 'block';
-    vaquitasList.style.display = 'none';
-  } else {
-    emptyState.style.display = 'none';
-    vaquitasList.style.display = 'flex';
+  function showContributeForm() {
+    document.getElementById('vaquita-options').style.display = 'none';
+    document.getElementById('contribute-vaquita-form').style.display = 'block';
+  }
 
-    vaquitas.forEach(v => {
-      const item = document.createElement('div');
-      item.className = 'list-item spacing-m grid vaquita-item justify-center items-center text-primary text-l';
-
-      item.innerHTML = `
-        <img src="${v.img}" alt="${v.titulo}" class="vaquita-image border-radius-small"/>
-        <div class="font-semibold">${v.titulo}</div>
-        <div>$${v.montoRecaudado} / $${v.montoObjetivo}</div>
-      `;
-      vaquitasList.appendChild(item);
-    });
+  function hideAllForms() {
+    document.getElementById('new-vaquita-button').style.display = 'block';
+    document.getElementById('vaquita-options').style.display = 'none';
+    document.getElementById('create-vaquita-form').style.display = 'none';
+    document.getElementById('contribute-vaquita-form').style.display = 'none';
   }
 </script>
