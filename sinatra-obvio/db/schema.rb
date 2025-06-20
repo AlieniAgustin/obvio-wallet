@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_19_033547) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_19_235918) do
   create_table "accounts", force: :cascade do |t|
     t.integer "balance"
     t.string "cvu"
@@ -48,29 +48,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_19_033547) do
     t.index ["account_id", "vaquita_id"], name: "index_contributions_on_account_id_and_vaquita_id", unique: true
     t.index ["account_id"], name: "index_contributions_on_account_id"
     t.index ["vaquita_id"], name: "index_contributions_on_vaquita_id"
-  end
-
-  create_table "monthly_summaries", force: :cascade do |t|
-    t.integer "initial_balance", null: false
-    t.integer "final_balance", null: false
-    t.text "note"
-    t.string "balance_status"
-    t.integer "transaction_count"
-    t.integer "account_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_monthly_summaries_on_account_id"
-  end
-
-  create_table "receipts", force: :cascade do |t|
-    t.integer "transfer_id"
-    t.date "date"
-    t.time "time"
-    t.integer "amount"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["transfer_id"], name: "index_receipts_on_transfer_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -119,8 +96,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_19_033547) do
   add_foreign_key "contact_lists", "accounts"
   add_foreign_key "contributions", "accounts"
   add_foreign_key "contributions", "vaquitas"
-  add_foreign_key "monthly_summaries", "accounts"
-  add_foreign_key "receipts", "transfers"
   add_foreign_key "transactions", "accounts", column: "source_account_id"
   add_foreign_key "transactions", "accounts", column: "target_account_id"
   add_foreign_key "vaquitas", "accounts", column: "creator_account_id"

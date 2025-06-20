@@ -12,8 +12,6 @@ require_relative 'models/account'
 require_relative 'models/transaction'
 require_relative 'models/contact_list'
 require_relative 'models/contact_list_account'
-require_relative 'models/monthly_summary'
-require_relative 'models/receipt' 
 require_relative 'models/vaquita'
 require_relative 'models/contribution'
 
