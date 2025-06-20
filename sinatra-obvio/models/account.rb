@@ -15,6 +15,7 @@ class Account < ActiveRecord::Base
     
     validates :cvu, presence: true, uniqueness: true
     validates :alias, presence: true, uniqueness: true
+    validates :balance, numericality: { greater_than_or_equal_to: 0, message: "must be greater than or equal to 0" }
 
     after_create :create_contact_list
 
