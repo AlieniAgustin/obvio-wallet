@@ -2,6 +2,7 @@ ENV['RACK_ENV'] ||= 'test'
 
 require 'yaml'
 require 'active_record'
+require 'rack/test'
 
 require_relative '../server'
 
