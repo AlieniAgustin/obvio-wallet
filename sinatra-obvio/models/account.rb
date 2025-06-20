@@ -1,7 +1,6 @@
 class Account < ActiveRecord::Base
     belongs_to :user  #pertenece a un usuario
     has_one :contact_list, dependent: :destroy # Si una cuenta es eliminada, su lista de contactos tambien es eliminada
-    has_many :monthly_summaries, dependent: :destroy
     
     has_many :outgoing_transactions, class_name: "Transaction", foreign_key: "source_account_id"
     has_many :incoming_transactions, class_name: "Transaction", foreign_key: "target_account_id"
