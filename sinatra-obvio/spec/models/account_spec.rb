@@ -124,7 +124,7 @@ RSpec.describe Account do
   end
 
   describe "callbacks" do
-    it "creates contact list after account creation" do
+    it "se crea una lista de contactos despues de la creacion de la cuenta" do
       new_user = User.new(
         first_name: "Santiago",
         last_name: "Llorente",
