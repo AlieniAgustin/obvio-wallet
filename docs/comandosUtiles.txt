@@ -1,0 +1,19 @@
+==================== Para ejecutar la app ====================
+Desde sinatra-obvio:
+
+# Correr migraciones
+sudo docker compose exec app bundle exec rake db:migrate
+
+# Levantar container en modo detached
+sudo docker compose up -d --build (hacer para cada modificacion en el backend)
+
+==================== RSpec ====================
+
+# Crear base de datos de test
+sudo docker-compose run --rm app bundle exec rake db:create RACK_ENV=test
+
+# Ejecutar migraciones sobre la db de test
+sudo docker-compose run --rm app bundle exec rake db:migrate RACK_ENV=test
+
+# Ejecutar tests
+sudo docker-compose run --rm app bundle exec rspec
