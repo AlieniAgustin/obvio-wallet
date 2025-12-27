@@ -33,6 +33,24 @@ Este enfoque permite a los estudiantes adquirir experiencia real y completa en e
 - Hernán Jara  
 - Julián Varea  
 
+## 🚀 Cómo ejecutar el proyecto
+
+### Requisitos
+
+- Tener **Docker** instalado.
+- Tener **Docker Compose** disponible.
+
+### Pasos
+
+1. Clonar el repositorio.
+2. Desde la raíz del proyecto, ejecutar:
+   ```bash
+   docker compose up --build
+   ```
+3. Abrir el navegador y acceder a:
+   ```
+   http://localhost:8000
+
 ## 📚 Tecnologías y Herramientas
 
 > En este proyecto empleamos diversas tecnologías y herramientas para el desarrollo, diseño y planificación:
